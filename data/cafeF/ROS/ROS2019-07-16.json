@@ -1,0 +1,29 @@
+{
+  "GiaMoCua": 27.8,
+  "GiaDongCua": 28.6,
+  "GiaThamChieu": 28,
+  "GiaCaoNhat": 28.6,
+  "GiaThayDoi": "0.6(2.14 % )",
+  "GiaThapNhat": 27,
+  "TongKhoiLuong": 9409450,
+  "DlTongHop": [
+    {
+      "Gia": 28.6,
+      "KhoiLuong": 553270,
+      "TyTrong": "100.0"
+    }
+  ],
+  "DlChiTiet": [
+    {
+      "ThoiGian": "11:12:23",
+      "Gia": 28.6,
+      "GiaThayDoi": " +0.6 ( +0.02 %)",
+      "KLLo": 553270,
+      "KLTichLuy": 940945.0000000001,
+      "TiTrong": "100.0"
+    }
+  ],
+  "BDGia": 0,
+  "BDKhoiLuong": 0,
+  "Data": null
+}

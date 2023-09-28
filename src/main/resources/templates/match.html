@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--    <link rel="stylesheet" href="../static/lib/bootstrap.min.css">-->
+<!--    <link rel="stylesheet" href="../static/lib/bootstrap-vue.min.css">-->
+<!--    <link rel="stylesheet" href="../static/lib/vue-multiselect.min.css">-->
+<!--    <link rel="stylesheet" href="../static/css/fab.css">-->
+     <link rel="stylesheet" th:href="@{/lib/bootstrap.min.css}" />
+     <link rel="stylesheet" th:href="@{/lib/bootstrap-vue.min.css}" />
+     <link rel="stylesheet" th:href="@{/lib/vue-multiselect.min.css}" />
+     <link rel="stylesheet" th:href="@{/css/fab.css}" />
+    <title>Match</title>
+</head>
+
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button,
+    input::-webkit-clear-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+<body>
+<div id="view-match-log">
+    <template>
+        <div v-show="fab.isShowMenu" @click="onClickMenu" class="floating-button-menu" :class="{ 'menu-on': fab.isMenuOpen }">
+            <div v-for="tool in fab.tools" class="floating-button-menu-links">
+                <a :href="tool.href">{{tool.name}}</a>
+            </div>
+            <div class="floating-button-menu-label">+</div>
+        </div>
+        <div @click="onClickMenu" class="floating-button-menu-close" :class="{ 'menu-on': fab.isMenuOpen }"></div>
+
+        <b-container fluid>
+            <b-form-row>
+                <b-col lg="1" class="my-1">
+                    <b-input v-model="inputMapId" :disabled="isSearching" placeholder="MapId" type="search">
+                    </b-input>
+                </b-col>
+
+                <b-col lg="1" class="my-1">
+                    <b-input v-model="inputGold" :disabled="isSearching" placeholder="Gold" type="search">
+                    </b-input>
+                </b-col>
+
+                <b-col lg="1" class="my-1">
+                    <b-input v-model="inputSize" :disabled="isSearching" placeholder="Size" type="search">
+                    </b-input>
+                </b-col>
+
+                <b-col lg="1" class="my-1">
+                    <b-input v-model="inputUserIds" :disabled="isSearching" placeholder="UserIds" type="search">
+                    </b-input>
+                </b-col>
+
+                <b-col lg="1" class="my-1">
+                    <b-input v-model="inputCardIds" :disabled="isSearching" placeholder="CardIds" type="search">
+                    </b-input>
+                </b-col>
+
+                <b-col lg="1" class="my-1">
+                    <b-input v-model="inputSkillIds" :disabled="isSearching" placeholder="SkillIds" type="search">
+                    </b-input>
+                </b-col>
+
+                <b-col lg="2" class="my-1">
+                    <multiselect v-model="value" tag-placeholder="Add this as new tag"
+                                 placeholder="Search or add a tag" label="name" track-by="code" :options="options"
+                                 :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+                </b-col>
+
+                <b-col lg="1" class="my-1">
+                    <b-input v-model="inputDateStart" :disabled="isSearching" type="date">
+                    </b-input>
+                </b-col>
+
+                <b-col lg="1" class="my-1">
+                    <b-input v-model="inputDateEnd" :disabled="isSearching" type="date">
+                    </b-input>
+                </b-col>
+
+                <b-col lg="1" class="my-1">
+                    <b-button @click="onSearchClicked" variant="primary" block :disabled="isSearching">Search
+                    </b-button>
+                </b-col>
+                <b-col lg="1" class="my-1">
+                    <b-button @click="onExampleClicked" block :disabled="isSearching">Example
+                    </b-button>
+                </b-col>
+            </b-form-row>
+
+            <div>
+
+            </div>
+
+            <b-table small responsive bordered hover show-empty caption-top :busy="isSearching" :items="items"
+                     :fields="fields">
+                <template slot="table-caption">Row = {{items.length}}</template>
+
+                <template v-slot:cell(show_details)="row">
+                    <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+                        {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
+                    </b-button>
+                </template>
+
+                <template v-slot:row-details="row">
+                    <b-card>
+                            <pre>{{ newFormatLog(row.item) }}
+                            </pre>
+                        <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
+                    </b-card>
+                </template>
+
+                <div slot="table-busy" class="text-center text-primary my-2">
+                    <b-spinner class="align-middle"></b-spinner>
+                    <strong>Searching ...</strong>
+                </div>
+            </b-table>
+        </b-container>
+    </template>
+</div>
+
+<!--<script src="../static/lib/axios.min.js"></script>-->
+<!--<script src="../static/lib/vue.min.js"></script>-->
+<!--<script src="../static/lib/bootstrap-vue.min.js"></script>-->
+<!--<script src="../static/lib/vue-multiselect@2.1.0.js"></script>-->
+<!--<script src="../static/js/utils.js"></script>-->
+<!--<script src="../static/js/conf_match.js"></script>-->
+<!--<script src="../static/js/conf_fab.js"></script>-->
+<!--<script src="../static/js/conf_test.js"></script>-->
+<!--<script src="../static/js/match.js"></script>-->
+ <script th:src="@{/lib/axios.min.js}"></script>
+ <script th:src="@{/lib/vue.min.js}"></script>
+ <script th:src="@{/lib/bootstrap-vue.min.js}"></script>
+ <script th:src="@{/lib/vue-multiselect@2.1.0.js}"></script>
+ <script th:src="@{/js/utils.js}"></script>
+ <script th:src="@{/js/conf_match.js}"></script>
+ <script th:src="@{/js/conf_fab.js}"></script>
+<!-- <script th:src="@{/js/conf_test.js}"></script> -->
+ <script th:src="@{/js/match.js}"></script>
+</body>
+
+</html>

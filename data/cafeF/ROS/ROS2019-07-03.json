@@ -1,0 +1,507 @@
+{
+  "GiaMoCua": 29.3,
+  "GiaDongCua": 29.4,
+  "GiaThamChieu": 29.4,
+  "GiaCaoNhat": 29.4,
+  "GiaThayDoi": "0(0 % )",
+  "GiaThapNhat": 29,
+  "TongKhoiLuong": 9174630,
+  "DlTongHop": [
+    {
+      "Gia": 29.4,
+      "KhoiLuong": 523600,
+      "TyTrong": "58.26"
+    },
+    {
+      "Gia": 29.2,
+      "KhoiLuong": 2165,
+      "TyTrong": "0.24"
+    },
+    {
+      "Gia": 29,
+      "KhoiLuong": 119868,
+      "TyTrong": "13.34"
+    },
+    {
+      "Gia": 29.05,
+      "KhoiLuong": 72010,
+      "TyTrong": "8.01"
+    },
+    {
+      "Gia": 29.1,
+      "KhoiLuong": 160044,
+      "TyTrong": "17.81"
+    },
+    {
+      "Gia": 29.15,
+      "KhoiLuong": 21004,
+      "TyTrong": "2.34"
+    },
+    {
+      "Gia": 29.25,
+      "KhoiLuong": 50,
+      "TyTrong": "0.01"
+    }
+  ],
+  "DlChiTiet": [
+    {
+      "ThoiGian": "02:19:11",
+      "Gia": 29.25,
+      "GiaThayDoi": " --0.15 ( --0.01 %)",
+      "KLLo": 50,
+      "KLTichLuy": 18772,
+      "TiTrong": "0.01"
+    },
+    {
+      "ThoiGian": "02:22:10",
+      "Gia": 29.15,
+      "GiaThayDoi": " --0.25 ( --0.01 %)",
+      "KLLo": 4122.999999999999,
+      "KLTichLuy": 22895,
+      "TiTrong": "0.46"
+    },
+    {
+      "ThoiGian": "02:26:07",
+      "Gia": 29.15,
+      "GiaThayDoi": " --0.25 ( --0.01 %)",
+      "KLLo": 15094,
+      "KLTichLuy": 37989,
+      "TiTrong": "1.68"
+    },
+    {
+      "ThoiGian": "02:29:41",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 21434.000000000004,
+      "KLTichLuy": 59423,
+      "TiTrong": "2.38"
+    },
+    {
+      "ThoiGian": "02:33:08",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 8741.999999999996,
+      "KLTichLuy": 68165,
+      "TiTrong": "0.97"
+    },
+    {
+      "ThoiGian": "02:37:11",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 2413.9999999999986,
+      "KLTichLuy": 70579,
+      "TiTrong": "0.27"
+    },
+    {
+      "ThoiGian": "02:40:38",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 15847.000000000004,
+      "KLTichLuy": 86426,
+      "TiTrong": "1.76"
+    },
+    {
+      "ThoiGian": "02:44:08",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 652.9999999999973,
+      "KLTichLuy": 87079,
+      "TiTrong": "0.07"
+    },
+    {
+      "ThoiGian": "02:47:37",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 3293.0000000000064,
+      "KLTichLuy": 90372,
+      "TiTrong": "0.37"
+    },
+    {
+      "ThoiGian": "02:52:25",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 1106.9999999999936,
+      "KLTichLuy": 91479,
+      "TiTrong": "0.12"
+    },
+    {
+      "ThoiGian": "02:55:52",
+      "Gia": 29.15,
+      "GiaThayDoi": " --0.25 ( --0.01 %)",
+      "KLLo": 66.00000000000819,
+      "KLTichLuy": 91545,
+      "TiTrong": "0.01"
+    },
+    {
+      "ThoiGian": "03:00:04",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 3707.9999999999927,
+      "KLTichLuy": 95253,
+      "TiTrong": "0.41"
+    },
+    {
+      "ThoiGian": "03:03:54",
+      "Gia": 29.15,
+      "GiaThayDoi": " --0.25 ( --0.01 %)",
+      "KLLo": 1516.0000000000082,
+      "KLTichLuy": 96769,
+      "TiTrong": "0.17"
+    },
+    {
+      "ThoiGian": "03:06:50",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 7401.999999999998,
+      "KLTichLuy": 104171,
+      "TiTrong": "0.82"
+    },
+    {
+      "ThoiGian": "03:11:09",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 484.9999999999909,
+      "KLTichLuy": 104656,
+      "TiTrong": "0.05"
+    },
+    {
+      "ThoiGian": "03:15:37",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 1216.0000000000082,
+      "KLTichLuy": 105872,
+      "TiTrong": "0.14"
+    },
+    {
+      "ThoiGian": "03:19:05",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 15809.99999999999,
+      "KLTichLuy": 121682,
+      "TiTrong": "1.76"
+    },
+    {
+      "ThoiGian": "03:23:53",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 41118.00000000001,
+      "KLTichLuy": 162800,
+      "TiTrong": "4.58"
+    },
+    {
+      "ThoiGian": "03:27:45",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 450,
+      "KLTichLuy": 163250,
+      "TiTrong": "0.05"
+    },
+    {
+      "ThoiGian": "03:31:03",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 9520.000000000004,
+      "KLTichLuy": 172770,
+      "TiTrong": "1.06"
+    },
+    {
+      "ThoiGian": "03:35:52",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 6605.9999999999945,
+      "KLTichLuy": 179376,
+      "TiTrong": "0.74"
+    },
+    {
+      "ThoiGian": "03:40:32",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 520.0000000000045,
+      "KLTichLuy": 179896,
+      "TiTrong": "0.06"
+    },
+    {
+      "ThoiGian": "03:43:55",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 43119.999999999985,
+      "KLTichLuy": 223016,
+      "TiTrong": "4.8"
+    },
+    {
+      "ThoiGian": "03:48:11",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 471.00000000000364,
+      "KLTichLuy": 223487,
+      "TiTrong": "0.05"
+    },
+    {
+      "ThoiGian": "03:52:06",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 41.00000000003092,
+      "KLTichLuy": 223528.00000000003,
+      "TiTrong": "0.0"
+    },
+    {
+      "ThoiGian": "03:55:17",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 14770.999999999958,
+      "KLTichLuy": 238298.99999999997,
+      "TiTrong": "1.64"
+    },
+    {
+      "ThoiGian": "04:00:01",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 1161.0000000000127,
+      "KLTichLuy": 239460,
+      "TiTrong": "0.13"
+    },
+    {
+      "ThoiGian": "04:04:02",
+      "Gia": 29,
+      "GiaThayDoi": " --0.4 ( --0.01 %)",
+      "KLLo": 85943.00000000003,
+      "KLTichLuy": 325403,
+      "TiTrong": "9.56"
+    },
+    {
+      "ThoiGian": "04:08:03",
+      "Gia": 29,
+      "GiaThayDoi": " --0.4 ( --0.01 %)",
+      "KLLo": 926.9999999999982,
+      "KLTichLuy": 326330,
+      "TiTrong": "0.1"
+    },
+    {
+      "ThoiGian": "04:12:06",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 554.9999999999727,
+      "KLTichLuy": 326885,
+      "TiTrong": "0.06"
+    },
+    {
+      "ThoiGian": "04:16:07",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 26.000000000021828,
+      "KLTichLuy": 326911,
+      "TiTrong": "0.0"
+    },
+    {
+      "ThoiGian": "04:19:26",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 40.99999999998545,
+      "KLTichLuy": 326952,
+      "TiTrong": "0.0"
+    },
+    {
+      "ThoiGian": "04:27:13",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 20,
+      "KLTichLuy": 326972,
+      "TiTrong": "0.0"
+    },
+    {
+      "ThoiGian": "04:32:09",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 205.0000000000182,
+      "KLTichLuy": 327177,
+      "TiTrong": "0.02"
+    },
+    {
+      "ThoiGian": "06:03:26",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 238.0000000000109,
+      "KLTichLuy": 327415,
+      "TiTrong": "0.03"
+    },
+    {
+      "ThoiGian": "06:07:49",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 50,
+      "KLTichLuy": 327465,
+      "TiTrong": "0.01"
+    },
+    {
+      "ThoiGian": "06:11:05",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 3156.999999999971,
+      "KLTichLuy": 330622,
+      "TiTrong": "0.35"
+    },
+    {
+      "ThoiGian": "06:15:35",
+      "Gia": 29,
+      "GiaThayDoi": " --0.4 ( --0.01 %)",
+      "KLLo": 298.0000000000018,
+      "KLTichLuy": 330920,
+      "TiTrong": "0.03"
+    },
+    {
+      "ThoiGian": "06:19:06",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 17867.000000000007,
+      "KLTichLuy": 348787,
+      "TiTrong": "1.99"
+    },
+    {
+      "ThoiGian": "06:22:47",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 100,
+      "KLTichLuy": 348887,
+      "TiTrong": "0.01"
+    },
+    {
+      "ThoiGian": "06:27:44",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 6141.000000000031,
+      "KLTichLuy": 355028,
+      "TiTrong": "0.68"
+    },
+    {
+      "ThoiGian": "06:31:37",
+      "Gia": 29,
+      "GiaThayDoi": " --0.4 ( --0.01 %)",
+      "KLLo": 5041.999999999962,
+      "KLTichLuy": 360070,
+      "TiTrong": "0.56"
+    },
+    {
+      "ThoiGian": "06:35:38",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 1349.0000000000236,
+      "KLTichLuy": 361419,
+      "TiTrong": "0.15"
+    },
+    {
+      "ThoiGian": "06:39:57",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 454.9999999999727,
+      "KLTichLuy": 361874,
+      "TiTrong": "0.05"
+    },
+    {
+      "ThoiGian": "06:43:34",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 100,
+      "KLTichLuy": 361974,
+      "TiTrong": "0.01"
+    },
+    {
+      "ThoiGian": "06:47:09",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 1706.00000000004,
+      "KLTichLuy": 363680,
+      "TiTrong": "0.19"
+    },
+    {
+      "ThoiGian": "06:51:59",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 2.999999999974534,
+      "KLTichLuy": 363683,
+      "TiTrong": "0.0"
+    },
+    {
+      "ThoiGian": "06:56:00",
+      "Gia": 29,
+      "GiaThayDoi": " --0.4 ( --0.01 %)",
+      "KLLo": 10800,
+      "KLTichLuy": 374483,
+      "TiTrong": "1.2"
+    },
+    {
+      "ThoiGian": "07:00:12",
+      "Gia": 29,
+      "GiaThayDoi": " --0.4 ( --0.01 %)",
+      "KLLo": 400,
+      "KLTichLuy": 374883,
+      "TiTrong": "0.04"
+    },
+    {
+      "ThoiGian": "07:04:32",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 30,
+      "KLTichLuy": 374913,
+      "TiTrong": "0.0"
+    },
+    {
+      "ThoiGian": "07:08:12",
+      "Gia": 29.05,
+      "GiaThayDoi": " --0.35 ( --0.01 %)",
+      "KLLo": 8.999999999969077,
+      "KLTichLuy": 374922,
+      "TiTrong": "0.0"
+    },
+    {
+      "ThoiGian": "07:12:04",
+      "Gia": 29.1,
+      "GiaThayDoi": " --0.3 ( --0.01 %)",
+      "KLLo": 113.00000000001091,
+      "KLTichLuy": 375035,
+      "TiTrong": "0.01"
+    },
+    {
+      "ThoiGian": "07:17:00",
+      "Gia": 29.15,
+      "GiaThayDoi": " --0.25 ( --0.01 %)",
+      "KLLo": 205.0000000000182,
+      "KLTichLuy": 375240,
+      "TiTrong": "0.02"
+    },
+    {
+      "ThoiGian": "07:24:47",
+      "Gia": 29.2,
+      "GiaThayDoi": " --0.2 ( --0.01 %)",
+      "KLLo": 63.000000000010914,
+      "KLTichLuy": 375303,
+      "TiTrong": "0.01"
+    },
+    {
+      "ThoiGian": "07:29:09",
+      "Gia": 29.2,
+      "GiaThayDoi": " --0.2 ( --0.01 %)",
+      "KLLo": 2101.999999999998,
+      "KLTichLuy": 377405,
+      "TiTrong": "0.23"
+    },
+    {
+      "ThoiGian": "07:33:00",
+      "Gia": 29,
+      "GiaThayDoi": " --0.4 ( --0.01 %)",
+      "KLLo": 16457.999999999993,
+      "KLTichLuy": 393863,
+      "TiTrong": "1.83"
+    },
+    {
+      "ThoiGian": "07:49:27",
+      "Gia": 29.4,
+      "GiaThayDoi": " -0 ( -0 %)",
+      "KLLo": 523599.9999999999,
+      "KLTichLuy": 917462.9999999999,
+      "TiTrong": "58.26"
+    }
+  ],
+  "BDGia": 0,
+  "BDKhoiLuong": 0,
+  "Data": null
+}

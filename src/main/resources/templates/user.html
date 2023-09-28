@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css">
+    <title>User</title>
+</head>
+
+<style>
+
+</style>
+
+<body>
+<div id="view-user">
+    <template>
+        <b-container fluid>
+            <b-table responsive bordered hover show-empty caption-top :busy="isSearching" :items="items"
+                     :fields="fields">
+
+                <template v-slot:cell(searchLog)="row">
+                    <b-form-checkbox v-model="row.item.searchLog" size="lg"></b-form-checkbox>
+                </template>
+
+                <template v-slot:cell(metric)="row">
+                    <b-form-checkbox v-model="row.item.metric" size="lg"></b-form-checkbox>
+                </template>
+
+                <template v-slot:cell(match)="row">
+                    <b-form-checkbox v-model="row.item.match" size="lg"></b-form-checkbox>
+                </template>
+
+                <template slot="table-caption">Num user = {{items.length}}</template>
+
+                <div slot="table-busy" class="text-center text-primary my-2">
+                    <b-spinner class="align-middle"></b-spinner>
+                    <strong>Searching ...</strong>
+                </div>
+            </b-table>
+
+            <b-form-row>
+                <b-col lg="1" offset-lg="10" class="my-1">
+                    <b-button @click="onRefresh" :disabled="isSearching" variant="dark" block>Refresh
+                    </b-button>
+                </b-col>
+
+                <b-col lg="1" class="my-1">
+                    <b-button @click="onSave" :disabled="isSearching" variant="primary" block>Save
+                    </b-button>
+                </b-col>
+            </b-form-row>
+        </b-container>
+    </template>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script th:src="@{/js/user.js}"></script>
+<!-- <script src="../static/js/user.js"></script> -->
+</body>
+
+</html>
