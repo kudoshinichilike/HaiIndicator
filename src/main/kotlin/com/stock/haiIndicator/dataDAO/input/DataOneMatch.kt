@@ -13,8 +13,8 @@ data class DataOneMatch(
     val TiTrong: String,
 ) {
     init {
-        KLTichLuy = ceil(KLTichLuy)
-        KLLo = ceil(KLLo)
+        KLTichLuy = ceil(KLTichLuy) * 10
+        KLLo = ceil(KLLo) * 10
 
     }
 }

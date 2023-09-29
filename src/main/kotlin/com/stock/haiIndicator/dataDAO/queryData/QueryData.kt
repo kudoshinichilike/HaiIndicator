@@ -10,13 +10,13 @@ object QueryData {
      * date: format yyyy-MM-dd
      */
     suspend fun query(code: String, date: String): String {
-        val bodyPost = createBodyPost(code, date)
-        val response = HttpUtilsKtor.sendPostJson(URL, bodyPosts)
+        val params = createBodyParams(code, date)
+        val response = HttpUtilsKtor.get(URL, params)
         println("queryData response ${response.bodyAsText()}")
         return response.bodyAsText()
     }
 
-    private fun createBodyPost(code: String, date: String): Map<String, String> {
+    private fun createBodyParams(code: String, date: String): Map<String, String> {
         return mutableMapOf(
             "Symbol" to code,
             "Date" to date

@@ -26,9 +26,9 @@ object DetectIndex2: IDetectIndex {
         return data.percentKLUpperPriceUnbound(data.GiaMoCua)
     }
 
-    override fun detect(code: String, date: Date): Either<ErrorDefine, Boolean> {
+    override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Boolean> {
         val dateStr = ConstDefine.SDF.format(date)
-        val data = DAO.readDataOneDay(code, dateStr) ?: return Left(ErrorDefine.NO_EXIST_DATA)
+        val data = DAO.getDataOneDay(code, dateStr) ?: return Left(ErrorDefine.NO_EXIST_DATA)
         return Right(detect(data))
     }
 }

@@ -8,8 +8,7 @@ data class ReqSearchData(
 
     @field:NotBlank(message = "dateSearch must not be blank")
     val dateSearch: String,
-) {
-    init {
-        println("dateSearch in req: $dateSearch")
-    }
-}
+
+    @field:NotBlank(message = "dataSource must not be blank")
+    val dataSource: String,
+)

@@ -12,6 +12,12 @@ import kotlin.math.max
 import kotlin.math.min
 
 object DetectIndex1: IDetectIndex {
+    override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Boolean> {
+        val dateStr = ConstDefine.SDF.format(date)
+        val data = DAO.getDataOneDay(code, dateStr) ?: return Left(ErrorDefine.NO_EXIST_DATA)
+        return Right(detect(data))
+    }
+
     fun detect(data: DataOneDay): Boolean {
         if (!isValidShape(data))
             return false
@@ -27,7 +33,7 @@ object DetectIndex1: IDetectIndex {
     }
 
     private fun isValidShape1(data: DataOneDay): Boolean {
-        return data.GiaCaoNhat == data.GiaMoCua
+        return data.GiaCaoNhat == data.GiaMoCua && data.GiaDongCua <= data.GiaCaoNhat
     }
 
     private fun isValidShape2(data: DataOneDay): Boolean {
@@ -37,12 +43,7 @@ object DetectIndex1: IDetectIndex {
     }
 
     private fun percentAKL(data: DataOneDay): Float {
-        return data.percentKLLowerPrice(min(data.GiaDongCua, data.GiaMoCua))
-    }
-
-    override fun detect(code: String, date: Date): Either<ErrorDefine, Boolean> {
-        val dateStr = ConstDefine.SDF.format(date)
-        val data = DAO.readDataOneDay(code, dateStr) ?: return Left(ErrorDefine.NO_EXIST_DATA)
-        return Right(detect(data))
+//        return data.percentKLLowerPrice(min(data.GiaDongCua, data.GiaMoCua))
+        return data.percentKLLowerPrice(data.GiaDongCua)
     }
 }

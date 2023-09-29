@@ -3,6 +3,7 @@ package com.stock.haiIndicator.logic.detectIndex.detect
 import com.stock.haiIndicator.bean.ErrorDefine
 import com.zps.bitzerokt.utils.some_monad.Either
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
+import com.zps.bitzerokt.utils.some_monad.Right
 import java.util.*
 
 object DetectIndex4: IDetectIndex {
@@ -26,7 +27,7 @@ object DetectIndex4: IDetectIndex {
         return data.percentKLUpperPrice(data.GiaDongCua)
     }
 
-    override fun detect(code: String, date: Date): Either<ErrorDefine, Boolean> {
-        TODO("Not yet implemented")
+    override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Boolean> {
+        return Right(false)
     }
 }

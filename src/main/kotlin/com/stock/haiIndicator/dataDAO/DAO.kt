@@ -2,7 +2,6 @@ package com.stock.haiIndicator.dataDAO
 
 import FileReader
 import FileWriter
-import com.stock.haiIndicator.bean.ConstDefine
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
 import com.stock.haiIndicator.dataDAO.queryData.QueryData
 import com.stock.haiIndicator.payload.res.ResMatchData
@@ -10,8 +9,30 @@ import kotlinx.serialization.json.jsonObject
 import utils.JsonUtils
 
 object DAO {
-    fun readDataOneDay(code: String, dateStr: String): DataOneDay? {
+    suspend fun getDataOneDay(code: String, dateStr: String): DataOneDay? {
+        return getDataOneDayLocal(code, dateStr) ?: getDataOneDayCafeF(code, dateStr)
+    }
+
+    private fun getDataOneDayLocal(code: String, dateStr: String): DataOneDay? {
         return FileReader.readDataOneDay(code, dateStr)
+    }
+
+    private suspend fun getDataOneDayCafeF(code: String, dateStr: String): DataOneDay? {
+        try {
+            val strData = QueryData.query(code, dateStr)
+            val jsonData = JsonUtils.parseToJsonElement(strData).jsonObject
+            val data: DataOneDay = JsonUtils.decodeFromString(jsonData["Data"].toString())
+            val isValidData = normalizeDataFromCafeF(data)
+            return if(isValidData) {
+                saveDataToLocal(code, dateStr, data)
+                data
+            } else
+                null
+        }
+        catch (e: Exception) {
+            println("getDataOneDayCafeF Exception $code $dateStr")
+            return null
+        }
     }
 
     suspend fun getMatchData(code: String, dateStr: String): List<ResMatchData>? {
@@ -43,9 +64,7 @@ object DAO {
     }
 
     private fun saveDataToLocal(code: String, date: String, data: DataOneDay) {
-        val dateCafeF = ConstDefine.SDF_cafeF.parse(date)
-        val dateSave = ConstDefine.SDF.format(dateCafeF)
-        FileWriter.writeDataOneDay(code, dateSave, data)
+        FileWriter.writeDataOneDay(code, date, data)
     }
 
     private fun normalizeDataFromCafeF(data: DataOneDay): Boolean {

@@ -23,4 +23,14 @@ object HttpUtilsKtor {
             setBody(JsonUtils.encodeToString(body))
         }
     }
+
+    suspend fun get(url: String, param: Map<String, String>): HttpResponse {
+        return httpClient.get(url) {
+            url {
+                param.forEach{
+                    parameters.append(it.key, it.value)
+                }
+            }
+        }
+    }
 }
