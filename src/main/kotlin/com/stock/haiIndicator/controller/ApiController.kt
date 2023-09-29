@@ -1,9 +1,11 @@
 package com.stock.haiIndicator.controller
 
 import com.stock.haiIndicator.bean.ErrorDefine
-import com.stock.haiIndicator.payload.req.IndicateOneCodeReq
+import com.stock.haiIndicator.payload.req.DetectOneCodeReq
+import com.stock.haiIndicator.payload.req.DetectOneIndicatorReq
 import com.stock.haiIndicator.payload.req.ReqSearchData
-import com.stock.haiIndicator.payload.res.IndicateOneCodeRes
+import com.stock.haiIndicator.payload.res.DetectOneCodeRes
+import com.stock.haiIndicator.payload.res.DetectOneIndicatorRes
 import com.stock.haiIndicator.payload.res.ResSearchData
 import com.stock.haiIndicator.service.DetectService
 import com.stock.haiIndicator.service.SearchDataService
@@ -23,27 +25,27 @@ class ApiController {
         return "phuonggg"
     }
 
-//    @PostMapping(value = ["/detectOneIndicator"])
-//    fun detectOneIndicator(@Valid @RequestBody req: IndicateOneCodeReq): IndicateOneCodeRes {
-//        val resDetect = detectService.indicateOneCode(req.code, req.indicatorName, req.dateStart, req.dateEnd)
-//        return when (resDetect) {
-//            is Left -> IndicateOneCodeRes(resDetect.value.code)
-//            is Right -> IndicateOneCodeRes(ErrorDefine.SUCCESS.code, resDetect.value)
-//        }
-//    }
+    @PostMapping(value = ["/detectOneIndicator"])
+    suspend fun detectOneIndicator(@Valid @RequestBody req: DetectOneIndicatorReq): DetectOneIndicatorRes {
+        val resDetect = detectService.detectOneIndicator(req.code, req.indicatorName, req.dateStart, req.dateEnd)
+        return when (resDetect) {
+            is Left -> DetectOneIndicatorRes(resDetect.value.code)
+            is Right -> DetectOneIndicatorRes(ErrorDefine.SUCCESS.code, resDetect.value)
+        }
+    }
 
     @PostMapping(value = ["/detectOneCode"])
-    suspend fun detectOneCode(@Valid @RequestBody req: IndicateOneCodeReq): IndicateOneCodeRes {
+    suspend fun detectOneCode(@Valid @RequestBody req: DetectOneCodeReq): DetectOneCodeRes {
         println("detectOneCode $req")
         val resDetect = detectService.indicateOneCode(req.code, req.indicatorName, req.dateStart, req.dateEnd)
         return when (resDetect) {
             is Left -> {
                 println("detectOneCode Left ${resDetect.value.code}")
-                IndicateOneCodeRes(resDetect.value.code)
+                DetectOneCodeRes(resDetect.value.code)
             }
             is Right -> {
                 println("resDetect ${resDetect.value}")
-                IndicateOneCodeRes(ErrorDefine.SUCCESS.code, resDetect.value)
+                DetectOneCodeRes(ErrorDefine.SUCCESS.code, resDetect.value)
             }
         }
     }

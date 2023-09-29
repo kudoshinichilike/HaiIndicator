@@ -2,7 +2,7 @@ package com.stock.haiIndicator.payload.req
 
 import jakarta.validation.constraints.NotBlank
 
-data class IndicateOneCodeReq(
+data class DetectOneCodeReq(
     @field:NotBlank(message = "code must not be blank")
     val code: String,
 

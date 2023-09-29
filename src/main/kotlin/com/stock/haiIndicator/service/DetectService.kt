@@ -71,6 +71,62 @@ class DetectService {
         }
     }
 
+    suspend fun detectOneIndicator(codeList: List<String>, indicatorName: String, dateStartStr: String, dateEndStr: String):
+            Either<ErrorDefine, Map<String,List<String>>> {
+        try {
+            val detector = DefineDetector.fromName(indicatorName) ?: return Left(ErrorDefine.NO_EXIST_DETECTOR)
+            codeList.forEach { code ->
+                if (!validateCode(code))
+                    return Left(ErrorDefine.INVALID_CODE)
+            }
+
+            val resMap = mutableMapOf<String, List<String>>()
+            val dateStart = SDF.parse(dateStartStr)
+            val dateEnd = SDF.parse(dateEndStr)
+            val calendar = Calendar.getInstance()
+            calendar.time = dateStart
+            calendar.add(Calendar.DATE, -1)
+
+            while (!calendar.time.after(dateEnd)) {
+                calendar.add(Calendar.DATE, 1)
+                val currentDate = calendar.time
+                println("indicateOneCode currentDate: ${SDF.format(currentDate)}")
+                if (!validateDate(SDF.format(currentDate)))
+                    continue
+
+                val resList = mutableListOf<String>()
+                val listDateNoData = mutableListOf<Date>()
+                codeList.forEach {code ->
+                    val resDetect = detector.detect(code, currentDate)
+                    println("indicateOneCode resDetect: ${Gson().toJson(resDetect)}")
+                    when (resDetect) {
+                        is Left -> {
+                            if (resDetect.value == ErrorDefine.NO_EXIST_DATA)
+                                listDateNoData.add(currentDate)
+                            else
+                                println("indicateOneCode resDetect error $code ${SDF.format(currentDate)}: ${resDetect.value}")
+                        }
+                        is Right -> {
+                            if (resDetect.value)
+                                resList.add(code)
+                        }
+                    }
+                }
+
+                if (listDateNoData.isNotEmpty())
+                    println(Gson().toJson(listDateNoData))
+
+                resMap[SDF.format(currentDate)] = resList
+            }
+
+            return Right(resMap)
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+            return Left(ErrorDefine.FAIL)
+        }
+    }
+
     fun validateCode(code: String): Boolean {
         return CodeConfig.containsCode(code)
     }
