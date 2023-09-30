@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" th:href="@{/lib/bootstrap.min.css}" />
-    <link rel="stylesheet" th:href="@{/lib/bootstrap-vue.min.css}" />
-    <link rel="stylesheet" th:href="@{/lib/vue-multiselect.min.css}" />
-    <link rel="stylesheet" th:href="@{/css/fab.css}" />
+    <link rel="stylesheet" th:href="@{/lib/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/bootstrap-vue.min.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/vue-multiselect.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fab.css}"/>
     <title>Search</title>
 </head>
 
@@ -24,31 +24,48 @@
 <div id="view-search-data">
     <template>
         <b-container fluid>
-            <b-form-row>
-                <b-col lg="2" class="my-1">
-                    <b-input v-model="code" :disabled="isSearching" placeholder="Nhập mã chứng khoán" type="search">
-                    </b-input>
-                </b-col>
+            <b-card class="mb-2 mt-5">
+                <b-form-row>
+                    <b-col lg="1" class="my-1">
+                        Mã chứng khoán
+                    </b-col>
+                    <b-col lg="2" class="my-1">
+                        <b-input v-model="code" :disabled="isSearching" placeholder="Nhập mã chứng khoán" type="search">
+                        </b-input>
+                    </b-col>
+                </b-form-row>
 
-                <b-col lg="2" class="my-1">
-                    <b-input v-model="dateSearch" :disabled="isSearching" type="date"></b-input>
-                </b-col>
+                <b-form-row>
+                    <b-col lg="1" class="my-1">
+                        Ngày bắt đầu
+                    </b-col>
+                    <b-col lg="2" class="my-1">
+                        <b-input v-model="dateSearch" :disabled="isSearching" type="date"></b-input>
+                    </b-col>
+                </b-form-row>
 
-                <b-col lg="1" class="my-1">
-                    <b-button @click="onSearchClicked" variant="primary" block :disabled="isSearching">Search
-                    </b-button>
-                </b-col>
-            </b-form-row>
+                <b-form-row>
+                    <b-col lg="1" class="my-1">
+                        Ngày kết thúc
+                    </b-col>
+                    <b-col lg="2" class="my-1">
+                        <b-input v-model="dateSearch" :disabled="isSearching" type="date"></b-input>
+                    </b-col>
+                </b-form-row>
 
-            <b-table small responsive bordered hover show-empty caption-top :busy="isSearching"
-                     selected-variant="none" :items="items"
-                     :fields="fields">
-                <template slot="table-caption">Row = {{items.length}}</template>
-                <div slot="table-busy" class="text-center text-primary my-2">
-                    <b-spinner class="align-middle"></b-spinner>
-                    <strong>Searching ...</strong>
+            </b-card>
+
+            <template>
+                <div class="overflow-auto">
+                    <b-table small responsive bordered hover show-empty caption-top :busy="isSearching"
+                             selected-variant="none" :items="items"
+                             :fields="fields" :per-page="perPage"
+                             :current-page="currentPage">
+                        <template slot="table-caption">Row = {{items.length}}</template>
+                    </b-table>
+                    <b-pagination v-if="rows" v-model="currentPage" :total-rows="rows" align="center"></b-pagination>
                 </div>
-            </b-table>
+            </template>
         </b-container>
     </template>
 </div>

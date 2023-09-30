@@ -21,3 +21,7 @@ var timestampToMSM = function (timestamp) {
 var isDefined = function (o) {
     return typeof o !== 'undefined';
 }
+
+var isEmpty = function (o) {
+    return typeof o == null || o == '';
+}
