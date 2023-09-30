@@ -1,12 +1,5 @@
 [
   {
-    "name": "Other",
-    "code": {
-      "ROS": "ROS",
-      "FLC": "FLC"
-    }
-  },
-  {
     "name": "Ngân hàng",
     "code": {
       "CTG": "Vietinbank",
@@ -522,6 +515,214 @@
       "TN1": "CTCP Thương Mại và dịch vụ TNS Holdings",
       "UDC": "CTCP Xây dựng và Phát triển tỉnh Bà Rịa Vũng Tàu",
       "VCG": "CTCP xuất nhập khẩu và xây dựng Việt Nam"
+    }
+  },
+  {
+    "name": "Ngành dệt - nhuộm - may mặc",
+    "code": {
+      "STK": "Công ty cổ phần Sợi Thế Kỷ",
+      "CTM": "Công ty Cổ phần Dệt may – Đầu tư – Thương mại Thành Công",
+      "HDM": "Công ty Cổ phần Dệt May Huế",
+      "HFS": "Công ty Cổ phần Thương mại dịch vụ Thời trang Hà Nội",
+      "HSM": "Tổng Công ty cổ phần Dệt may Hà Nội",
+      "HTG": "Tổng Công ty cổ phần Dệt may Hòa Thọ",
+      "LGM": "CTCP Giày da và May mặc Xuất khẩu (LEGAMEX)",
+      "M10": "Tổng Công ty May 10 – CTCP",
+      "HCB": "Công ty cổ phần Dệt may 29/3",
+      "BDF": "Công ty cổ phần Giày Bình Định",
+      "G20": "Công ty cổ phần Đầu tư Dệt may G.Home",
+      "NTT": "Công ty Cổ phần Dệt – May Nha Trang",
+      "PTG": "Công ty Cổ phần May Xuất khẩu Phan Thiết",
+      "SPB": "Công ty cổ phần Sợi Phú Bài",
+      "VDM": "CTCP – Viện nghiên cứu Dệt may",
+      "VGT": "Tập đoàn Dệt may Việt Nam",
+      "VGG": "Tổng Công ty cổ phần May Việt Tiến",
+      "MDN": "CTCP Tổng Công ty May Đồng Nai",
+      "MKT": "Công ty cổ phần Dệt Minh Khai",
+      "MNB": "Tổng Công ty May Nhà Bè – Công ty Cổ phần",
+      "NDT": "Tổng Công ty cổ phần Dệt may Nam Định",
+      "NJC": "Công ty cổ phần May Nam Định",
+      "NPS": "Công ty Cổ phần May Phú Thịnh – Nhà Bè"
+    }
+  },
+  {
+    "name": "Ngành giao thông vận tải",
+    "code": {
+      "TMS": "CTCP Transimex&nbsp",
+      "VIP": "CTCP Vận tải Xăng dầu Vipco",
+      "VNL": "CTCP Logistics Vinalink",
+      "VNS": "CTCP Ánh Dương Việt Nam",
+      "VOS": "CTCP Vận tải Biển Việt Nam",
+      "HAH": "CTCP Vận tải và Xếp dỡ Hải An",
+      "HTV": "CTCP Vận tải Hà Tiên",
+      "MHC": "CTCP MHC",
+      "PDN": "CTCP Cảng Đồng Nai",
+      "PJT": "CTCP Vận tải Xăng dầu đường Thủy Petrolimex",
+      "PVT": "Tổng Công ty cổ phần Vận tải Dầu khí",
+      "VSC": "CTCP Container Việt Nam",
+      "VTO": "CTCP Vận tải Xăng dầu Vitaco",
+      "CLL": "CTCP Cảng Cát Lái",
+      "DVP": "CTCP Đầu tư và Phát triển Cảng Đình Vũ",
+      "GMD": "CTCP Gemadept",
+      "GSP": "CTCP Vận tải Sản Phẩm Khí Quốc tế",
+      "SFI": "CTCP Đại lý Vận tải SAFI",
+      "TCL": "CTCP Đại lý Giao nhận Vận tải Xếp dỡ Tân Cảng",
+      "TCO": "CTCP Vận tải Đa phương thức Duyên Hải",
+      "HCT": "CTCP Thương mại Dịch vụ Vận tải Xi măng Hải Phòng",
+      "HHG": "CTCP Hoàng Hà",
+      "HTC": "CTCP Thương mại Hóc Môn",
+      "PJC": "CTCP Thương mại và Vận tải Petrolimex Hà Nội",
+      "PRC": "CTCP Logistics Portserco",
+      "CDN": "CTCP Cảng Đà Nẵng",
+      "DL1": "CTCP Tập đoàn Năng lượng Tái tạo Việt Nam",
+      "DXP": "CTCP Cảng Đoạn Xá",
+      "PHP": "CTCP Cảng Hải Phòng",
+      "TJC": "CTCP Dịch vụ Vận tải và Thương mại",
+      "VGP": "CTCP Cảng Rau Quả",
+      "VNT": "CTCP Giao nhận Vận tải Ngoại thương",
+      "PSC": "CTCP Vận tải và Dịch vụ Petrolimex Sài Gòn",
+      "PTS": "CTCP Vận tải và Dịch vụ Petrolimex Hải Phòng",
+      "MAC": "CTCP Cung ứng và Dịch vụ Kỹ thuật Hàng Hải",
+      "NAP": "CTCP Cảng Nghệ Tĩnh",
+      "PCT": "CTCP Vận tải Khí và Hóa chất Việt Nam",
+      "PGT": "CTCP PGT Holdings",
+      "CCT": "CTCP Cảng Cần Thơ",
+      "HRT": "CTCP Vận tải Đường sắt Hà Nội",
+      "PSP": "CTCP Cảng Dịch vụ Dầu khí Đình Vũ",
+      "PVP": "CTCP Vận tải Dầu khí Thái Bình Dương",
+      "QSP": "CTCP Tân Cảng Quy Nhơn",
+      "SAC": "CTCP Xếp dỡ và Dịch vụ Cảng Sài Gòn",
+      "SGP": "CTCP Cảng Sài Gòn",
+      "CMP": "CTCP Cảng Chân Mây",
+      "DDM": "CTCP Hàng Hải Đông Đô",
+      "DNL": "CTCP Logistics Cảng Đà Nẵng",
+      "STT": "CTCP Vận chuyển Sài Gòn Tourist",
+      "IST": "CTCP ICD Tân Cảng Sóng Thần",
+      "CCP": "CTCP Cảng Cửa Cấm Hải Phòng",
+      "CCR": "CTCP Cảng Cam Ranh",
+      "PSN": "CTCP Cảng Dịch vụ Dầu khí Tổng hợp PTSC Thanh Hóa",
+      "TCW": "CTCP Kho Vận Tân Cảng",
+      "TNP": "CTCP Cảng Thị Nại",
+      "VFC": "CTCP Vinafco",
+      "VFR": "CTCP Vận tải và Thuê tàu",
+      "VNA": "CTCP Vận tải Biển Vinaship",
+      "DVC": "CTCP Thương mại Dịch vụ Tổng hợp Cảng Hải Phòng",
+      "GTT": "CTCP Thuận Thảo",
+      "HDO": "CTCP Hưng Đạo Container",
+      "SSG": "CTCP Vận tải biển Hải Âu",
+      "DGC": "Tập đoàn hóa chất Đức Giang"
+    }
+  },{
+  "name": "Ngành thực phẩm",
+  "code": {
+    "HNG": "Công ty cổ phần Nông nghiệp Quốc tế Hoàng Anh Gia Lai",
+    "FMC": "Công ty Cổ phần Thực phẩm Sao Ta",
+    "NAF": "Công ty Cổ phần Nafoods Group",
+    "SJ1": "Công ty cổ phần Nông nghiệp Hùng Hậu",
+    "CAP": "Công ty Cổ phần Lâm Nông sản Thực phẩm Yên Bái",
+    "CMN": "Công ty Cổ phần Lương thực Thực phẩm Colusa-Miliket",
+    "AFX": "Công ty Cổ phần Xuất nhập khẩu Nông sản Thực phẩm An Giang",
+    "ANT": "CTCP Rau quả Thực phẩm An Giang",
+    "FCS": "Công ty Cổ phần Lương thực Thành phố Hồ Chí Minh",
+    "FHN": "Công Ty Cổ phần Xuất Nhập Khẩu Lương Thực – Thực Phẩm Hà Nội",
+    "HKB": "Công ty Cổ phần Nông nghiệp và Thực phẩm Hà Nội – Kinh Bắc",
+    "VLF": "Công ty Cổ phần Lương thực Thực phẩm Vĩnh Long",
+    "VSF": "Tổng Công ty Lương thực Miền Nam – Công ty cổ phần",
+    "APF": "Công ty Cổ phần Nông sản thực phẩm Quảng Ngãi",
+    "BLT": "Công ty Cổ phần Lương thực Bình Định",
+    "BMV1": "Công ty Cổ phần Bột mỳ Vinafood 1"
+  }
+},
+  {
+    "name": "Ngành Bảo hiểm",
+    "code": {
+      "BVH": "Tập đoàn Bảo Việt",
+      "PVI": "Công ty cổ phần PVI",
+      "MIG": "Tổng công ty cổ phần bảo hiểm Quân Đội",
+      "VNR": "Tổng công ty cổ phần tái bảo hiểm Quốc gia Việt Nam",
+      "BMI": "Tổng công ty cổ phần Bảo Minh",
+      "BIC": "Tổng công ty cổ phần bảo hiểm Ngân hàng Đầu tư và phát triển Việt Nam",
+      "BLI": "Tổng công ty cổ phần bảo hiểm Bảo Long",
+      "PTI": "Tổng công ty cổ phần bảo hiểm Bưu Điện",
+      "ABI": "Tổng công ty cổ phần bảo hiểm Ngân hàng Nông nghiệp",
+      "PGI": "Tổng công ty cổ phần bảo hiểm Petrolimex",
+      "AIC": "Tổng công ty cổ phần bảo hiểm Hàng Không"
+    }
+  },
+  {
+    "name": "Ngành công nghệ thông tin",
+    "code": {
+      "FPT": "Công ty cổ phần FPT",
+      "CMG": "Công ty cổ phần tập đoàn công nghệ CMC",
+      "SAM": "Công ty cổ phần Sam Holdings",
+      "SGT": "Công ty cổ phần công nghệ viễn thông Sài Gòn",
+      "ELC": "Công ty cổ phần đầu tư phát triển công nghệ điện tử – viễn thông",
+      "VEC": "Tổng công ty cổ phần điện tử và tin học Việt Nam",
+      "ICT": "Công ty cổ phần viễn thông – tin học bưu điện",
+      "SRA": "Công ty cổ phần Sara Việt Nam",
+      "POT": "Công ty cổ phần thiết bị Bưu Điện",
+      "KST": "Công ty cổ phần Kasati",
+      "HIG": "Công ty cổ phần tập đoàn HIPT",
+      "ITD": "Công ty cổ phần Công nghệ Tiên Phong",
+      "UNI": "Công ty cổ phần Viễn Liên",
+      "CMT": "Công ty cổ phần Công nghệ mạng và truyền thông",
+      "VTE": "Công ty cổ phần Viễn thông điện tử Vinacap",
+      "SBD": "Công ty cổ phần công nghệ Sao Bắc Đẩu",
+      "HPT": "Công ty cổ phần dịch vụ công nghệ tin học HPT"
+    }
+  },
+  {
+    "name": "Ngành bưu chính viễn thông",
+    "code": {
+      "VGI": "Tổng công ty Cổ phần đầu tư Quốc tế Viettel",
+      "PIA": "Công ty cổ phần tin học viễn thông Petrolimex",
+      "POX": "Công ty cổ phần Viễn thông FPT",
+      "TTN": "Công ty cổ phần Công nghệ và truyền thông Việt Nam",
+      "ABC": "Công ty cổ phần Truyền thông VMG",
+      "MFS": "Công ty cổ phần Dịch vụ kỹ thuật Mobifone",
+      "PTP": "Công ty cổ phần dịch vụ viễn thông và in Bưu Điện",
+      "PAI": "Công ty cổ phần Công nghệ thông tin, viễn thông và tự động hóa dầu khí"
+    }
+  },
+  {
+    "name": "Ngành truyền thông - giải trí",
+    "code": {
+      "RGC": "Công ty cổ phần đầu tư PV-Inconess",
+      "VEF": "Công ty cổ phần Trung tâm hội chợ triển lãm Việt Nam",
+      "CAB": "Công ty cổ phần Truyền hình cáp Việt Nam",
+      "FOC": "Công ty cổ phần Dịch vụ trực tuyến FPT",
+      "HTP": "Công ty cổ phần in sách giáo khoa Hòa Phát",
+      "VNB": "Công ty cổ phần Sách Việt Nam",
+      "ADG": "Công ty cổ phần Clever Group",
+      "FHS": "Công ty cổ phần Phát hành sách thành phố Hồ Chí Minh",
+      "YEG": "Công ty cổ phần tập đoàn Yeah1",
+      "STH": "Công ty cổ phần phát hành sách Thái Nguyên"
+    }
+  },
+  {
+    "name": "Ngành cao su",
+    "code": {
+      "TNC": "Công ty CP cao su Thống Nhất",
+      "DRC": "Công ty CP cao su Đà Nẵng",
+      "HRC": "Công ty CP cao su Hòa Bình",
+      "BRR": "Công ty CP cao su Bà Rịa",
+      "RTB": "Công ty CP cao su Tân Biên",
+      "CDR": "Công ty CP Xây dựng cao su Đồng Nai",
+      "DRI": "Công ty CP Đầu tư cao su Đăk Lăk",
+      "RBC": "Công ty CP Công nghiệp và xuất nhập khẩu cao su",
+      "PHR": "Công ty CP cao su Phước Hòa",
+      "VHG": "Công ty CP cao su Quảng Nam",
+      "HNG": "Công ty CP Nông nghiệp Quốc tế Hoàng Anh Gia Lai",
+      "VRG": "Công ty CP Phát triển đô thị và khu công nghiệp cao su Việt Nam",
+      "BRC": "Công ty CP cao su Bến Thành",
+      "RCD": "Công ty CP xây dựng Địa ốc cao su"
+    }
+  },
+  {
+    "name": "Other",
+    "code": {
+      "BAF": "CTCP Nông ngiệp BAF Việt Nam",
+      "TSB": "CTCP Ắc quy Tia Sáng"
     }
   }
 ]
