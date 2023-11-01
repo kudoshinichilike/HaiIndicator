@@ -21,7 +21,7 @@
 </style>
 
 <body>
-<div id="view-search-data">
+<div id="view-detect-one-code">
     <template>
         <b-container fluid>
             <b-card class="mb-2 mt-5">
@@ -40,49 +40,63 @@
 
                 <b-form-row>
                     <b-col lg="1" class="my-1">
-                        Ngày tìm kiếm
+                        Ngày bắt đầu
                     </b-col>
                     <b-col lg="2" class="my-1">
-                        <b-input v-model="dateSearch" :disabled="isSearching" type="date"></b-input>
+                        <b-input v-model="startDate" :disabled="isSearching" type="date"></b-input>
                     </b-col>
                 </b-form-row>
 
                 <b-form-row>
                     <b-col lg="1" class="my-1">
-                        Nguồn dữ liệu
+                        Ngày kết thúc
                     </b-col>
                     <b-col lg="2" class="my-1">
-                        <b-form-input v-model="dataSource" :disabled="isSearching" placeholder="Nhập nguồn dữ liệu"
-                                      list="listDataSource" type="search"></b-form-input>
-                        <datalist id="listDataSource">
-                            <option v-for="dataName in listDataSource">{{ dataName }}</option>
-                        </datalist>
+                        <b-input v-model="endDate" :disabled="isSearching" type="date"></b-input>
+                    </b-col>
+                </b-form-row>
+
+                <b-form-row>
+                    <b-col lg="1" class="my-1">
+                        Chỉ báo
+                    </b-col>
+
+                    <b-col lg="5" class="my-1">
+                        <multiselect v-model="nameIndicator" :disabled="isSearching" placeholder="Nhập chỉ báo"
+                                     label="name" track-by="name" :options="listIndicator"
+                                     :multiple="true" :taggable="true" @tag="addIndicator">
+                        </multiselect>
+                    </b-col>
+                </b-form-row>
+
+                <b-form-row>
+                    <b-col lg="4" class="my-1">
+                        Chỉ tìm kiếm được trong khoảng thời gian tối đa 1 tháng
                     </b-col>
                 </b-form-row>
 
                 <b-form-row>
                     <b-col lg="1" class="my-1">
                         <b-button @click="onSearchClicked" variant="primary" block :disabled="isSearching">
-                            Tìm kiếm
+                            Quét
                         </b-button>
                     </b-col>
                 </b-form-row>
 
             </b-card>
 
-            <div class="row">
-                <div style="max-height: 800px; overflow-y: auto; width: 55%;"
-                     class="col-md-6 table-wrapper">
-                    <b-table :items="dataTableStatistic" :fields="fieldsTableStatistic" class="table-striped">
-                    </b-table>
-                </div>
-
-                <div style="max-height: 800px; overflow-y: auto; width: 55%;"
-                     class="table-wrapper col-md-6 text-right">
-                    <b-table :items="dataTableDetails" :fields="fieldsTableDetails" class="table-striped">
-                    </b-table>
-                </div>
+            <div style="max-height: 800px; overflow-y: auto; overflow-x: auto;"
+                 class="table-wrapper text-center">
+                <b-table :fields="fields" class="table-striped">
+                </b-table>
             </div>
+
+            <div style="max-height: 800px; overflow-y: auto; overflow-x: auto;"
+                 class="table-wrapper text-center">
+                <b-table :items="items" :fields="fields" class="table-striped">
+                </b-table>
+            </div>
+
         </b-container>
     </template>
 </div>
@@ -93,7 +107,7 @@
 <script th:src="@{/lib/vue-multiselect@2.1.0.js}"></script>
 <script th:src="@{/js/utils.js}"></script>
 <script th:src="@{/js/conf_fab.js}"></script>
-<script th:src="@{/js/searchData.js}"></script>
+<script th:src="@{/js/detectOneCode.js}"></script>
 </body>
 
 </html>

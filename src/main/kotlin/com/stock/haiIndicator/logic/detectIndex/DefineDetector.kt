@@ -10,14 +10,14 @@ enum class DefineDetector(val processor: IDetectIndex) {
     Indicate5(DetectIndex5),
     Indicate6(DetectIndex6),
     Indicate7(DetectIndex7),
-    Indicate8(DetectIndex8),
+//    Indicate8(DetectIndex8),
     Indicate8T(DetectIndex8T),
     Indicate8V(DetectIndex8V),
-    Indicate8Z(DetectIndex8Z),
+//    Indicate8Z(DetectIndex8Z),
     ;
 
     companion object {
-        private val mapNameToDetector = DefineDetector
+        val mapNameToDetector = DefineDetector
                                     .values()
                                     .asSequence()
                                     .map {

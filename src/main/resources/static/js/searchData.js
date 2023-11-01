@@ -1,8 +1,15 @@
-var fields = [
+var fieldsTableDetails = [
     { key: 'time', label: 'Thời gian', sortable: true },
     { key: 'price', label: 'Giá', sortable: true },
     { key: 'matchVolume', label: 'KL theo lô', sortable: true },
     { key: 'accumulatedVolume', label: 'KL tích lũy', sortable: true },
+    { key: 'proportion', label: 'Tỷ trọng', sortable: true },
+    { key: 'changePrice', label: 'Giá thay đổi', sortable: true },
+]
+
+var fieldsTableStatistic = [
+    { key: 'price', label: 'Giá', sortable: true },
+    { key: 'volume', label: 'Khối lượng', sortable: true },
     { key: 'proportion', label: 'Tỷ trọng', sortable: true },
 ]
 
@@ -12,14 +19,20 @@ var viewSearchLog = new Vue({
         Multiselect: window.VueMultiselect.default
     },
     data: {
-        items: [],
-        visible: true,
+        listCodeSearch: [],
         code: 'CTG',
+
         dateSearch: '',
+
+        listDataSource: ["CAFE_F", "RONG_VIET", "FIREANT"],
+        dataSource: 'CAFE_F',
+
+        dataTableDetails: [],
+        dataTableStatistic: [],
+
         isSearching: false,
         errored: false,
         fab: conf_fab,
-        rows: 0,
         perPage: 10,
         currentPage: 1,
 
@@ -41,14 +54,13 @@ var viewSearchLog = new Vue({
                     .post('api/haiIndicator/searchData', {
                         code: this.code,
                         dateSearch: this.dateSearch,
-                        dataSource: "CAFE_F"
+                        dataSource: this.dataSource
                     })
                     .then(res => {
                         var data = res.data.matchData
-                        this.items = data
-                        this.items.forEach(i => i.price = i.price + i.changePrice)
-                        this.rows = this.items.length
-                        })
+                        this.dataTableDetails = res.data.matchData
+                        this.dataTableStatistic = res.data.statisticData
+                    })
                     .catch(e => {
                         console.log(e)
                         this.makeToast('danger', e)
@@ -66,9 +78,21 @@ var viewSearchLog = new Vue({
                 // noAutoHide: true
             })
         },
+
+        getListCodeSearch() {
+            var isSearching = true
+            axios.get('api/haiIndicator/getListCode')
+            .then(res => {
+                this.listCodeSearch = res.data
+            })
+            .catch(e => {
+                console.log(e)
+            })
+            .finally(() => this.isSearching = false)
+        },
     },
     created: function () {
         this.dateSearch = dateToString(new Date())
-        this.onSearchClicked()
+        this.getListCodeSearch()
     },
 })

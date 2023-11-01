@@ -34,12 +34,14 @@ class DetectService {
                 calendar.time = dateStart
                 calendar.add(Calendar.DATE, -1)
 
-                while (!calendar.time.after(dateEnd)) {
+                while (calendar.time.before(dateEnd)) {
                     calendar.add(Calendar.DATE, 1)
                     val currentDate = calendar.time
                     println("indicateOneCode currentDate: ${SDF.format(currentDate)}")
-                    if (!validateDate(SDF.format(currentDate)))
+                    if (!DateValidator.validateDate(SDF.format(currentDate))) {
+                        println("invalidateDate: ${SDF.format(currentDate)}")
                         continue
+                    }
 
                     val resDetect = detector.detect(code, currentDate)
                     println("indicateOneCode resDetect: ${Gson().toJson(resDetect)}")
@@ -90,21 +92,21 @@ class DetectService {
             while (!calendar.time.after(dateEnd)) {
                 calendar.add(Calendar.DATE, 1)
                 val currentDate = calendar.time
-                println("indicateOneCode currentDate: ${SDF.format(currentDate)}")
-                if (!validateDate(SDF.format(currentDate)))
+                println("detectOneIndicator currentDate: ${SDF.format(currentDate)}")
+                if (!DateValidator.validateDate(SDF.format(currentDate)))
                     continue
 
                 val resList = mutableListOf<String>()
                 val listDateNoData = mutableListOf<Date>()
                 codeList.forEach {code ->
                     val resDetect = detector.detect(code, currentDate)
-                    println("indicateOneCode resDetect: ${Gson().toJson(resDetect)}")
+                    println("detectOneIndicator resDetect: ${Gson().toJson(resDetect)}")
                     when (resDetect) {
                         is Left -> {
                             if (resDetect.value == ErrorDefine.NO_EXIST_DATA)
                                 listDateNoData.add(currentDate)
                             else
-                                println("indicateOneCode resDetect error $code ${SDF.format(currentDate)}: ${resDetect.value}")
+                                println("detectOneIndicator resDetect error $code ${SDF.format(currentDate)}: ${resDetect.value}")
                         }
                         is Right -> {
                             if (resDetect.value)
@@ -119,6 +121,7 @@ class DetectService {
                 resMap[SDF.format(currentDate)] = resList
             }
 
+            println("detectOneIndicator resMap: ${Gson().toJson(resMap)}")
             return Right(resMap)
         }
         catch (e: Exception) {
@@ -131,12 +134,7 @@ class DetectService {
         return CodeConfig.containsCode(code)
     }
 
-    fun validateDate(dateStr: String): Boolean {
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"))
-        calendar.time = SDF.parse(dateStr)
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-        if (dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY)
-            return false
-        return true
+    fun getListIndicator(): List<String> {
+        return DefineDetector.mapNameToDetector.keys.toList()
     }
 }

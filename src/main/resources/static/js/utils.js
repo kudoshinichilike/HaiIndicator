@@ -22,6 +22,22 @@ var isDefined = function (o) {
     return typeof o !== 'undefined';
 }
 
+var isUndefined = function (o) {
+    return typeof o == 'undefined';
+}
+
 var isEmpty = function (o) {
     return typeof o == null || o == '';
+}
+
+var getDates = function (startDate, endDate) {
+  const dateArray = [];
+  let currentDate = new Date(startDate);
+
+  while (currentDate <= new Date(endDate)) {
+    dateArray.push(new Date(currentDate));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dateArray;
 }

@@ -33,7 +33,7 @@ object DetectIndex1: IDetectIndex {
     }
 
     private fun isValidShape1(data: DataOneDay): Boolean {
-        return data.GiaCaoNhat == data.GiaMoCua && data.GiaDongCua <= data.GiaCaoNhat
+        return data.GiaCaoNhat == data.GiaMoCua && data.GiaMoCua >= data.GiaDongCua && data.GiaDongCua > data.GiaThapNhat
     }
 
     private fun isValidShape2(data: DataOneDay): Boolean {

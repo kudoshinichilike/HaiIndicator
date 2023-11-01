@@ -722,7 +722,11 @@
     "name": "Other",
     "code": {
       "BAF": "CTCP Nông ngiệp BAF Việt Nam",
-      "TSB": "CTCP Ắc quy Tia Sáng"
+      "TSB": "CTCP Ắc quy Tia Sáng",
+      "ROS": "Faros",
+      "SAB": "SAB",
+      "IDC": "IDC",
+      "PVC": "PVC"
     }
   }
 ]

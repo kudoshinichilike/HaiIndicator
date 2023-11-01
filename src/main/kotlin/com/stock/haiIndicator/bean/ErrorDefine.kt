@@ -8,5 +8,6 @@ enum class ErrorDefine (val code: Byte) {
     INVALID_CODE(3),
     INVALID_DATE(4),
     INVALID_SOURCE(5),
+    NOT_ENOUGH_DATA(6),
     ;
 }

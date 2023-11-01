@@ -4,6 +4,7 @@ import com.stock.haiIndicator.bean.DataSourceEnum
 import com.stock.haiIndicator.bean.ErrorDefine
 import com.stock.haiIndicator.bean.config.CodeConfig
 import com.stock.haiIndicator.dataDAO.DAO
+import com.stock.haiIndicator.dataDAO.input.DataOneDay
 import com.stock.haiIndicator.payload.req.ReqSearchData
 import com.stock.haiIndicator.payload.res.ResSearchData
 import org.springframework.stereotype.Service
@@ -12,6 +13,10 @@ import java.util.*
 
 @Service
 class SearchDataService {
+    fun getListCodeSearch(): List<String> {
+        return CodeConfig.codeList
+    }
+
     suspend fun searchDataCafeF(reqData: ReqSearchData): ResSearchData {
         println("searchDataCafeF $reqData")
         val (code, dateStr, dataSource) = reqData
@@ -25,8 +30,9 @@ class SearchDataService {
         if (!validateDataSource(dataSource))
             return ResSearchData(ErrorDefine.INVALID_SOURCE.code)
 
-        val matchData = DAO.getMatchData(code, dateStr)
-        return ResSearchData(ErrorDefine.SUCCESS.code, matchData)
+        val dataOneDay = DAO.getDataOneDay(code, dateStr) ?: return ResSearchData(ErrorDefine.NO_EXIST_DATA.code)
+        val (matchData, statisticData) = DataOneDay.convertToSearchDataResponse(dataOneDay)
+        return ResSearchData(ErrorDefine.SUCCESS.code, matchData, statisticData)
     }
 
     fun validateCode(code: String): Boolean {

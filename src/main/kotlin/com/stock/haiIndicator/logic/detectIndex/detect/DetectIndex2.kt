@@ -15,11 +15,12 @@ object DetectIndex2: IDetectIndex {
             return false
 
         val aKL = percentAKL(data)
+        println("--------------- DetectIndex2 $aKL")
         return aKL <= 0.8
     }
 
     private fun isValidShape(data: DataOneDay): Boolean {
-        return data.GiaThapNhat == data.GiaDongCua
+        return data.GiaCaoNhat > data.GiaMoCua && data.GiaMoCua >= data.GiaDongCua && data.GiaThapNhat == data.GiaDongCua
     }
 
     private fun percentAKL(data: DataOneDay): Float {

@@ -2,10 +2,13 @@ package com.stock.haiIndicator.dataDAO
 
 import FileReader
 import FileWriter
+import com.google.gson.Gson
+import com.stock.haiIndicator.bean.ConstDefine
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
+import com.stock.haiIndicator.dataDAO.input.dataMshDev.DataOneDayMshDev
 import com.stock.haiIndicator.dataDAO.queryData.QueryData
-import com.stock.haiIndicator.payload.res.ResMatchData
 import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.JsonObject
 import utils.JsonUtils
 
 object DAO {
@@ -19,9 +22,13 @@ object DAO {
 
     private suspend fun getDataOneDayCafeF(code: String, dateStr: String): DataOneDay? {
         try {
-            val strData = QueryData.query(code, dateStr)
-            val jsonData = JsonUtils.parseToJsonElement(strData).jsonObject
-            val data: DataOneDay = JsonUtils.decodeFromString(jsonData["Data"].toString())
+//            val dateCafeF = ConstDefine.SDF_cafeF.format(ConstDefine.SDF.parse(dateStr))
+            val dateCafeF = ConstDefine.SDF_cafeF.format(ConstDefine.SDF.parse(dateStr)).replace("-", "") //mshDev
+            val strData = QueryData.query(code, dateCafeF)
+//            val jsonData = JsonUtils.parseToJsonElement(strData).jsonObject
+//            val data: DataOneDay = JsonUtils.decodeFromString(jsonData["Data"].toString())
+            val jsonData = convertFromMshDevappdata(JsonUtils.parseToJsonElement(strData).jsonObject)  //mshDev
+            val data: DataOneDay = JsonUtils.decodeFromString(jsonData.toString())  //mshDev
             val isValidData = normalizeDataFromCafeF(data)
             return if(isValidData) {
                 saveDataToLocal(code, dateStr, data)
@@ -30,37 +37,10 @@ object DAO {
                 null
         }
         catch (e: Exception) {
+//            e.printStackTrace()
             println("getDataOneDayCafeF Exception $code $dateStr")
             return null
         }
-    }
-
-    suspend fun getMatchData(code: String, dateStr: String): List<ResMatchData>? {
-        return getMatchDataLocal(code, dateStr) ?: getMatchDataCafeF(code, dateStr)
-    }
-
-    private fun getMatchDataLocal(code: String, dateStr: String): List<ResMatchData>? {
-        val dataOneDayLocal = FileReader.readDataOneDay(code, dateStr) ?: return null
-        return convertToDataResponse(dataOneDayLocal)
-    }
-
-    private suspend fun getMatchDataCafeF(code: String, dateStr: String): List<ResMatchData>? {
-        var resData: List<ResMatchData>? = null
-        try {
-            val strData = QueryData.query(code, dateStr)
-            val jsonData = JsonUtils.parseToJsonElement(strData).jsonObject
-            val data: DataOneDay = JsonUtils.decodeFromString(jsonData["Data"].toString())
-            val isValidData = normalizeDataFromCafeF(data)
-            if(isValidData) {
-                saveDataToLocal(code, dateStr, data)
-                resData = convertToDataResponse(data)
-            }
-        }
-        catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        return resData
     }
 
     private fun saveDataToLocal(code: String, date: String, data: DataOneDay) {
@@ -68,12 +48,13 @@ object DAO {
     }
 
     private fun normalizeDataFromCafeF(data: DataOneDay): Boolean {
-        return !(data.DlChiTiet.isEmpty() || data.DlTongHop.isEmpty())
+        return !(data.DlChiTiet.size <= 5 || data.DlTongHop.isEmpty())
     }
 
-    private fun convertToDataResponse(data: DataOneDay): List<ResMatchData> {
-        return data.DlChiTiet.map {
-            ResMatchData(it.ThoiGian, it.Gia, it.GiaThayDoi, it.KLLo, it.KLTichLuy, it.TiTrong)
-        }.toList()
+    private fun convertFromMshDevappdata(jsonObject: JsonObject): JsonObject {
+        val dataMsh: DataOneDayMshDev = JsonUtils.decodeFromString(jsonObject.toString())
+        val dataOneDay = dataMsh.convertToDataOneDay()
+        val dataOneDayStr = Gson().toJson(dataOneDay)
+        return JsonUtils.parseToJsonElement(dataOneDayStr).jsonObject
     }
 }

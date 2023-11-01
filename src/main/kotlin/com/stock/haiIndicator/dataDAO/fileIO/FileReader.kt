@@ -8,11 +8,7 @@ object FileReader {
             return null
 
         try {
-            val dataOneDay = JsonUtils.decodeFromFile<DataOneDay>(fileName)
-            if (!dataOneDay.dataError)
-                return dataOneDay
-            else
-                return null
+            return JsonUtils.decodeFromFile<DataOneDay>(fileName)
         } catch (e: Exception) {
             e.printStackTrace()
             return null

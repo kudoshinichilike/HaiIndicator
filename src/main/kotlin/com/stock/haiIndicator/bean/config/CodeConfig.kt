@@ -4,7 +4,7 @@ import utils.JsonUtils
 
 object CodeConfig {
     private val majorData: List<MajorData>
-    private val codeList: MutableList<String> = mutableListOf()
+    val codeList: MutableList<String> = mutableListOf()
     init {
         majorData = JsonUtils.decodeFromFile("config/CodeDefine.json")
         majorData.forEach {

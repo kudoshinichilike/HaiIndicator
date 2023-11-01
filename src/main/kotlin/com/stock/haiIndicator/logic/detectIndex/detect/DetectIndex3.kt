@@ -15,31 +15,28 @@ import java.util.*
  * Cứ tính 7 bước giá trước, tuning sau
  */
 object DetectIndex3: IDetectIndex {
-    private val aBuocGia = 7
-    private val percentVolumnValid = 0.8
+    private val aBuocGia = 0.7f
+    private val percentVolumnValid = 0.7
     fun detect(data: DataOneDay): Boolean {
         if (!isValidShape(data))
             return false
 
         val aKL = percentAKL(data)
+        println("--------------- DetectIndex3 $aKL")
         return aKL >= percentVolumnValid
     }
 
     private fun isValidShape(data: DataOneDay): Boolean {
         return isValidShape1(data)
-//        return isValidShape2(data)
     }
 
     private fun isValidShape1(data: DataOneDay): Boolean {
-        return data.GiaCaoNhat == data.GiaMoCua && data.GiaThapNhat == data.GiaDongCua
-    }
-
-    private fun isValidShape2(data: DataOneDay): Boolean {
-        return data.GiaMoCua > data.GiaDongCua && (data.GiaMoCua - data.GiaDongCua) / data.GiaMoCua > 0.04
+        println("changePrice ${data.changePrice}")
+        return data.GiaMoCua > data.GiaDongCua && data.changePrice < -2
     }
 
     private fun percentAKL(data: DataOneDay): Float {
-        return data.percentKLLowerPriceUnbound(data.GiaDongCua)
+        return data.percentKLStepUp(aBuocGia)
     }
 
     override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Boolean> {
