@@ -58,7 +58,7 @@ class DetectService {
                     }
                 }
 
-                if (listDateNoData.isNotEmpty())
+//                if (listDateNoData.isNotEmpty())
 //                    println(Gson().toJson(listDateNoData))
 
                 resMap[indicatorName] = resList
@@ -67,7 +67,7 @@ class DetectService {
             return Right(resMap)
         }
         catch (e: Exception) {
-//            e.printStackTrace()
+            e.printStackTrace()
             return Left(ErrorDefine.FAIL)
         }
     }
@@ -124,7 +124,7 @@ class DetectService {
             return Right(resMap)
         }
         catch (e: Exception) {
-//            e.printStackTrace()
+            e.printStackTrace()
             return Left(ErrorDefine.FAIL)
         }
     }
@@ -191,7 +191,7 @@ class DetectService {
             return Right(resMap)
         }
         catch (e: Exception) {
-//            e.printStackTrace()
+            e.printStackTrace()
             return Left(ErrorDefine.FAIL)
         }
     }

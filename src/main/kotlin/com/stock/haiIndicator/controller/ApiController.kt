@@ -57,7 +57,7 @@ class ApiController {
 
     @PostMapping(value = ["/detectOneCode"])
     suspend fun detectOneCode(@Valid @RequestBody req: DetectOneCodeReq): DetectOneCodeRes {
-//        println("detectOneCode $req")
+        println("detectOneCode $req")
         val listIndicatorName = mutableListOf<String>()
         if (req.indicatorName.contains("All"))
             listIndicatorName.addAll(detectService.getListIndicator())
@@ -67,11 +67,11 @@ class ApiController {
         val resDetect = detectService.indicateOneCode(req.code, listIndicatorName, req.dateStart, req.dateEnd)
         return when (resDetect) {
             is Left -> {
-//                println("detectOneCode Left ${resDetect.value.code}")
+                println("detectOneCode Left ${resDetect.value.code}")
                 DetectOneCodeRes(resDetect.value.code)
             }
             is Right -> {
-//                println("resDetect ${resDetect.value}")
+                println("resDetect ${resDetect.value}")
                 DetectOneCodeRes(ErrorDefine.SUCCESS.code, resDetect.value)
             }
         }
@@ -80,7 +80,7 @@ class ApiController {
     @PostMapping(value = ["/searchData"])
     suspend fun searchData(@Valid @RequestBody req: ReqSearchData): ResSearchData {
         val resSearch = searchDataService.searchDataCafeF(req)
-//        println("searchData resSearch: $resSearch")
+        println("searchData resSearch: $resSearch")
         return resSearch
     }
 
@@ -94,7 +94,7 @@ class ApiController {
     @GetMapping(value = ["/getListIndicator"])
     suspend fun getListIndicator(): List<String> {
         val listIndicator = detectService.getListIndicator()
-//        println("getListIndicator listIndicator: $listIndicator")
+        println("getListIndicator listIndicator: $listIndicator")
         return listIndicator
     }
 }
