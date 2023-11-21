@@ -12,12 +12,13 @@ import java.util.*
 
 object DetectIndex7: IDetectIndex {
     private const val NUM_DATE_BF = 3
+    private const val PERCENT_VOL = 0.75
     fun detect(data: DataOneDay, dataBefore: List<DataOneDay>): Boolean {
         if (!isValidShape(data, dataBefore))
             return false
 
         val avgVolBf = calcAvgBefore(dataBefore)
-        return data.TongKhoiLuong < avgVolBf*0.7
+        return data.TongKhoiLuong < avgVolBf*PERCENT_VOL
     }
 
     private fun calcAvgBefore(dataBefore: List<DataOneDay>): Double  {
@@ -46,7 +47,7 @@ object DetectIndex7: IDetectIndex {
             cnt ++
             calendar.add(Calendar.DATE, -1)
             val currentDateStr = ConstDefine.SDF.format(calendar.time)
-            if (!DateValidator.validateDate(currentDateStr))
+            if (!DateValidator.validateDateGet(currentDateStr))
                 continue
 
             val dataCur = DAO.getDataOneDay(code, currentDateStr)

@@ -9,7 +9,7 @@ import utils.HttpUtilsKtor
  */
 object QueryData {
 //    const val URL = "https://s.cafef.vn/Ajax/PageNew/DataHistory/KhopLenh/DataKhopLenh.ashx"
-    const val URL = "https://msh-devappdata.cafef.vn/rest-api/api/v1/MatchPrice"
+    const val URL = "https://msh-appdata.cafef.vn/rest-api/api/v1/MatchPrice"
 
     /***
      * date: format yyyy-MM-dd

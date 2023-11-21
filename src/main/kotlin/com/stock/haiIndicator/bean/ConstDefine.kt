@@ -1,6 +1,9 @@
 package com.stock.haiIndicator.bean
 
 import java.text.SimpleDateFormat
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 object ConstDefine {
     val SDF = SimpleDateFormat("yyyy-MM-dd")
@@ -8,4 +11,6 @@ object ConstDefine {
     val SDF_cafeF = SimpleDateFormat("yyyy-MM-dd")  //mshDev
     const val MAX_RANGE_DATE_SEARCH = 20
     const val pathSaveDataCafeF = "cafeF/"
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+    val zone = ZoneId.of("Asia/Bangkok")
 }

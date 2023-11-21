@@ -4,8 +4,8 @@ var viewSearchLog = new Vue({
         Multiselect: window.VueMultiselect.default
     },
     data: {
-//        listCodeSearch: [],
-        listCodeSearch: [{name: "ALL_CODE"}],
+        listCodeSearch: [],
+//        listCodeSearch: [{name: "ALL_CODE"}],
         code: [],
 
         startDate: '',
@@ -32,7 +32,15 @@ var viewSearchLog = new Vue({
     methods: {
         onSearchClicked() {
             var isSearching = true
-            if (isEmpty(this.code)) this.makeToast('danger', 'Bạn chưa nhập đủ thông tin')
+            if (isEmpty(this.code)) {
+                this.makeToast('danger', 'Bạn chưa nhập đủ thông tin')
+                return
+            }
+
+            if (!isDateDifferenceLessThanDays(this.startDate, this.endDate, 8)) {
+                this.makeToast('danger', 'Chỉ tìm kiếm được trong khoảng thời gian tối đa 9 ngày')
+                return
+            }
             else {
                 var listCodeReq = [];
                 this.code.forEach ( it => {
@@ -137,28 +145,28 @@ var viewSearchLog = new Vue({
         },
     },
 
-    watch: {
-        startDate: function (val) {
-            let endDateCalc = new Date(this.startDate);
-            endDateCalc.setDate(endDateCalc.getDate() + 31);
-            if (this.endDate != dateToString(endDateCalc))
-            this.endDate = dateToString(endDateCalc)
-        },
-
-        endDate: function (val) {
-            let startDateCalc = new Date(this.endDate);
-            startDateCalc.setDate(startDateCalc.getDate() - 31);
-            if (this.startDate != dateToString(startDateCalc))
-                this.startDate = dateToString(startDateCalc)
-        },
-    },
+//    watch: {
+//        startDate: function (val) {
+//            let endDateCalc = new Date(this.startDate);
+//            endDateCalc.setDate(endDateCalc.getDate() + 31);
+//            if (this.endDate != dateToString(endDateCalc))
+//            this.endDate = dateToString(endDateCalc)
+//        },
+//
+//        endDate: function (val) {
+//            let startDateCalc = new Date(this.endDate);
+//            startDateCalc.setDate(startDateCalc.getDate() - 31);
+//            if (this.startDate != dateToString(startDateCalc))
+//                this.startDate = dateToString(startDateCalc)
+//        },
+//    },
 
     created: function () {
         this.getListCodeSearch()
         this.getListIndicator()
 
         let startDateInit = new Date();
-        startDateInit.setDate(startDateInit.getDate() - 31);
+        startDateInit.setDate(startDateInit.getDate() - 8);
         this.startDate = dateToString(startDateInit);
         this.endDate = dateToString(new Date());
     },

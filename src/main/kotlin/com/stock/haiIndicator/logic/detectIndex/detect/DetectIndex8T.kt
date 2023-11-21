@@ -16,18 +16,18 @@ object DetectIndex8T: IDetectIndex {
     fun detect(data: DataOneDay, dataBefore: List<DataOneDay>): Boolean {
         val aKL = calcAKL(data)
         val avgBefore = calcAvgBefore(dataBefore)
-        println("--------------- DetectIndex8T aKL: $aKL, avgBefore: $avgBefore")
-        if (aKL >= MULTIPLY_CONDITION * avgBefore)
-            println("--------------- DetectIndex8T ${aKL/avgBefore}")
+//        println("--------------- DetectIndex8T aKL: $aKL, avgBefore: $avgBefore")
+//        if (aKL >= MULTIPLY_CONDITION * avgBefore)
+//            println("--------------- DetectIndex8T ${aKL/avgBefore}")
         return aKL >= MULTIPLY_CONDITION * avgBefore
     }
 
     private fun calcAvgBefore(dataBefore: List<DataOneDay>): Double  {
-        return dataBefore.sumOf { it.calcKLATO() } / dataBefore.size.toDouble()
+        return dataBefore.sumOf { it.KLATO } / dataBefore.size.toDouble()
     }
 
     private fun calcAKL(data: DataOneDay): Int {
-        return data.calcKLATO()
+        return data.KLATO
     }
 
     override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Boolean> {
@@ -44,7 +44,7 @@ object DetectIndex8T: IDetectIndex {
             cnt ++
             calendar.add(Calendar.DATE, -1)
             val currentDateStr = ConstDefine.SDF.format(calendar.time)
-            if (!DateValidator.validateDate(currentDateStr))
+            if (!DateValidator.validateDateGet(currentDateStr))
                 continue
 
             val dataCur = DAO.getDataOneDay(code, currentDateStr)

@@ -22,7 +22,7 @@ object DetectIndex3: IDetectIndex {
             return false
 
         val aKL = percentAKL(data)
-        println("--------------- DetectIndex3 $aKL")
+//        println("--------------- DetectIndex3 $aKL")
         return aKL >= percentVolumnValid
     }
 
@@ -31,7 +31,7 @@ object DetectIndex3: IDetectIndex {
     }
 
     private fun isValidShape1(data: DataOneDay): Boolean {
-        println("changePrice ${data.changePrice}")
+//        println("changePrice ${data.changePrice}")
         return data.GiaMoCua > data.GiaDongCua && data.changePrice < -2
     }
 

@@ -38,7 +38,7 @@ object DAO {
         }
         catch (e: Exception) {
 //            e.printStackTrace()
-            println("getDataOneDayCafeF Exception $code $dateStr")
+//            println("getDataOneDayCafeF Exception $code $dateStr")
             return null
         }
     }

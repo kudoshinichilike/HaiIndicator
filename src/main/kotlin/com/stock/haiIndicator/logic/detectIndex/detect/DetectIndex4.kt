@@ -20,7 +20,7 @@ object DetectIndex4: IDetectIndex {
             return false
 
         val aKL = percentAKL(data)
-        println("--------------- DetectIndex4 $aKL")
+//        println("--------------- DetectIndex4 $aKL")
         return aKL <= percentVolumnValid
     }
 

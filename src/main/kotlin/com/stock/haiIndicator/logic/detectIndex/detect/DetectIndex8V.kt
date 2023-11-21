@@ -16,21 +16,21 @@ object DetectIndex8V: IDetectIndex {
     fun detect(data: DataOneDay, dataBefore: List<DataOneDay>): Boolean {
         val bKL = calcBKL(data)
         val avgBefore = calcAvgBefore(dataBefore)
-        println("--------------- DetectIndex8V bKL: $bKL, avgBefore: $avgBefore")
-        if (bKL >= MULTIPLY_CONDITION * avgBefore)
-            println("--------------- DetectIndex8V ${bKL/avgBefore}")
+//        println("--------------- DetectIndex8V bKL: $bKL, avgBefore: $avgBefore")
+//        if (bKL >= MULTIPLY_CONDITION * avgBefore)
+//            println("--------------- DetectIndex8V ${bKL/avgBefore}")
         return bKL >= MULTIPLY_CONDITION * avgBefore
     }
 
     private fun calcAvgBefore(dataBefore: List<DataOneDay>): Double  {
-        dataBefore.forEach {
-            println("calcAvgBefore ${it.calcKLATC()}")
-        }
-        return dataBefore.sumOf { it.calcKLATC() } / dataBefore.size.toDouble()
+//        dataBefore.forEach {
+//            println("calcAvgBefore ${it.KLATC}")
+//        }
+        return dataBefore.sumOf { it.KLATC } / dataBefore.size.toDouble()
     }
 
     private fun calcBKL(data: DataOneDay): Int {
-        return data.calcKLATC()
+        return data.KLATC
     }
 
     override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Boolean> {
@@ -47,7 +47,7 @@ object DetectIndex8V: IDetectIndex {
             cnt ++
             calendar.add(Calendar.DATE, -1)
             val currentDateStr = ConstDefine.SDF.format(calendar.time)
-            if (!DateValidator.validateDate(currentDateStr))
+            if (!DateValidator.validateDateGet(currentDateStr))
                 continue
 
             val dataCur = DAO.getDataOneDay(code, currentDateStr)

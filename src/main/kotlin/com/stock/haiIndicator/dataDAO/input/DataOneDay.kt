@@ -7,6 +7,7 @@ import kotlinx.serialization.Transient
 import kotlin.math.max
 import kotlin.math.round
 
+//TODO phuong: tinh lai KL & price ATC, ATO
 @Serializable
 data class DataOneDay(
     val GiaThamChieu: Float,
@@ -16,7 +17,7 @@ data class DataOneDay(
     var GiaMoCua: Float = DlChiTiet[0].Gia,
     var GiaCaoNhat: Float = DlChiTiet.maxOf { it.Gia },
     var GiaThapNhat: Float = DlChiTiet.minOf { it.Gia },
-    var TongKhoiLuong: Int = DlChiTiet.sumOf { it.KLLo.toInt() },
+    var TongKhoiLuong: Long = DlChiTiet.sumOf { it.KLLo.toLong() },
 ) {
     @Transient
     val sortedDLTongHop = DlTongHop.sortedBy { it.Gia }
@@ -24,17 +25,35 @@ data class DataOneDay(
     @Transient
     var changePrice: Float = 0f
 
+    @Transient
+    var KLATO: Int = 0
+
+    @Transient
+    var KLATC: Int = 0
+
     init {
+        normalizeKLLo()
         if (DlChiTiet.isNotEmpty()) {
             GiaDongCua = DlChiTiet[DlChiTiet.size-1].Gia
             GiaMoCua = DlChiTiet[0].Gia
             GiaCaoNhat = DlChiTiet.maxOf { it.Gia }
             GiaThapNhat = DlChiTiet.minOf { it.Gia }
-            TongKhoiLuong = DlChiTiet.sumOf { it.KLLo.toInt() }
+            TongKhoiLuong = DlChiTiet.sumOf { it.KLLo.toLong() }
         }
 
-        changePrice = (GiaDongCua - GiaMoCua) / GiaMoCua * 100
+        changePrice = (GiaDongCua - GiaMoCua) / GiaMoCua * 100 //TODO: tinh theo gia tham chieu
+        KLATO = calcKLATO()
+        KLATC = calcKLATC()
     }
+
+    private fun normalizeKLLo() {
+        var lastKLTichLuy = 0L
+        DlChiTiet.forEach {
+            it.KLLo = it.KLTichLuy - lastKLTichLuy
+            lastKLTichLuy = it.KLTichLuy.toLong()
+        }
+    }
+
     /***
      * inclusive maxPrice
      */
@@ -94,7 +113,7 @@ data class DataOneDay(
             throw Exception("KLStepUp invalid percentStep: $percentStep")
         val stepIdx = round(sortedDLTongHop.size * percentStep).toInt()
         val milestonePrice = sortedDLTongHop[sortedDLTongHop.size-stepIdx].Gia
-        println("KLStepUp size: ${sortedDLTongHop.size}, stepIdx: ${sortedDLTongHop.size-stepIdx}, milestonePrice: $milestonePrice")
+//        println("KLStepUp size: ${sortedDLTongHop.size}, stepIdx: ${sortedDLTongHop.size-stepIdx}, milestonePrice: $milestonePrice")
         return calcKLUpperPrice(milestonePrice)
     }
 
@@ -103,7 +122,7 @@ data class DataOneDay(
             throw Exception("KLStepDown invalid percentStep: $percentStep")
         val stepIdx = round(sortedDLTongHop.size * percentStep).toInt()
         val milestonePrice = sortedDLTongHop[stepIdx].Gia
-        println("KLStepDown size: ${sortedDLTongHop.size}, stepIdx: $stepIdx, milestonePrice: $milestonePrice")
+//        println("KLStepDown size: ${sortedDLTongHop.size}, stepIdx: $stepIdx, milestonePrice: $milestonePrice")
         return calcKLLowerPriceUnbound(milestonePrice)
     }
 
@@ -115,11 +134,11 @@ data class DataOneDay(
         return KLStepDown(percentDown) / TongKhoiLuong.toFloat()
     }
 
-    fun calcKLATO() : Int {
-        return getMatchATO().KLLo.toInt()
+    private fun calcKLATO() : Int {
+        return DlChiTiet.filter { it.isInATO() }.sumOf { it.KLLo.toInt()}
     }
 
-    fun calcKLATC() : Int {
+    private fun calcKLATC() : Int {
         return getMatchATC().KLLo.toInt()
     }
 

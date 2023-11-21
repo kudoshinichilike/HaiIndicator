@@ -13,4 +13,7 @@ class WebController {
 
     @GetMapping("/detectOneIndicator")
     fun detectOneIndicator(): String = "detectOneIndicator"
+
+    @GetMapping("/nen8")
+    fun nen8(): String = "nen8"
 }

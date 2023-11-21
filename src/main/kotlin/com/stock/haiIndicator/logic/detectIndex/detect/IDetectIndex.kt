@@ -1,6 +1,7 @@
 package com.stock.haiIndicator.logic.detectIndex.detect
 
 import com.stock.haiIndicator.bean.ErrorDefine
+import com.stock.haiIndicator.dataDAO.input.DataOneDay
 import com.zps.bitzerokt.utils.some_monad.Either
 import java.util.*
 

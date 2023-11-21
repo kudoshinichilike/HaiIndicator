@@ -8,22 +8,21 @@ import com.stock.haiIndicator.dataDAO.input.DataOneDay
 import com.stock.haiIndicator.payload.req.ReqSearchData
 import com.stock.haiIndicator.payload.res.ResSearchData
 import org.springframework.stereotype.Service
-import utils.TimeUtils
 import java.util.*
 
 @Service
 class SearchDataService {
     fun getListCodeSearch(): List<String> {
-        return CodeConfig.codeList
+        return CodeConfig.codeList.toList()
     }
 
     suspend fun searchDataCafeF(reqData: ReqSearchData): ResSearchData {
-        println("searchDataCafeF $reqData")
+//        println("searchDataCafeF $reqData")
         val (code, dateStr, dataSource) = reqData
         if (!validateCode(code))
             return ResSearchData(ErrorDefine.INVALID_CODE.code)
 
-        if (!validateDate(dateStr)) {
+        if (!DateValidator.validateDateDetect(dateStr)) {
             return ResSearchData(ErrorDefine.INVALID_DATE.code)
         }
 

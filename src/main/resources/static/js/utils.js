@@ -41,3 +41,13 @@ var getDates = function (startDate, endDate) {
 
   return dateArray;
 }
+
+var isDateDifferenceLessThanDays = function (dateStart, dateEnd, day) {
+    let startDate = new Date(dateStart);
+    let endDate = new Date(dateEnd);
+
+    let timeDifference = endDate - startDate;
+    let daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+   return daysDifference <= day;
+}

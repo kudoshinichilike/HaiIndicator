@@ -3,9 +3,11 @@ package com.stock.haiIndicator.controller
 import com.stock.haiIndicator.bean.ErrorDefine
 import com.stock.haiIndicator.payload.req.DetectOneCodeReq
 import com.stock.haiIndicator.payload.req.DetectOneIndicatorReq
+import com.stock.haiIndicator.payload.req.Nen8Req
 import com.stock.haiIndicator.payload.req.ReqSearchData
 import com.stock.haiIndicator.payload.res.DetectOneCodeRes
 import com.stock.haiIndicator.payload.res.DetectOneIndicatorRes
+import com.stock.haiIndicator.payload.res.Nen8Res
 import com.stock.haiIndicator.payload.res.ResSearchData
 import com.stock.haiIndicator.service.DetectService
 import com.stock.haiIndicator.service.SearchDataService
@@ -25,6 +27,20 @@ class ApiController {
         return "phuonggg"
     }
 
+    @PostMapping(value = ["/nen8"])
+    suspend fun nen8(@Valid @RequestBody req: Nen8Req): Nen8Res {
+        val codes = mutableListOf<String>()
+        if (req.code.contains("ALL_CODE"))
+            codes.addAll(searchDataService.getListCodeSearch())
+        else
+            codes.addAll(req.code)
+        val resDetect = detectService.detectNen8(codes, req.multiply, req.numDateBf, req.dateStart, req.dateEnd)
+        return when (resDetect) {
+            is Left -> Nen8Res(resDetect.value.code)
+            is Right -> Nen8Res(ErrorDefine.SUCCESS.code, resDetect.value)
+        }
+    }
+
     @PostMapping(value = ["/detectOneIndicator"])
     suspend fun detectOneIndicator(@Valid @RequestBody req: DetectOneIndicatorReq): DetectOneIndicatorRes {
         val codes = mutableListOf<String>()
@@ -41,7 +57,7 @@ class ApiController {
 
     @PostMapping(value = ["/detectOneCode"])
     suspend fun detectOneCode(@Valid @RequestBody req: DetectOneCodeReq): DetectOneCodeRes {
-        println("detectOneCode $req")
+//        println("detectOneCode $req")
         val listIndicatorName = mutableListOf<String>()
         if (req.indicatorName.contains("All"))
             listIndicatorName.addAll(detectService.getListIndicator())
@@ -51,11 +67,11 @@ class ApiController {
         val resDetect = detectService.indicateOneCode(req.code, listIndicatorName, req.dateStart, req.dateEnd)
         return when (resDetect) {
             is Left -> {
-                println("detectOneCode Left ${resDetect.value.code}")
+//                println("detectOneCode Left ${resDetect.value.code}")
                 DetectOneCodeRes(resDetect.value.code)
             }
             is Right -> {
-                println("resDetect ${resDetect.value}")
+//                println("resDetect ${resDetect.value}")
                 DetectOneCodeRes(ErrorDefine.SUCCESS.code, resDetect.value)
             }
         }

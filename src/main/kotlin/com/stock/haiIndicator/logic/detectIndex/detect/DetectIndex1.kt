@@ -4,6 +4,7 @@ import com.stock.haiIndicator.bean.ConstDefine
 import com.stock.haiIndicator.bean.ErrorDefine
 import com.stock.haiIndicator.dataDAO.DAO
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
+import com.stock.haiIndicator.logic.processDataBefore.ProcessDataBefore
 import com.zps.bitzerokt.utils.some_monad.Either
 import com.zps.bitzerokt.utils.some_monad.Left
 import com.zps.bitzerokt.utils.some_monad.Right
@@ -12,18 +13,46 @@ import kotlin.math.max
 import kotlin.math.min
 
 object DetectIndex1: IDetectIndex {
+    private const val NUM_DATE_KL_BF = 20
+    private const val MULTIPLY_CONDITION = 1.5
+    private const val DATE_SAME_CANDLE_BF = 2
+    private const val NUM_SAME_CANDLE_BF = 1
+
     override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Boolean> {
         val dateStr = ConstDefine.SDF.format(date)
         val data = DAO.getDataOneDay(code, dateStr) ?: return Left(ErrorDefine.NO_EXIST_DATA)
-        return Right(detect(data))
+        val avgKLBefore = ProcessDataBefore.getAvgKLBefore(code, date, NUM_DATE_KL_BF)
+        if (avgKLBefore == -1L)
+            return Left(ErrorDefine.CAN_NOT_CALC_AVG_BF)
+
+        val detectCurDate = detect(data, avgKLBefore)
+        if (!detectCurDate)
+            return Right(false)
+
+        var validBf = 0
+        val listDataBfCheckSame = ProcessDataBefore.getDataBefore(code, date, DATE_SAME_CANDLE_BF)
+        if (listDataBfCheckSame is Left) {
+            listDataBfCheckSame.value.forEach {
+                if (detect(it, avgKLBefore))
+                    validBf ++
+            }
+        }
+
+        return if (validBf >= NUM_SAME_CANDLE_BF)
+            Right(true)
+        else
+            Right(false)
     }
 
-    fun detect(data: DataOneDay): Boolean {
+    fun detect(data: DataOneDay, avgKLBefore: Long): Boolean {
         if (!isValidShape(data))
             return false
 
+        if (data.TongKhoiLuong < avgKLBefore * MULTIPLY_CONDITION)
+            return false
+
         val aKL = percentAKL(data)
-        println("--------------- DetectIndex1 $aKL")
+//        println("--------------- DetectIndex1 $aKL")
         return aKL >= 0.8
     }
 

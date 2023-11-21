@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/lib/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/bootstrap-vue.min.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/vue-multiselect.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fab.css}"/>
+    <title>Search</title>
+</head>
+
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button,
+    input::-webkit-clear-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+<body>
+<div id="view-nen8">
+    <template>
+        <b-container fluid>
+            <b-card class="mb-2 mt-5">
+                <b-form-row>
+                    <b-col lg="1" class="my-1">
+                        Mã
+                    </b-col>
+
+                    <b-col lg="5" class="my-1">
+                        <multiselect v-model="code" :disabled="isSearching" placeholder="Nhập mã chứng khoán"
+                                     label="name" track-by="name" :options="listCodeSearch"
+                                     :multiple="true" :taggable="true" @tag="addCode">
+                        </multiselect>
+                    </b-col>
+                </b-form-row>
+
+                <b-form-row>
+                    <b-col lg="1" class="my-1">
+                        Ngày bắt đầu
+                    </b-col>
+                    <b-col lg="2" class="my-1">
+                        <b-input v-model="startDate" :disabled="isSearching" type="date"></b-input>
+                    </b-col>
+                </b-form-row>
+
+                <b-form-row>
+                    <b-col lg="1" class="my-1">
+                        Ngày kết thúc
+                    </b-col>
+                    <b-col lg="2" class="my-1">
+                        <b-input v-model="endDate" :disabled="isSearching" type="date"></b-input>
+                    </b-col>
+                </b-form-row>
+
+                <b-form-row>
+                    <b-col lg="1" class="my-1">
+                        Tỷ lệ
+                    </b-col>
+
+                    <b-col lg="2" class="my-1">
+                        <b-form-input v-model="multiply" :disabled="isSearching" placeholder="Tỷ lệ"
+                                      list="listMultiply" type="search"></b-form-input>
+                        <datalist id="listMultiply">
+                            <option v-for="multiplyName in listMultiply">{{ multiplyName }}</option>
+                        </datalist>
+                    </b-col>
+                </b-form-row>
+
+                <b-form-row>
+                    <b-col lg="1" class="my-1">
+                        Số ngày so sánh
+                    </b-col>
+
+                    <b-col lg="2" class="my-1">
+                        <b-form-input v-model="numDateBf" :disabled="isSearching" placeholder="Số ngày so sánh"
+                                      list="listNumDateBf" type="search"></b-form-input>
+                        <datalist id="listNumDateBf">
+                            <option v-for="numDateBfName in listNumDateBf">{{ numDateBfName }}</option>
+                        </datalist>
+                    </b-col>
+                </b-form-row>
+
+                <b-form-row>
+                    <b-col lg="1" class="my-1">
+                        <b-button @click="onSearchClicked" variant="primary" block :disabled="isSearching">
+                            Quét
+                        </b-button>
+                    </b-col>
+                </b-form-row>
+
+            </b-card>
+
+            <div style="max-height: 800px; overflow-y: auto; overflow-x: auto;"
+                 class="table-wrapper text-center">
+                <b-table :items="items" :fields="fields" class="table-striped">
+                </b-table>
+            </div>
+
+        </b-container>
+    </template>
+</div>
+
+<script th:src="@{/lib/axios.min.js}"></script>
+<script th:src="@{/lib/vue.min.js}"></script>
+<script th:src="@{/lib/bootstrap-vue.min.js}"></script>
+<script th:src="@{/lib/vue-multiselect@2.1.0.js}"></script>
+<script th:src="@{/js/utils.js}"></script>
+<script th:src="@{/js/conf_fab.js}"></script>
+<script th:src="@{/js/nen8.js}"></script>
+</body>
+
+</html>

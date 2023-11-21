@@ -17,10 +17,10 @@ object DetectIndex5: IDetectIndex {
         val aKL = percentAKL(data)
         val cKL = percentCKL(data)
         val bKL = 1 - aKL - cKL
-        println("--------------- DetectIndex5 aKL: $aKL")
-        println("--------------- DetectIndex5 bKL: $bKL")
-        println("--------------- DetectIndex5 cKL: $cKL")
-        return aKL <= 0.1 && cKL >= 0.1 && (bKL in 0.70..0.85)
+//        println("--------------- DetectIndex5 aKL: $aKL")
+//        println("--------------- DetectIndex5 bKL: $bKL")
+//        println("--------------- DetectIndex5 cKL: $cKL")
+        return aKL <= 0.2 && cKL >= 0.1 && (bKL in 0.60..0.85)
     }
 
     private fun isValidShape(data: DataOneDay): Boolean {

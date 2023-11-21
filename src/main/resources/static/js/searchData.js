@@ -60,6 +60,7 @@ var viewSearchLog = new Vue({
                         var data = res.data.matchData
                         this.dataTableDetails = res.data.matchData
                         this.dataTableStatistic = res.data.statisticData
+                        console.log(res.data.matchData)
                     })
                     .catch(e => {
                         console.log(e)

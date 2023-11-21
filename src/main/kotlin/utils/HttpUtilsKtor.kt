@@ -17,7 +17,7 @@ object HttpUtilsKtor {
     }
 
     suspend inline fun <reified T> sendPostJson(url: String, body: T): HttpResponse {
-        println(JsonUtils.encodeToString(body))
+//        println(JsonUtils.encodeToString(body))
         return httpClient.post(url) {
             contentType(ContentType.parse("application/json"))
             setBody(JsonUtils.encodeToString(body))

@@ -15,7 +15,7 @@ object DetectIndex6: IDetectIndex {
             return false
 
         val aKL = percentAKL(data)
-        println("--------------- DetectIndex6 aKL: $aKL")
+//        println("--------------- DetectIndex6 aKL: $aKL")
         return aKL <= 0.2
     }
 

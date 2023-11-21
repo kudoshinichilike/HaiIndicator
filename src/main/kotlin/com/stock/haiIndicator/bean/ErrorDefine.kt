@@ -9,5 +9,7 @@ enum class ErrorDefine (val code: Byte) {
     INVALID_DATE(4),
     INVALID_SOURCE(5),
     NOT_ENOUGH_DATA(6),
+    NO_EXIST_DATA_TODAY(7),
+    CAN_NOT_CALC_AVG_BF(8),
     ;
 }
