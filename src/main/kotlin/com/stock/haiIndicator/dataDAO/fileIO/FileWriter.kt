@@ -5,7 +5,8 @@ import java.io.FileWriter
 
 object FileWriter {
     fun writeDataOneDay(code: String, date: String, data: DataOneDay) {
-        val directoryPath = System.getProperty("user.dir") + "/data/" + "cafeF/$code/"
+//        val directoryPath = System.getProperty("user.dir") + "/data/" + "cafeF/$code/"
+        val directoryPath = "/home/phuongnm5/toolAnhHai/data/cafeF/$code/" //live
         val filePath = "${directoryPath}$code$date.json"
 
         val directory = File(directoryPath)

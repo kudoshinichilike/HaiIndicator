@@ -10,12 +10,12 @@ import com.zps.bitzerokt.utils.some_monad.Right
 import java.util.*
 
 object DetectIndex2: IDetectIndex {
-    fun detect(data: DataOneDay): Boolean {
+    fun detect(code: String, data: DataOneDay): Boolean {
         if (!isValidShape(data))
             return false
 
         val aKL = percentAKL(data)
-//        println("--------------- DetectIndex2 $aKL")
+//        println("$code  $aKL")
         return aKL <= 0.8
     }
 
@@ -30,6 +30,6 @@ object DetectIndex2: IDetectIndex {
     override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Boolean> {
         val dateStr = ConstDefine.SDF.format(date)
         val data = DAO.getDataOneDay(code, dateStr) ?: return Left(ErrorDefine.NO_EXIST_DATA)
-        return Right(detect(data))
+        return Right(detect(code, data))
     }
 }

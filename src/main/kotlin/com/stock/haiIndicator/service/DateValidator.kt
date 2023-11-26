@@ -25,7 +25,8 @@ object DateValidator {
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
         val isWeekend = dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY
 //        println("validateDateDetect: ${!isWeekend && canDetectToday(calendar)}")
-        return !isWeekend && canDetectToday(calendar)
+//        return !isWeekend && canDetectToday(calendar)
+        return !isWeekend
     }
 
     private fun canDetectToday(calendarCheck: Calendar): Boolean {

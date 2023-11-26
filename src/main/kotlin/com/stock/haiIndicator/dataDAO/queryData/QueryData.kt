@@ -5,6 +5,7 @@ import utils.HttpUtilsKtor
 
 /***
  * https://msh-devappdata.cafef.vn/rest-api/api/v1/MatchPrice?symbol=DIG&date=20231006
+ * https://msh-appdata.cafef.vn/rest-api/api/v1/MatchPrice?symbol=DIG&date=20231006
  * https://s.cafef.vn/Ajax/PageNew/DataHistory/KhopLenh/DataKhopLenh.ashx
  */
 object QueryData {
@@ -23,8 +24,8 @@ object QueryData {
 
     private fun createBodyParams(code: String, date: String): Map<String, String> {
         return mutableMapOf(
-            "Symbol" to code,
-            "Date" to date
+            "symbol" to code,
+            "date" to date
         )
     }
 }

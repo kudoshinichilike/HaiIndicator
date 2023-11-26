@@ -38,7 +38,7 @@ data class DataOneDay(
             GiaMoCua = DlChiTiet[0].Gia
             GiaCaoNhat = DlChiTiet.maxOf { it.Gia }
             GiaThapNhat = DlChiTiet.minOf { it.Gia }
-            TongKhoiLuong = DlChiTiet.sumOf { it.KLLo.toLong() }
+            TongKhoiLuong = DlChiTiet.maxOf { it.KLTichLuy.toLong() }
         }
 
         changePrice = (GiaDongCua - GiaMoCua) / GiaMoCua * 100 //TODO: tinh theo gia tham chieu
@@ -152,6 +152,28 @@ data class DataOneDay(
 
     fun getMatchATC(): DataOneMatch {
         return DlChiTiet[DlChiTiet.size-1]
+    }
+
+    fun calcVolInDuration(timeStart: String, timeEnd: String): Long {
+        val type2H = DlChiTiet.any { it.ThoiGian.contains("02:15:") }
+        val timeType2H = "07:10:00" //TODO: normalize time
+        val timeType9H = "14:10:00"
+        val timeCompare = if (type2H) timeType2H else timeType9H
+        var sum = 0L
+        DlChiTiet.forEach {  oneMatch ->
+            val timeSubstring = if (oneMatch.ThoiGian.contains("T"))
+                                    oneMatch.ThoiGian.substringAfter('T').take(8)
+                                else
+                                    oneMatch.ThoiGian
+
+            if (timeSubstring >= timeCompare)
+                sum += oneMatch.KLLo.toLong()
+        }
+        return sum
+    }
+
+    fun calcPercentVolInDuration(timeStart: String, timeEnd: String): Float {
+        return calcVolInDuration(timeEnd, timeEnd) / TongKhoiLuong.toFloat()
     }
 
     companion object {

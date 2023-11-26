@@ -41,12 +41,14 @@ object JsonUtils {
 
     inline fun <reified T> decodeFromFile(fileName: String): T {
         val pathLoad = System.getProperty("user.dir") + "/data/" + fileName
+//        val pathLoad = "/home/phuongnm5/toolAnhHai/data/" + fileName //live
         val str = File(pathLoad).readText(Charsets.UTF_8)
         return JSON.decodeFromString(str)
     }
 
     fun checkExistFile(fileName: String): Boolean {
         val pathLoad = System.getProperty("user.dir") + "/data/" + fileName
+//        val pathLoad = "/home/phuongnm5/toolAnhHai/data/" + fileName //live
         val file = File(pathLoad)
         return file.exists()
     }

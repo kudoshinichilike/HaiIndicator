@@ -4,8 +4,8 @@ var viewSearchLog = new Vue({
         Multiselect: window.VueMultiselect.default
     },
     data: {
-        listCodeSearch: [],
-//        listCodeSearch: [{name: "ALL_CODE"}],
+//        listCodeSearch: [],
+        listCodeSearch: [{name: "ALL_CODE"}],
         code: [],
 
         startDate: '',
