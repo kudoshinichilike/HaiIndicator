@@ -11,5 +11,6 @@ enum class ErrorDefine (val code: Byte) {
     NOT_ENOUGH_DATA(6),
     NO_EXIST_DATA_TODAY(7),
     CAN_NOT_CALC_AVG_BF(8),
+    EXCEPTION_IN_DETECT(9),
     ;
 }

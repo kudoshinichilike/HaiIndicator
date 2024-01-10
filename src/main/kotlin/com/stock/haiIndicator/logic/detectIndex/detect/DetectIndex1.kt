@@ -5,6 +5,7 @@ import com.stock.haiIndicator.bean.ErrorDefine
 import com.stock.haiIndicator.dataDAO.DAO
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
 import com.stock.haiIndicator.logic.processDataBefore.ProcessDataBefore
+import com.stock.haiIndicator.payload.res.resEachIndex.SealedResIndex
 import com.zps.bitzerokt.utils.some_monad.Either
 import com.zps.bitzerokt.utils.some_monad.Left
 import com.zps.bitzerokt.utils.some_monad.Right
@@ -14,11 +15,11 @@ import kotlin.math.min
 
 object DetectIndex1: IDetectIndex {
     private const val NUM_DATE_KL_BF = 20
-    private const val MULTIPLY_CONDITION = 1.5
+    private const val MULTIPLY_KL_CONDITION = 1.2
     private const val DATE_SAME_CANDLE_BF = 2
     private const val NUM_SAME_CANDLE_BF = 1
 
-    override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Boolean> {
+    override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Pair<Boolean, SealedResIndex>> {
         val dateStr = ConstDefine.SDF.format(date)
         val data = DAO.getDataOneDay(code, dateStr) ?: return Left(ErrorDefine.NO_EXIST_DATA)
         val avgKLBefore = ProcessDataBefore.getAvgKLBefore(code, date, NUM_DATE_KL_BF)
@@ -27,7 +28,7 @@ object DetectIndex1: IDetectIndex {
 
         val detectCurDate = detect(data, avgKLBefore)
         if (!detectCurDate)
-            return Right(false)
+            return Right(Pair(false, SealedResIndex()))
 
         var validBf = 0
         val listDataBfCheckSame = ProcessDataBefore.getDataBefore(code, date, DATE_SAME_CANDLE_BF)
@@ -39,16 +40,16 @@ object DetectIndex1: IDetectIndex {
         }
 
         return if (validBf >= NUM_SAME_CANDLE_BF)
-            Right(true)
+            Right(Pair(true, SealedResIndex()))
         else
-            Right(false)
+            Right(Pair(false, SealedResIndex()))
     }
 
     fun detect(data: DataOneDay, avgKLBefore: Long): Boolean {
         if (!isValidShape(data))
             return false
 
-        if (data.TongKhoiLuong < avgKLBefore * MULTIPLY_CONDITION)
+        if (data.TongKhoiLuong < avgKLBefore * MULTIPLY_KL_CONDITION)
             return false
 
         val aKL = percentAKL(data)

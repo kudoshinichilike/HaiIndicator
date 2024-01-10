@@ -1,9 +1,12 @@
 package com.stock.haiIndicator.logic.detectIndex.detect
 
+import com.google.gson.Gson
 import com.stock.haiIndicator.bean.ConstDefine
 import com.stock.haiIndicator.bean.ErrorDefine
 import com.stock.haiIndicator.dataDAO.DAO
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
+import com.stock.haiIndicator.payload.res.resEachIndex.ResIndex8DetailInfo
+import com.stock.haiIndicator.payload.res.resEachIndex.SealedResIndex
 import com.stock.haiIndicator.service.DateValidator
 import com.zps.bitzerokt.utils.some_monad.Either
 import com.zps.bitzerokt.utils.some_monad.Left
@@ -14,6 +17,7 @@ import java.util.*
 object DetectIndex8: IDetectIndex {
     private const val MINUTE_BREAK = 30 //second
     private const val GAP_SECOND = 180 //second
+    private const val CAN_NOT_GET_KL_BF = 10000000000L
     fun detect(code: String, date: Date, multiply: Int, data: DataOneDay, dataBefore: List<Pair<String, DataOneDay>>): List<String> {
         val resList = mutableListOf<String>()
         val dateStr = ConstDefine.SDF.format(date)
@@ -37,10 +41,13 @@ object DetectIndex8: IDetectIndex {
             calendarEndGap.add(Calendar.MINUTE, MINUTE_BREAK)
             val timeStampEndGap = calendarEndGap.timeInMillis/1000
 
-            val klCurDate = calcKLCurDate(currentTimestampSc, timeStampEndGap, data)
+            val (klCurDate, avgPrice) = calcKLCurDate(currentTimestampSc, timeStampEndGap, data)
             val klBefore = calcAvgBefore(dataBefore,
                                 calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),
                                 calendarEndGap.get(Calendar.HOUR_OF_DAY), calendarEndGap.get(Calendar.MINUTE))
+            if (klBefore == CAN_NOT_GET_KL_BF)
+                continue
+
             if (klCurDate != 0L && klCurDate > klBefore * multiply) {
                 val timeRes = code + " " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) +
                         "\n($klCurDate>$klBefore*$multiply)"
@@ -88,18 +95,25 @@ object DetectIndex8: IDetectIndex {
             }
         }
         if (cntDate == 0)
-            return 10000000000L
+            return CAN_NOT_GET_KL_BF
 //        println("sumBefore $sumBefore")
         return sumBefore / cntDate
     }
 
-    private fun calcKLCurDate(timestampStart: Long, timestampEnd: Long, data: DataOneDay): Long {
-        return data.DlChiTiet
-                .filter { it.timeStamp in timestampStart..timestampEnd }
-                .sumOf { it.KLLo.toLong() }
+    private fun calcKLCurDate(timestampStart: Long, timestampEnd: Long, data: DataOneDay): Pair<Long, Float> {
+        var sumPrice = 0.0
+        var sumKL = 0L
+        data.DlChiTiet
+            .filter { it.timeStamp in timestampStart..timestampEnd }
+            .forEach {
+                sumPrice += it.Gia * it.KLLo.toDouble()
+                sumKL += it.KLLo.toLong()
+            }
+
+        return Pair(sumKL, (sumPrice / sumKL).toFloat())
     }
 
-    override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Boolean> {
+    override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Pair<Boolean, SealedResIndex>> {
         return Left(ErrorDefine.FAIL)
     }
 
@@ -129,5 +143,76 @@ object DetectIndex8: IDetectIndex {
             return Left(ErrorDefine.NOT_ENOUGH_DATA)
 
         return Right(detect(code, date, multiply, data, dataBefore))
+    }
+
+    suspend fun detectResDetailInfo(code: String, multiply: Int, numDateBf: Int, date: Date):
+                            Either<ErrorDefine, List<ResIndex8DetailInfo>> {
+        val dateStr = ConstDefine.SDF.format(date)
+        val data = DAO.getDataOneDay(code, dateStr) ?: return Left(ErrorDefine.NO_EXIST_DATA)
+
+        val dataBefore = mutableListOf<Pair<String, DataOneDay>>()
+        var cnt = 0
+        val maxCnt = 50
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+
+        while (cnt < maxCnt && dataBefore.size < numDateBf) {
+            cnt ++
+            calendar.add(Calendar.DATE, -1)
+            val currentDateStr = ConstDefine.SDF.format(calendar.time)
+            if (!DateValidator.validateDateGet(currentDateStr))
+                continue
+
+            val dataCur = DAO.getDataOneDay(code, currentDateStr)
+            if (dataCur != null)
+                dataBefore.add(Pair(currentDateStr, dataCur))
+        }
+
+        if (dataBefore.size < numDateBf)
+            return Left(ErrorDefine.NOT_ENOUGH_DATA)
+
+        return Right(detectResDetailInfo(code, date, multiply, data, dataBefore))
+    }
+
+    private fun detectResDetailInfo(code: String, date: Date, multiply: Int,
+                    data: DataOneDay, dataBefore: List<Pair<String, DataOneDay>>): List<ResIndex8DetailInfo> {
+        val resList = mutableListOf<ResIndex8DetailInfo>()
+        val dateStr = ConstDefine.SDF.format(date)
+
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.set(Calendar.HOUR_OF_DAY, 9)
+        calendar.set(Calendar.MINUTE, 15)
+        calendar.set(Calendar.SECOND, 0)
+
+        val endTime = Calendar.getInstance()
+        endTime[Calendar.HOUR_OF_DAY] = 14
+        endTime[Calendar.MINUTE] = 15
+        endTime[Calendar.SECOND] = 0
+
+        while (calendar.before(endTime)) {
+            val currentTimestampSc = calendar.timeInMillis/1000
+
+            val calendarEndGap = Calendar.getInstance()
+            calendarEndGap.time = calendar.time
+            calendarEndGap.add(Calendar.MINUTE, MINUTE_BREAK)
+            val timeStampEndGap = calendarEndGap.timeInMillis/1000
+
+            val (klCurDate, avgPrice) = calcKLCurDate(currentTimestampSc, timeStampEndGap, data)
+            val klBefore = calcAvgBefore(dataBefore,
+                calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),
+                calendarEndGap.get(Calendar.HOUR_OF_DAY), calendarEndGap.get(Calendar.MINUTE))
+
+            if (klBefore != CAN_NOT_GET_KL_BF && klCurDate != 0L && klCurDate > klBefore * multiply) {
+                val timeRes = "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}"
+                val info = ResIndex8DetailInfo(timeRes, klCurDate / klBefore.toFloat(), klCurDate, avgPrice)
+                resList.add(info)
+            }
+
+            calendar.add(Calendar.MINUTE, 15)
+        }
+
+        println("code: $code, date: $dateStr, resList: ${Gson().toJson(resList)}")
+        return resList
     }
 }

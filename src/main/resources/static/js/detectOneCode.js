@@ -5,7 +5,7 @@ var viewSearchLog = new Vue({
     },
     data: {
         listCodeSearch: [],
-        code: 'DIG',
+        code: 'NKG',
 
         startDate: '',
         endDate: '',
@@ -35,9 +35,13 @@ var viewSearchLog = new Vue({
     },
     methods: {
         onSearchClicked() {
-            var isSearching = true
             if (isEmpty(this.code) || Object.keys(this.nameIndicator).length == 0) {
                 this.makeToast('danger', 'Bạn chưa nhập mã chứng khoán')
+                return
+            }
+
+            if (Object.keys(this.nameIndicator).length == 0) {
+                this.makeToast('danger', 'Bạn chưa chọn chỉ báo cần tìm kiếm')
                 return
             }
 
@@ -68,6 +72,9 @@ var viewSearchLog = new Vue({
                 if (!canSearch)
                     return
 
+                this.isSearching = true
+                this.makeToast('warning', "Đợi xíu, đang tìm nhé ạ ^^ ...", 2000)
+
                 axios
                     .post('api/haiIndicator/detectOneCode', {
                         code: this.code,
@@ -81,7 +88,7 @@ var viewSearchLog = new Vue({
                             this.makeToast('danger', "Lỗi")
                         else {
                             this.makeToast('warning', "Xử lý thành công")
-    //                        console.log("res", res.data)
+                            console.log("res", res.data)
                             var item = {}
                             //TODO: if error != 0 notify
                             for (indicatorName in res.data.result) {
@@ -122,18 +129,18 @@ var viewSearchLog = new Vue({
             }
         },
 
-        makeToast(variant = null, msg) {
+        makeToast(variant = null, msg, time = 8000) {
             this.$bvToast.toast(msg, {
                 title: 'Thông báo',
                 variant: variant,
                 solid: true,
-                autoHideDelay: 8000
+                autoHideDelay: time
                 // noAutoHide: true
             })
         },
 
         getListCodeSearch() {
-            var isSearching = true
+            this.isSearching = true
             axios.get('api/haiIndicator/getListCode')
             .then(res => {
                 this.listCodeSearch = res.data
@@ -146,7 +153,7 @@ var viewSearchLog = new Vue({
         },
 
         getListIndicator() {
-            var isSearching = true
+            this.isSearching = true
             axios.get('api/haiIndicator/getListIndicator')
             .then(res => {
 //                console.log("listIndicator", res.data)
@@ -167,7 +174,10 @@ var viewSearchLog = new Vue({
                 name: newIndicator
             }
             this.nameIndicator.push(tag)
-        }
+        },
+
+        onHidden() {
+        },
     },
 
 //    watch: {

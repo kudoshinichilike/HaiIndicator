@@ -98,6 +98,9 @@
             </div>
 
         </b-container>
+
+        <b-overlay :show="isSearching" rounded no-wrap opacity="0.4" spinner-type="border" @hidden="onHidden">
+        </b-overlay>
     </template>
 </div>
 

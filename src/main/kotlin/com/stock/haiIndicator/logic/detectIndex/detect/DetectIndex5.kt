@@ -5,6 +5,7 @@ import com.stock.haiIndicator.bean.ErrorDefine
 import com.stock.haiIndicator.dataDAO.DAO
 import com.zps.bitzerokt.utils.some_monad.Either
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
+import com.stock.haiIndicator.payload.res.resEachIndex.SealedResIndex
 import com.zps.bitzerokt.utils.some_monad.Left
 import com.zps.bitzerokt.utils.some_monad.Right
 import java.util.*
@@ -35,9 +36,9 @@ object DetectIndex5: IDetectIndex {
         return data.percentKLLowerPriceUnbound(data.GiaDongCua)
     }
 
-    override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Boolean> {
+    override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Pair<Boolean, SealedResIndex>> {
         val dateStr = ConstDefine.SDF.format(date)
         val data = DAO.getDataOneDay(code, dateStr) ?: return Left(ErrorDefine.NO_EXIST_DATA)
-        return Right(detect(data))
+        return Right(Pair(detect(data), SealedResIndex()))
     }
 }
