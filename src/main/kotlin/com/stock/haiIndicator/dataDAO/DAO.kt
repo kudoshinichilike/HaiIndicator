@@ -3,15 +3,18 @@ package com.stock.haiIndicator.dataDAO
 import FileReader
 import FileWriter
 import com.google.gson.Gson
-import com.stock.haiIndicator.bean.ConstDefine
+import com.stock.haiIndicator.define.ConstDefine
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
 import com.stock.haiIndicator.dataDAO.input.dataMshDev.DataOneDayMshDev
 import com.stock.haiIndicator.dataDAO.queryData.QueryData
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.JsonObject
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import utils.JsonUtils
 
 object DAO {
+    val logger: Logger = LoggerFactory.getLogger("DAO")
     suspend fun getDataOneDay(code: String, dateStr: String): DataOneDay? {
         return getDataOneDayLocal(code, dateStr) ?: getDataOneDayCafeF(code, dateStr)
     }
@@ -37,8 +40,7 @@ object DAO {
                 null
         }
         catch (e: Exception) {
-//            e.printStackTrace()
-//            println("getDataOneDayCafeF Exception $code $dateStr")
+            logger.error("Exception getDataOneDayCafeF $code $dateStr", e)
             return null
         }
     }

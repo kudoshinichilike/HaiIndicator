@@ -1,7 +1,7 @@
 package com.stock.haiIndicator.logic.detectIndex.detect
 
-import com.stock.haiIndicator.bean.ConstDefine
-import com.stock.haiIndicator.bean.ErrorDefine
+import com.stock.haiIndicator.define.ConstDefine
+import com.stock.haiIndicator.define.ErrorDefine
 import com.stock.haiIndicator.dataDAO.DAO
 import com.zps.bitzerokt.utils.some_monad.Either
 import com.stock.haiIndicator.dataDAO.input.DataOneDay

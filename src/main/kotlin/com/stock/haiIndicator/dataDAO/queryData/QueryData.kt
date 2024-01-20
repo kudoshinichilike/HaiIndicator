@@ -1,5 +1,6 @@
 package com.stock.haiIndicator.dataDAO.queryData
 
+import com.stock.haiIndicator.logger.GlobalLogger
 import io.ktor.client.statement.*
 import utils.HttpUtilsKtor
 
@@ -18,7 +19,7 @@ object QueryData {
     suspend fun query(code: String, date: String): String {
         val params = createBodyParams(code, date)
         val response = HttpUtilsKtor.get(URL, params)
-//        println("queryData response ${response.bodyAsText()}")
+        GlobalLogger.logger.debug("queryData response ${response.bodyAsText()}")
         return response.bodyAsText()
     }
 

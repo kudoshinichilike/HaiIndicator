@@ -1,4 +1,4 @@
-package com.stock.haiIndicator.bean
+package com.stock.haiIndicator.define
 
 enum class DataSourceEnum {
     CAFE_F,

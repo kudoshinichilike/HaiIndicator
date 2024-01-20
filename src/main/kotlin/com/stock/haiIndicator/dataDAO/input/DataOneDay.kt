@@ -1,5 +1,6 @@
 package com.stock.haiIndicator.dataDAO.input
 
+import com.stock.haiIndicator.logger.GlobalLogger
 import com.stock.haiIndicator.payload.res.ResMatchData
 import com.stock.haiIndicator.payload.res.ResStatisticData
 import kotlinx.serialization.Serializable
@@ -113,7 +114,7 @@ data class DataOneDay(
             throw Exception("KLStepUp invalid percentStep: $percentStep")
         val stepIdx = round(sortedDLTongHop.size * percentStep).toInt()
         val milestonePrice = sortedDLTongHop[sortedDLTongHop.size-stepIdx].Gia
-//        println("KLStepUp size: ${sortedDLTongHop.size}, stepIdx: ${sortedDLTongHop.size-stepIdx}, milestonePrice: $milestonePrice")
+        GlobalLogger.logger.debug("KLStepUp size: ${sortedDLTongHop.size}, stepIdx: ${sortedDLTongHop.size-stepIdx}, milestonePrice: $milestonePrice")
         return calcKLUpperPrice(milestonePrice)
     }
 
@@ -122,7 +123,7 @@ data class DataOneDay(
             throw Exception("KLStepDown invalid percentStep: $percentStep")
         val stepIdx = round(sortedDLTongHop.size * percentStep).toInt()
         val milestonePrice = sortedDLTongHop[stepIdx].Gia
-//        println("KLStepDown size: ${sortedDLTongHop.size}, stepIdx: $stepIdx, milestonePrice: $milestonePrice")
+        GlobalLogger.logger.debug("KLStepDown size: ${sortedDLTongHop.size}, stepIdx: $stepIdx, milestonePrice: $milestonePrice")
         return calcKLLowerPriceUnbound(milestonePrice)
     }
 

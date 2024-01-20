@@ -1,5 +1,6 @@
 package utils
 
+import com.stock.haiIndicator.logger.GlobalLogger
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
@@ -17,7 +18,7 @@ object HttpUtilsKtor {
     }
 
     suspend inline fun <reified T> sendPostJson(url: String, body: T): HttpResponse {
-//        println(JsonUtils.encodeToString(body))
+        GlobalLogger.logger.debug("sendPostJson ${JsonUtils.encodeToString(body)}")
         return httpClient.post(url) {
             contentType(ContentType.parse("application/json"))
             setBody(JsonUtils.encodeToString(body))

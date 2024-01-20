@@ -1,8 +1,6 @@
 package com.stock.haiIndicator.logic.detectIndex
 
-import com.stock.haiIndicator.bean.ErrorDefine
 import com.stock.haiIndicator.logic.detectIndex.detect.*
-import com.zps.bitzerokt.utils.some_monad.Left
 import kotlin.math.max
 
 enum class DefineDetector(val processor: IDetectIndex) {

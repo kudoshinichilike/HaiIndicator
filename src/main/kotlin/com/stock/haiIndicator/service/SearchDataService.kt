@@ -1,23 +1,26 @@
 package com.stock.haiIndicator.service
 
-import com.stock.haiIndicator.bean.DataSourceEnum
-import com.stock.haiIndicator.bean.ErrorDefine
-import com.stock.haiIndicator.bean.config.CodeConfig
+import com.stock.haiIndicator.define.DataSourceEnum
+import com.stock.haiIndicator.define.ErrorDefine
+import com.stock.haiIndicator.define.detectConfig.CodeConfig
 import com.stock.haiIndicator.dataDAO.DAO
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
 import com.stock.haiIndicator.payload.req.ReqSearchData
 import com.stock.haiIndicator.payload.res.ResSearchData
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class SearchDataService {
+    val logger: Logger = LoggerFactory.getLogger("SearchDataService")
     fun getListCodeSearch(): List<String> {
         return CodeConfig.codeList.toList()
     }
 
     suspend fun searchDataCafeF(reqData: ReqSearchData): ResSearchData {
-//        println("searchDataCafeF $reqData")
+        logger.debug("searchDataCafeF $reqData")
         val (code, dateStr, dataSource) = reqData
         if (!validateCode(code))
             return ResSearchData(ErrorDefine.INVALID_CODE.code)

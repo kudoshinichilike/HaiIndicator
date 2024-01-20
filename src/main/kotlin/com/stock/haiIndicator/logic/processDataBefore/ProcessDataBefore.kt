@@ -1,9 +1,10 @@
 package com.stock.haiIndicator.logic.processDataBefore
 
-import com.stock.haiIndicator.bean.ConstDefine
-import com.stock.haiIndicator.bean.ErrorDefine
+import com.stock.haiIndicator.define.ConstDefine
+import com.stock.haiIndicator.define.ErrorDefine
 import com.stock.haiIndicator.dataDAO.DAO
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
+import com.stock.haiIndicator.logger.GlobalLogger
 import com.stock.haiIndicator.service.DateValidator
 import com.zps.bitzerokt.utils.some_monad.Either
 import com.zps.bitzerokt.utils.some_monad.Left
@@ -50,7 +51,7 @@ object ProcessDataBefore {
         }
 
         if (dataBefore.size < numDataBf) {
-//            println("error getDataBefore code: $code, dateStr: $dateStr, numDataBf: $numDataBf")
+            GlobalLogger.detectLogger.warn("error getDataBefore code: $code, dateStr: $dateStr, numDataBf: $numDataBf")
             return Right(ErrorDefine.NOT_ENOUGH_DATA)
         }
 

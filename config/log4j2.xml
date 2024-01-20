@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+
+        <Property name="LOG_DIR" value="logs/"/>
+
+        <Property name="COMMON_PATTERN">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] (%F:%L) %-5level %logger{36} --- %msg%n
+        </Property>
+
+        <Property name="CONSOLE_PATTERN">
+            %highlight{%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] (%F:%L) %-5level %logger{36} --- %msg%n}{ERROR=red, WARN=yellow, INFO=bright_white, DEBUG=white}
+        </Property>
+
+        <Property name="ROLLING_PATTERN">
+            %d{ISO8601} %-5p [%t] (%F:%L) --- %m%n
+        </Property>
+
+        <Property name="FAIL_LOG_PATTERN">
+            %m%n
+        </Property>
+
+    </Properties>
+
+    <Appenders>
+        <Console name="ConsoleLog" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${CONSOLE_PATTERN}" disableAnsi="false"/>
+            <ThresholdFilter level="info" onMatch="ACCEPT" />
+        </Console>
+
+        <RollingFile name="common" fileName="${LOG_DIR}general/common.log"
+                     filePattern="${LOG_DIR}general/common.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${ROLLING_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+
+        <RollingFile name="io" fileName="${LOG_DIR}io/io.log"
+                     filePattern="${LOG_DIR}io/io.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${ROLLING_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+
+        <RollingFile name="ext" fileName="${LOG_DIR}ext/ext.log"
+                     filePattern="${LOG_DIR}ext/ext.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${ROLLING_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="city" fileName="${LOG_DIR}city/city.log"
+                     filePattern="${LOG_DIR}city/city.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${ROLLING_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="profile" fileName="${LOG_DIR}profile/profile.log"
+                     filePattern="${LOG_DIR}profile/profile.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${ROLLING_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="quest" fileName="${LOG_DIR}quest/quest.log"
+                     filePattern="${LOG_DIR}quest/quest.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${ROLLING_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="minigame" fileName="${LOG_DIR}minigame/minigame.log"
+                     filePattern="${LOG_DIR}minigame/minigame.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${ROLLING_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="inventory" fileName="${LOG_DIR}inventory/inventory.log"
+                     filePattern="${LOG_DIR}inventory/inventory.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${ROLLING_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="farm" fileName="${LOG_DIR}farm/farm.log"
+                     filePattern="${LOG_DIR}farm/farm.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${ROLLING_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="chat" fileName="${LOG_DIR}chat/chat.log"
+                     filePattern="${LOG_DIR}chat/chat.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${ROLLING_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+    </Appenders>
+
+
+    <Loggers>
+
+        <!--Core-->
+
+        <Root level="debug">
+            <AppenderRef ref="ConsoleLog"/>
+        </Root>
+
+        <Logger name="common" level="info">
+            <AppenderRef ref="common"/>
+        </Logger>
+
+        <Logger name="io" level="info">
+            <AppenderRef ref="io"/>
+        </Logger>
+
+        <Logger name="ext" level="info">
+            <AppenderRef ref="ext"/>
+        </Logger>
+
+        <Logger name="city" level="info">
+            <AppenderRef ref="city"/>
+        </Logger>
+
+        <Logger name="profile" level="info">
+            <AppenderRef ref="profile"/>
+        </Logger>
+
+        <Logger name="quest" level="info">
+            <AppenderRef ref="quest"/>
+        </Logger>
+
+        <Logger name="minigame" level="info">
+            <AppenderRef ref="minigame"/>
+        </Logger>
+
+        <Logger name="inventory" level="info">
+            <AppenderRef ref="inventory"/>
+        </Logger>
+
+        <Logger name="farm" level="info">
+            <AppenderRef ref="farm"/>
+        </Logger>
+
+        <Logger name="chat" level="info">
+            <AppenderRef ref="chat"/>
+        </Logger>
+
+
+    </Loggers>
+</Configuration>

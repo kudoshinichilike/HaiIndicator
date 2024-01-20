@@ -1,10 +1,11 @@
 package com.stock.haiIndicator.logic.detectIndex.detect
 
 import com.google.gson.Gson
-import com.stock.haiIndicator.bean.ConstDefine
-import com.stock.haiIndicator.bean.ErrorDefine
+import com.stock.haiIndicator.define.ConstDefine
+import com.stock.haiIndicator.define.ErrorDefine
 import com.stock.haiIndicator.dataDAO.DAO
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
+import com.stock.haiIndicator.logger.GlobalLogger
 import com.stock.haiIndicator.payload.res.resEachIndex.ResIndex8DetailInfo
 import com.stock.haiIndicator.payload.res.resEachIndex.SealedResIndex
 import com.stock.haiIndicator.service.DateValidator
@@ -51,7 +52,7 @@ object DetectIndex8: IDetectIndex {
             if (klCurDate != 0L && klCurDate > klBefore * multiply) {
                 val timeRes = code + " " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) +
                         "\n($klCurDate>$klBefore*$multiply)"
-//                println("DetectIndex8 $timeRes | klCurDate: $klCurDate | klBefore: $klBefore")
+                GlobalLogger.detectLogger.debug("DetectIndex8 $timeRes | klCurDate: $klCurDate | klBefore: $klBefore")
                 resList.add(timeRes)
             }
 
@@ -96,7 +97,7 @@ object DetectIndex8: IDetectIndex {
         }
         if (cntDate == 0)
             return CAN_NOT_GET_KL_BF
-//        println("sumBefore $sumBefore")
+        GlobalLogger.detectLogger.debug("sumBefore $sumBefore")
         return sumBefore / cntDate
     }
 
@@ -212,7 +213,7 @@ object DetectIndex8: IDetectIndex {
             calendar.add(Calendar.MINUTE, 15)
         }
 
-        println("code: $code, date: $dateStr, resList: ${Gson().toJson(resList)}")
+        GlobalLogger.detectLogger.debug("code: $code, date: $dateStr, resList: ${Gson().toJson(resList)}")
         return resList
     }
 }

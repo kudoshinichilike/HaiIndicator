@@ -1,6 +1,6 @@
 package com.stock.haiIndicator.controller
 
-import com.stock.haiIndicator.bean.ErrorDefine
+import com.stock.haiIndicator.define.ErrorDefine
 import com.stock.haiIndicator.payload.req.DetectOneCodeReq
 import com.stock.haiIndicator.payload.req.DetectOneIndicatorReq
 import com.stock.haiIndicator.payload.req.Nen8Req
@@ -14,11 +14,14 @@ import com.stock.haiIndicator.service.SearchDataService
 import com.zps.bitzerokt.utils.some_monad.Left
 import com.zps.bitzerokt.utils.some_monad.Right
 import jakarta.validation.Valid
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/haiIndicator")
 class ApiController {
+    val logger: Logger = LoggerFactory.getLogger("ApiController")
     val detectService: DetectService = DetectService()
     val searchDataService: SearchDataService = SearchDataService()
 
@@ -57,7 +60,7 @@ class ApiController {
 
     @PostMapping(value = ["/detectOneCode"])
     suspend fun detectOneCode(@Valid @RequestBody req: DetectOneCodeReq): DetectOneCodeRes {
-        println("detectOneCode $req")
+        logger.debug("detectOneCode $req")
         val listIndicatorName = mutableListOf<String>()
         if (req.indicatorName.contains("All"))
             listIndicatorName.addAll(detectService.getListIndicator())
@@ -67,11 +70,11 @@ class ApiController {
         val resDetect = detectService.indicateOneCode(req.code, listIndicatorName, req.dateStart, req.dateEnd)
         return when (resDetect) {
             is Left -> {
-                println("detectOneCode Left ${resDetect.value.code}")
+                logger.debug("detectOneCode Left ${resDetect.value.code}")
                 DetectOneCodeRes(resDetect.value.code)
             }
             is Right -> {
-                println("resDetect ${resDetect.value}")
+                logger.debug("resDetect ${resDetect.value}")
                 DetectOneCodeRes(ErrorDefine.SUCCESS.code, resDetect.value)
             }
         }
@@ -80,21 +83,21 @@ class ApiController {
     @PostMapping(value = ["/searchData"])
     suspend fun searchData(@Valid @RequestBody req: ReqSearchData): ResSearchData {
         val resSearch = searchDataService.searchDataCafeF(req)
-        println("searchData resSearch: $resSearch")
+        logger.debug("searchData resSearch: $resSearch")
         return resSearch
     }
 
     @GetMapping(value = ["/getListCode"])
     suspend fun getListCodeSearch(): List<String> {
         val listCode = searchDataService.getListCodeSearch()
-//        println("getListCodeSearch listCode: $listCode")
+        logger.debug("getListCodeSearch listCode: $listCode")
         return listCode
     }
 
     @GetMapping(value = ["/getListIndicator"])
     suspend fun getListIndicator(): List<String> {
         val listIndicator = detectService.getListIndicator()
-        println("getListIndicator listIndicator: $listIndicator")
+        logger.debug("getListIndicator listIndicator: $listIndicator")
         return listIndicator
     }
 }

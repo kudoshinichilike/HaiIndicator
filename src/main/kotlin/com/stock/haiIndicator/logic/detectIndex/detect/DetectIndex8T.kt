@@ -1,10 +1,11 @@
 package com.stock.haiIndicator.logic.detectIndex.detect
 
-import com.stock.haiIndicator.bean.ConstDefine
-import com.stock.haiIndicator.bean.ErrorDefine
+import com.stock.haiIndicator.define.ConstDefine
+import com.stock.haiIndicator.define.ErrorDefine
 import com.stock.haiIndicator.dataDAO.DAO
 import com.zps.bitzerokt.utils.some_monad.Either
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
+import com.stock.haiIndicator.logger.GlobalLogger
 import com.stock.haiIndicator.payload.res.resEachIndex.SealedResIndex
 import com.stock.haiIndicator.service.DateValidator
 import com.zps.bitzerokt.utils.some_monad.Left
@@ -17,9 +18,9 @@ object DetectIndex8T: IDetectIndex {
     fun detect(data: DataOneDay, dataBefore: List<DataOneDay>): Boolean {
         val aKL = calcAKL(data)
         val avgBefore = calcAvgBefore(dataBefore)
-//        println("--------------- DetectIndex8T aKL: $aKL, avgBefore: $avgBefore")
-//        if (aKL >= MULTIPLY_CONDITION * avgBefore)
-//            println("--------------- DetectIndex8T ${aKL/avgBefore}")
+        GlobalLogger.detectLogger.debug("--------------- DetectIndex8T aKL: $aKL, avgBefore: $avgBefore")
+        if (aKL >= MULTIPLY_CONDITION * avgBefore)
+            GlobalLogger.detectLogger.debug("--------------- DetectIndex8T ${aKL/avgBefore}")
         return aKL >= MULTIPLY_CONDITION * avgBefore
     }
 
