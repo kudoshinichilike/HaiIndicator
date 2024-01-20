@@ -1,4 +1,4 @@
-package com.stock.haiIndicator.bean
+package com.stock.haiIndicator.define
 
 import java.text.SimpleDateFormat
 import java.time.ZoneId
@@ -7,6 +7,7 @@ import java.util.*
 
 object ConstDefine {
     val SDF = SimpleDateFormat("yyyy-MM-dd")
+    val SDF_LIVE_HAI = SimpleDateFormat("dd/MM/yyyy")
 //    val SDF_cafeF = SimpleDateFormat("dd/MM/yyyy")
     val SDF_cafeF = SimpleDateFormat("yyyyMMdd")  //mshDev
     val SDF_VDS = SimpleDateFormat("dd/MM/yyyy")  //anh Kelvin

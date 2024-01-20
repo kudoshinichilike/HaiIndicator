@@ -1,11 +1,14 @@
 package com.stock.haiIndicator.service
 
-import com.stock.haiIndicator.bean.ConstDefine
+import com.stock.haiIndicator.define.ConstDefine
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.time.LocalTime
 import java.time.ZoneId
 import java.util.*
 
 object DateValidator {
+    val logger: Logger = LoggerFactory.getLogger("DateValidator")
     fun validateDateGet(dateStr: String): Boolean {
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"))
         calendar.time = ConstDefine.SDF.parse(dateStr)
@@ -24,7 +27,7 @@ object DateValidator {
         calendar.time = ConstDefine.SDF.parse(dateStr)
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
         val isWeekend = dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY
-//        println("validateDateDetect: ${!isWeekend && canDetectToday(calendar)}")
+        logger.debug("validateDateDetect: ${!isWeekend && canDetectToday(calendar)}")
 //        return !isWeekend && canDetectToday(calendar)
         return !isWeekend
     }

@@ -1,9 +1,10 @@
 package com.stock.haiIndicator.logic.detectIndex.detect
 
-import com.stock.haiIndicator.bean.ConstDefine
-import com.stock.haiIndicator.bean.ErrorDefine
+import com.stock.haiIndicator.define.ConstDefine
+import com.stock.haiIndicator.define.ErrorDefine
 import com.stock.haiIndicator.dataDAO.DAO
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
+import com.stock.haiIndicator.logger.GlobalLogger
 import com.stock.haiIndicator.logic.processDataBefore.ProcessDataBefore
 import com.stock.haiIndicator.payload.res.resEachIndex.SealedResIndex
 import com.zps.bitzerokt.utils.some_monad.Either
@@ -53,7 +54,7 @@ object DetectIndex1: IDetectIndex {
             return false
 
         val aKL = percentAKL(data)
-//        println("--------------- DetectIndex1 $aKL")
+        GlobalLogger.detectLogger.debug("--------------- DetectIndex1 $aKL")
         return aKL >= 0.8
     }
 

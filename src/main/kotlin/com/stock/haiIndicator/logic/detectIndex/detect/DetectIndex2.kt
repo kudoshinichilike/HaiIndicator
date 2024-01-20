@@ -1,10 +1,11 @@
 package com.stock.haiIndicator.logic.detectIndex.detect
 
-import com.stock.haiIndicator.bean.ConstDefine
-import com.stock.haiIndicator.bean.ErrorDefine
+import com.stock.haiIndicator.define.ConstDefine
+import com.stock.haiIndicator.define.ErrorDefine
 import com.stock.haiIndicator.dataDAO.DAO
 import com.zps.bitzerokt.utils.some_monad.Either
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
+import com.stock.haiIndicator.logger.GlobalLogger
 import com.stock.haiIndicator.logic.processDataBefore.ProcessDataBefore
 import com.stock.haiIndicator.payload.res.resEachIndex.ResIndex2
 import com.stock.haiIndicator.payload.res.resEachIndex.ResIndex8DetailInfo
@@ -58,7 +59,7 @@ object DetectIndex2: IDetectIndex {
             val detectCurDate = detect(code, date, data, avgKLBefore)
             Right(detectCurDate)
         } catch (e: Exception) {
-//            e.printStackTrace()
+            GlobalLogger.detectLogger.error("detect $code $dateStr", e)
             Left(ErrorDefine.EXCEPTION_IN_DETECT)
         }
     }

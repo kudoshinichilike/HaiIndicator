@@ -1,4 +1,4 @@
-package com.stock.haiIndicator.bean.config
+package com.stock.haiIndicator.define.detectConfig
 
 import utils.JsonUtils
 

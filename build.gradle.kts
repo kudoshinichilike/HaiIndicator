@@ -21,7 +21,14 @@ repositories {
 	maven { url = uri("https://repo.spring.io/snapshot") }
 }
 
+configurations {
+	all {
+		exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
+	}
+}
+
 val ktorVersion = "2.2.1"
+val log4jVersion = "2.17.2"
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.springframework.boot:spring-boot-starter-web")
@@ -29,18 +36,18 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-
 	implementation("jakarta.validation:jakarta.validation-api:3.0.2")
-
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-//	implementation("org.slf4j:slf4j-log4j12")
-	implementation("org.projectlombok:lombok")
-
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 	implementation("com.google.code.gson:gson:2.10.1")
 	implementation("io.ktor:ktor-client-cio:$ktorVersion")
+	implementation("org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion")
+	implementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
+
+	implementation("org.apache.poi:poi:5.0.0")
+	implementation("org.apache.poi:poi-ooxml:5.0.0")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
