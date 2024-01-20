@@ -37,4 +37,4 @@ out/
 .vscode/
 data/
 logs/
-.DS_Store
+data/.DS_Store data/cafeF/.DS_Store
