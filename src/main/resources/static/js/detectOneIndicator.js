@@ -6,12 +6,12 @@ var viewSearchLog = new Vue({
     data: {
 //        listCodeSearch: [],
         listCodeSearch: [{name: "ALL_CODE"}],
-        code: [],
+        code: [{name: "ALL_CODE"}],
 
         startDate: '',
         endDate: '',
 
-        listIndicator: [],
+        listIndicator: nameIndicatorDefine,
         nameIndicator: '',
 
         dataTableDetails: [],
@@ -36,8 +36,8 @@ var viewSearchLog = new Vue({
                 return
             }
 
-            if (!isDateDifferenceLessThanDays(this.startDate, this.endDate, 8)) {
-                this.makeToast('danger', 'Chỉ tìm kiếm được trong khoảng thời gian tối đa 9 ngày')
+            if (!isDateDifferenceLessThanDays(this.startDate, this.endDate, 10)) {
+                this.makeToast('danger', 'Chỉ tìm kiếm được trong khoảng thời gian tối đa 10 ngày')
                 return
             }
             else {
@@ -48,7 +48,7 @@ var viewSearchLog = new Vue({
                 );
 
                 this.isSearching = true
-                this.makeToast('warning', "Đợi xíu, đang tìm nhé ạ ^^ ...", 2000)
+                this.makeToast('warning', "Đợi xíu, đang tìm nhé ạ ...", 3000)
                 axios
                     .post('api/haiIndicator/detectOneIndicator', {
                         code: listCodeReq,
@@ -58,12 +58,11 @@ var viewSearchLog = new Vue({
                     })
                     .then(res => {
                         if (res.data.error != 0)
-                            this.makeToast('danger', "Lỗi")
+                            this.makeToast('danger', "Lỗi: " + res.data.error)
                         else {
                             this.makeToast('warning', "Xử lý thành công")
-    //                        console.log("res", res.data)
+                            console.log("res", res.data)
                             this.items = []
-                            //TODO: if error != 0 notify
                             const dataItem = res.data.result
                             const datesInRange = getDates(this.startDate, this.endDate);
                             var maxLenValidCode = 0
@@ -148,29 +147,25 @@ var viewSearchLog = new Vue({
         onHidden() {},
     },
 
-//    watch: {
-//        startDate: function (val) {
-//            let endDateCalc = new Date(this.startDate);
-//            endDateCalc.setDate(endDateCalc.getDate() + 31);
-//            if (this.endDate != dateToString(endDateCalc))
-//            this.endDate = dateToString(endDateCalc)
-//        },
-//
-//        endDate: function (val) {
-//            let startDateCalc = new Date(this.endDate);
-//            startDateCalc.setDate(startDateCalc.getDate() - 31);
-//            if (this.startDate != dateToString(startDateCalc))
-//                this.startDate = dateToString(startDateCalc)
-//        },
-//    },
+    watch: {
+        endDate: function (val) {
+            let startDateCalc = new Date(this.endDate);
+            startDateCalc.setDate(startDateCalc.getDate() - 10);
+            if (this.startDate != dateToString(startDateCalc))
+                this.startDate = dateToString(startDateCalc)
+        },
+    },
 
     created: function () {
         this.getListCodeSearch()
-        this.getListIndicator()
+//        this.getListIndicator()
 
         let startDateInit = new Date();
-        startDateInit.setDate(startDateInit.getDate() - 8);
+        startDateInit.setDate(startDateInit.getDate() - 9);
         this.startDate = dateToString(startDateInit);
-        this.endDate = dateToString(new Date());
+
+        let startEndInit = new Date();
+        startEndInit.setDate(startEndInit.getDate() - 1);
+        this.endDate = dateToString(startEndInit);
     },
 })

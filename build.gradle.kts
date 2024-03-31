@@ -49,7 +49,7 @@ dependencies {
 	implementation("org.apache.poi:poi:5.0.0")
 	implementation("org.apache.poi:poi-ooxml:5.0.0")
 
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+//	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.withType<KotlinCompile> {

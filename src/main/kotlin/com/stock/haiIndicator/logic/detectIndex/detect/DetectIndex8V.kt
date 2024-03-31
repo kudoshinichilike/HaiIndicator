@@ -5,8 +5,10 @@ import com.stock.haiIndicator.define.ErrorDefine
 import com.stock.haiIndicator.dataDAO.DAO
 import com.zps.bitzerokt.utils.some_monad.Either
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
-import com.stock.haiIndicator.logger.GlobalLogger
-import com.stock.haiIndicator.payload.res.resEachIndex.SealedResIndex
+import com.stock.haiIndicator.logger.GLLogger
+import com.stock.haiIndicator.logic.cacheStore.ResultStore
+import com.stock.haiIndicator.logic.detectIndex.DefineDetector
+import com.stock.haiIndicator.payload.res.resEachIndex.SealedResDetect
 import com.stock.haiIndicator.service.DateValidator
 import com.zps.bitzerokt.utils.some_monad.Left
 import com.zps.bitzerokt.utils.some_monad.Right
@@ -15,27 +17,35 @@ import java.util.*
 object DetectIndex8V: IDetectIndex {
     private const val NUM_DATE_BF = 20
     private const val MULTIPLY_CONDITION = 2
-    fun detect(data: DataOneDay, dataBefore: List<DataOneDay>): Boolean {
+    fun detect(code: String, date: Date, data: DataOneDay, dataBefore: List<DataOneDay>): Boolean {
         val bKL = calcBKL(data)
         val avgBefore = calcAvgBefore(dataBefore)
-        GlobalLogger.detectLogger.debug("--------------- DetectIndex8V bKL: $bKL, avgBefore: $avgBefore")
+        GLLogger.detectLogger.info("--------------- DetectIndex8V bKL: $bKL, avgBefore: $avgBefore")
         if (bKL >= MULTIPLY_CONDITION * avgBefore)
-            GlobalLogger.detectLogger.debug("--------------- DetectIndex8V ${bKL/avgBefore}")
-        return bKL >= MULTIPLY_CONDITION * avgBefore
+            GLLogger.detectLogger.info("--------------- DetectIndex8V ${bKL/avgBefore}")
+        return if (bKL >= MULTIPLY_CONDITION * avgBefore) {
+            ResultStore.addResult(date, code, DefineDetector.getEnumFromDetector(this)!!)
+            true
+        }
+        else false
     }
 
     private fun calcAvgBefore(dataBefore: List<DataOneDay>): Double  {
         dataBefore.forEach {
-            GlobalLogger.detectLogger.debug("calcAvgBefore ${it.KLATC}")
+            GLLogger.detectLogger.info("calcAvgBefore ${it.KLATC}")
         }
         return dataBefore.sumOf { it.KLATC } / dataBefore.size.toDouble()
     }
 
-    private fun calcBKL(data: DataOneDay): Int {
+    private fun calcBKL(data: DataOneDay): Long {
         return data.KLATC
     }
 
-    override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Pair<Boolean, SealedResIndex>> {
+    override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Pair<Boolean, SealedResDetect>> {
+        val resultFromSuper = super.detect(code, date)
+        if (resultFromSuper is Right)
+            return resultFromSuper
+
         val dateStr = ConstDefine.SDF.format(date)
         val data = DAO.getDataOneDay(code, dateStr) ?: return Left(ErrorDefine.NO_EXIST_DATA)
 
@@ -60,6 +70,6 @@ object DetectIndex8V: IDetectIndex {
         if (dataBefore.size < NUM_DATE_BF)
             return Left(ErrorDefine.NOT_ENOUGH_DATA)
 
-        return Right(Pair(detect(data, dataBefore), SealedResIndex()))
+        return Right(Pair(detect(code, date, data, dataBefore), SealedResDetect()))
     }
 }

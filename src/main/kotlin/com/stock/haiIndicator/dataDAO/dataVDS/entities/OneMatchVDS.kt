@@ -1,41 +1,46 @@
 package com.stock.haiIndicator.dataDAO.dataVDS.entities
 
+import utils.TimeUtils
+
 data class OneMatchVDS(
-    val _id: String,
-    val Code: String,
-    val FloorCode: String,
-    val TradeTime: String,
-    val AmPm: String,
+    val tradeTime: String,
+    val amPm: String,
 
-    val FlrPrice: Double,
-    val CeiPrice: Double,
-    val RefPrice: Double,
+    val higPrice: Double,
+    val lowPrice: Double,
+    val avgPrice: Double,
 
-    val HigPrice: Double,
-    val LowPrice: Double,
-    val AvgPrice: Double,
+    val matchedPrice: Double,
+    val matchedChange: Double,
+    val matchedVol: Int,
+    val matchedTotalVol: Long,
 
-    val MatchedPrice: Double,
-    val MatchedChange: Double,
-    val MatchedVol: Int,
-    val MatchedTotalVol: Long,
+    val offerVol1: Int,
+    val offerVol2: Int,
+    val offerVol3: Int,
+    val offerPrice1: Double,
+    val offerPrice2: Double,
+    val offerPrice3: Double,
 
-    val OfferVol1: Int,
-    val OfferVol2: Int,
-    val OfferVol3: Int,
-    val OfferPrice1: Double,
-    val OfferPrice2: Double,
-    val OfferPrice3: Double,
+    val bidVol1: Int,
+    val bidVol2: Int,
+    val bidVol3: Int,
+    val bidPrice1: Double,
+    val bidPrice2: Double,
+    val bidPrice3: Double,
 
-    val BidVol1: Int,
-    val BidVol2: Int,
-    val BidVol3: Int,
-    val BidPrice1: Double,
-    val BidPrice2: Double,
-    val BidPrice3: Double,
-
-    val FSellVol: Int,
-    val FBuyVol: Int,
+    val fSellVol: Int,
+    val fBuyVol: Int,
 ) {
+    fun isInATO(): Boolean {
+        return TimeUtils.isTimeInRange(tradeTime, "00:00:00", "09:15:00")
+    }
 
+    fun isInATC(): Boolean {
+        return TimeUtils.isTimeInRange(tradeTime, "14:30:00", "23:59:59")
+    }
+
+    fun isInPhien2(): Boolean {
+        return TimeUtils.isTimeInRange(tradeTime, "09:15:01", "14:29:59")
+    }
 }

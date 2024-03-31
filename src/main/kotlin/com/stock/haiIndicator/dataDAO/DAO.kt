@@ -16,7 +16,18 @@ import utils.JsonUtils
 object DAO {
     val logger: Logger = LoggerFactory.getLogger("DAO")
     suspend fun getDataOneDay(code: String, dateStr: String): DataOneDay? {
-        return getDataOneDayLocal(code, dateStr) ?: getDataOneDayCafeF(code, dateStr)
+        val dataLocal = getDataOneDayLocal(code, dateStr)
+        if (dataLocal != null)
+            return dataLocal
+
+        val turnTry = 2
+        var dataCafeF: DataOneDay? = null
+        for (i in 1..turnTry) {
+            dataCafeF = getDataOneDayCafeF(code, dateStr)
+            if (dataCafeF != null)
+                break
+        }
+        return dataCafeF
     }
 
     private fun getDataOneDayLocal(code: String, dateStr: String): DataOneDay? {
@@ -40,7 +51,7 @@ object DAO {
                 null
         }
         catch (e: Exception) {
-            logger.error("Exception getDataOneDayCafeF $code $dateStr", e)
+//            logger.error("Exception getDataOneDayCafeF $code $dateStr", e)
             return null
         }
     }
@@ -50,7 +61,7 @@ object DAO {
     }
 
     private fun normalizeDataFromCafeF(data: DataOneDay): Boolean {
-        return !(data.DlChiTiet.size <= 5 || data.DlTongHop.isEmpty())
+        return !(data.DlChiTiet.size <= 15 || data.DlTongHop.isEmpty()) //TODO: tam bo nhung co thanh khoan thap
     }
 
     private fun convertFromMshDevappdata(jsonObject: JsonObject): JsonObject {

@@ -1,4 +1,5 @@
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
+import com.stock.haiIndicator.define.ConstDefine
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import utils.JsonUtils
@@ -8,8 +9,7 @@ import java.io.FileWriter
 object FileWriter {
     val logger: Logger = LoggerFactory.getLogger("FileWriter")
     fun writeDataOneDay(code: String, date: String, data: DataOneDay) {
-        val directoryPath = System.getProperty("user.dir") + "/data/" + "cafeF/$code/"
-//        val directoryPath = "/home/phuongnm5/toolAnhHai/data/cafeF/$code/" //live
+        val directoryPath = ConstDefine.prePathLoad + "cafeF/$code/"
         val filePath = "${directoryPath}$code$date.json"
 
         val directory = File(directoryPath)
@@ -25,6 +25,17 @@ object FileWriter {
             fileWriter.close()
         } catch (e: Exception) {
             logger.error("FileWriter readDataOneDay $code $date", e)
+        }
+    }
+
+    fun writeToFile(filePath: String, data: String) {
+        try {
+            val file = File(ConstDefine.prePathLoad + filePath)
+            val fileWriter = FileWriter(file)
+            fileWriter.write(data)
+            fileWriter.close()
+        } catch (e: Exception) {
+            logger.error("writeToFile filePath: $filePath", e)
         }
     }
 }

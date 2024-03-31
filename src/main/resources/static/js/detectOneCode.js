@@ -45,8 +45,8 @@ var viewSearchLog = new Vue({
                 return
             }
 
-            if (!isDateDifferenceLessThanDays(this.startDate, this.endDate, 32)) {
-                this.makeToast('danger', 'Chỉ tìm kiếm được trong khoảng thời gian tối đa 1 tháng')
+            if (!isDateDifferenceLessThanDays(this.startDate, this.endDate, 30)) {
+                this.makeToast('danger', 'Chỉ tìm kiếm được trong khoảng thời gian tối đa 30 ngày')
                 return
             }
 
@@ -180,29 +180,25 @@ var viewSearchLog = new Vue({
         },
     },
 
-//    watch: {
-//        startDate: function (val) {
-//            let endDateCalc = new Date(this.startDate);
-//            endDateCalc.setDate(endDateCalc.getDate() + 31);
-//            if (this.endDate != dateToString(endDateCalc))
-//            this.endDate = dateToString(endDateCalc)
-//        },
-//
-//        endDate: function (val) {
-//            let startDateCalc = new Date(this.endDate);
-//            startDateCalc.setDate(startDateCalc.getDate() - 31);
-//            if (this.startDate != dateToString(startDateCalc))
-//                this.startDate = dateToString(startDateCalc)
-//        },
-//    },
+    watch: {
+        endDate: function (val) {
+            let startDateCalc = new Date(this.endDate);
+            startDateCalc.setDate(startDateCalc.getDate() - 29);
+            if (this.startDate != dateToString(startDateCalc))
+                this.startDate = dateToString(startDateCalc)
+        },
+    },
 
     created: function () {
         this.getListCodeSearch()
         this.getListIndicator()
 
         let startDateInit = new Date();
-        startDateInit.setDate(startDateInit.getDate() - 30);
+        startDateInit.setDate(startDateInit.getDate() - 29);
         this.startDate = dateToString(startDateInit);
-        this.endDate = dateToString(new Date());
+
+        let startEndInit = new Date();
+        startEndInit.setDate(startEndInit.getDate() - 1);
+        this.endDate = dateToString(startEndInit);
     },
 })

@@ -20,7 +20,7 @@ class SearchDataService {
     }
 
     suspend fun searchDataCafeF(reqData: ReqSearchData): ResSearchData {
-        logger.debug("searchDataCafeF $reqData")
+        logger.info("searchDataCafeF $reqData")
         val (code, dateStr, dataSource) = reqData
         if (!validateCode(code))
             return ResSearchData(ErrorDefine.INVALID_CODE.code)

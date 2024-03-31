@@ -13,5 +13,11 @@ data class DetectOneCodeReq(
     val dateStart: String,
 
     @field:NotBlank(message = "dateEnd must not be blank")
-    val dateEnd: String
-)
+    val dateEnd: String,
+) {
+    val indicatorNameNormalized = indicatorName.map {
+        if(it.contains(":"))
+            it.substringBefore(":")
+        else it
+    }
+}

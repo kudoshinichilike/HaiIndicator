@@ -12,5 +12,6 @@ enum class ErrorDefine (val code: Byte) {
     NO_EXIST_DATA_TODAY(7),
     CAN_NOT_CALC_AVG_BF(8),
     EXCEPTION_IN_DETECT(9),
+    FAIL_FROM_SUPER(10),
     ;
 }

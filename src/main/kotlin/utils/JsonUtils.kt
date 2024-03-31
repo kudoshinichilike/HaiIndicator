@@ -1,5 +1,6 @@
 package utils
 
+import com.stock.haiIndicator.define.ConstDefine
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -40,15 +41,13 @@ object JsonUtils {
     }
 
     inline fun <reified T> decodeFromFile(fileName: String): T {
-        val pathLoad = System.getProperty("user.dir") + "/data/" + fileName
-//        val pathLoad = "/home/phuongnm5/toolAnhHai/data/" + fileName //live
+        val pathLoad = ConstDefine.prePathLoad + fileName
         val str = File(pathLoad).readText(Charsets.UTF_8)
         return JSON.decodeFromString(str)
     }
 
     fun checkExistFile(fileName: String): Boolean {
-        val pathLoad = System.getProperty("user.dir") + "/data/" + fileName
-//        val pathLoad = "/home/phuongnm5/toolAnhHai/data/" + fileName //live
+        val pathLoad = ConstDefine.prePathLoad + fileName
         val file = File(pathLoad)
         return file.exists()
     }

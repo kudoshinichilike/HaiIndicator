@@ -4,10 +4,10 @@ import com.google.gson.Gson
 import com.stock.haiIndicator.define.ConstDefine.SDF
 import com.stock.haiIndicator.define.ErrorDefine
 import com.stock.haiIndicator.define.detectConfig.CodeConfig
-import com.stock.haiIndicator.logger.GlobalLogger
+import com.stock.haiIndicator.logger.GLLogger
 import com.stock.haiIndicator.logic.detectIndex.DefineDetector
 import com.stock.haiIndicator.logic.detectIndex.detect.DetectIndex8
-import com.stock.haiIndicator.payload.res.resEachIndex.SealedResIndex
+import com.stock.haiIndicator.payload.res.resEachIndex.SealedResDetect
 import com.zps.bitzerokt.utils.some_monad.Either
 import com.zps.bitzerokt.utils.some_monad.Left
 import com.zps.bitzerokt.utils.some_monad.Right
@@ -18,18 +18,18 @@ import java.util.*
 
 @Service
 class DetectService {
-    val logger: Logger = LoggerFactory.getLogger(this.javaClass)
+    val logger: Logger = LoggerFactory.getLogger(this.javaClass.simpleName)
     suspend fun indicateOneCode(code: String, indicatorNameList: List<String>, dateStartStr: String, dateEndStr: String)
-                                : Either<ErrorDefine, Map<String, List<Pair<String, SealedResIndex>>>> {
+                                : Either<ErrorDefine, Map<String, List<Pair<String, SealedResDetect>>>> {
         try {
-            val resMap = mutableMapOf<String, List<Pair<String, SealedResIndex>>>()
+            val resMap = mutableMapOf<String, List<Pair<String, SealedResDetect>>>()
             if (!validateCode(code))
                 return Left(ErrorDefine.INVALID_CODE)
 
             indicatorNameList.forEach {indicatorName ->
-                GlobalLogger.detectLogger.debug("indicateOneCode $indicatorName")
+                GLLogger.detectLogger.info("indicateOneCode $indicatorName")
                 val detector = DefineDetector.fromName(indicatorName) ?: return Left(ErrorDefine.NO_EXIST_DETECTOR)
-                val resList = mutableListOf<Pair<String, SealedResIndex>>()
+                val resList = mutableListOf<Pair<String, SealedResDetect>>()
                 val listDateNoData = mutableListOf<Date>()
 
                 val dateStart = SDF.parse(dateStartStr)
@@ -41,20 +41,20 @@ class DetectService {
                 while (calendar.time.before(dateEnd)) {
                     calendar.add(Calendar.DATE, 1)
                     val currentDate = calendar.time
-                    GlobalLogger.detectLogger.debug("indicateOneCode currentDate: ${SDF.format(currentDate)}")
-                    if (!DateValidator.validateDateDetect(SDF.format(currentDate))) {
-                        GlobalLogger.detectLogger.debug("invalidateDate: ${SDF.format(currentDate)}")
+                    GLLogger.detectLogger.info("indicateOneCode currentDate: ${SDF.format(currentDate)}")
+                    if (!DateValidator.validateDateDetect(SDF.format(currentDate), true)) {
+                        GLLogger.detectLogger.info("invalidateDate: ${SDF.format(currentDate)}")
                         continue
                     }
 
                     val resDetect = detector.detect(code, currentDate)
-                    GlobalLogger.detectLogger.debug("indicateOneCode resDetect: ${Gson().toJson(resDetect)}")
+                    GLLogger.detectLogger.info("indicateOneCode resDetect: ${Gson().toJson(resDetect)}")
                     when (resDetect) {
                         is Left -> {
                             if (resDetect.value == ErrorDefine.NO_EXIST_DATA)
                                 listDateNoData.add(currentDate)
                             else
-                                GlobalLogger.detectLogger.debug("indicateOneCode resDetect $code ${SDF.format(currentDate)}: ${resDetect.value}")
+                                GLLogger.detectLogger.info("indicateOneCode resDetect $code ${SDF.format(currentDate)}: ${resDetect.value}")
                         }
                         is Right -> {
                             if (resDetect.value.first)
@@ -64,7 +64,7 @@ class DetectService {
                 }
 
                 if (listDateNoData.isNotEmpty())
-                    GlobalLogger.detectLogger.debug("indicateOneCode ${Gson().toJson(listDateNoData)}")
+                    GLLogger.detectLogger.info("indicateOneCode ${Gson().toJson(listDateNoData)}")
 
                 resMap[indicatorName] = resList
             }
@@ -79,7 +79,7 @@ class DetectService {
     }
 
     suspend fun detectOneIndicator(codeList: List<String>, indicatorName: String, dateStartStr: String, dateEndStr: String):
-            Either<ErrorDefine, Map<String,List<Pair<String, SealedResIndex>>>> {
+            Either<ErrorDefine, Map<String,List<Pair<String, SealedResDetect>>>> {
         try {
             val detector = DefineDetector.fromName(indicatorName) ?: return Left(ErrorDefine.NO_EXIST_DETECTOR)
             codeList.forEach { code ->
@@ -87,31 +87,31 @@ class DetectService {
                     return Left(ErrorDefine.INVALID_CODE)
             }
 
-            val resMap = mutableMapOf<String, List<Pair<String, SealedResIndex>>>()
+            val resMap = mutableMapOf<String, List<Pair<String, SealedResDetect>>>()
             val dateStart = SDF.parse(dateStartStr)
             val dateEnd = SDF.parse(dateEndStr)
             val calendar = Calendar.getInstance()
             calendar.time = dateStart
             calendar.add(Calendar.DATE, -1)
 
-            while (!calendar.time.after(dateEnd)) {
+            while (calendar.time.before(dateEnd)) {
                 calendar.add(Calendar.DATE, 1)
                 val currentDate = calendar.time
-                logger.debug("detectOneIndicator currentDate: ${SDF.format(currentDate)}")
+                logger.info("detectOneIndicator currentDate: ${SDF.format(currentDate)}")
                 if (!DateValidator.validateDateDetect(SDF.format(currentDate)))
                     continue
 
-                val resList = mutableListOf<Pair<String, SealedResIndex>>()
+                val resList = mutableListOf<Pair<String, SealedResDetect>>()
                 val listDateNoData = mutableListOf<Date>()
                 codeList.forEach {code ->
                     val resDetect = detector.detect(code, currentDate)
-                    logger.debug("detectOneIndicator resDetect: ${Gson().toJson(resDetect)}")
+                    logger.info("detectOneIndicator resDetect: ${Gson().toJson(resDetect)}")
                     when (resDetect) {
                         is Left -> {
                             if (resDetect.value == ErrorDefine.NO_EXIST_DATA)
                                 listDateNoData.add(currentDate)
                             else
-                                logger.debug("detectOneIndicator resDetect error $code ${SDF.format(currentDate)}: ${resDetect.value}")
+                                logger.info("detectOneIndicator resDetect error $code ${SDF.format(currentDate)}: ${resDetect.value}")
                         }
                         is Right -> {
                             if (resDetect.value.first)
@@ -121,12 +121,12 @@ class DetectService {
                 }
 
                 if (listDateNoData.isNotEmpty())
-                    logger.debug("detectOneIndicator ${Gson().toJson(listDateNoData)}")
+                    logger.info("detectOneIndicator ${Gson().toJson(listDateNoData)}")
 
                 resMap[SDF.format(currentDate)] = resList
             }
 
-            logger.debug("detectOneIndicator resMap: ${Gson().toJson(resMap)}")
+            logger.info("detectOneIndicator resMap: ${Gson().toJson(resMap)}")
             return Right(resMap)
         }
         catch (e: Exception) {
@@ -165,7 +165,7 @@ class DetectService {
             while (!calendar.time.after(dateEnd)) {
                 calendar.add(Calendar.DATE, 1)
                 val currentDate = calendar.time
-                logger.debug("detectOneIndicator currentDate: ${SDF.format(currentDate)}")
+                logger.info("detectOneIndicator currentDate: ${SDF.format(currentDate)}")
                 if (!DateValidator.validateDateDetect(SDF.format(currentDate)))
                     continue
 
@@ -173,13 +173,13 @@ class DetectService {
                 val listDateNoData = mutableListOf<Date>()
                 codeList.forEach {code ->
                     val resDetect = detector.detect(code, multiply, numDateBf, currentDate)
-                    logger.debug("detectOneIndicator resDetect: ${Gson().toJson(resDetect)}")
+                    logger.info("detectOneIndicator resDetect: ${Gson().toJson(resDetect)}")
                     when (resDetect) {
                         is Left -> {
                             if (resDetect.value == ErrorDefine.NO_EXIST_DATA)
                                 listDateNoData.add(currentDate)
                             else
-                                logger.debug("detectOneIndicator resDetect error $code ${SDF.format(currentDate)}: ${resDetect.value}")
+                                logger.info("detectOneIndicator resDetect error $code ${SDF.format(currentDate)}: ${resDetect.value}")
                         }
                         is Right -> {
                             if (resDetect.value.isNotEmpty())
@@ -189,12 +189,12 @@ class DetectService {
                 }
 
                 if (listDateNoData.isNotEmpty())
-                    logger.debug("detectNen8 ${Gson().toJson(listDateNoData)}")
+                    logger.info("detectNen8 ${Gson().toJson(listDateNoData)}")
 
                 resMap[SDF.format(currentDate)] = resList
             }
 
-            logger.debug("detectOneIndicator resMap: ${Gson().toJson(resMap)}")
+            logger.info("detectOneIndicator resMap: ${Gson().toJson(resMap)}")
             return Right(resMap)
         }
         catch (e: Exception) {

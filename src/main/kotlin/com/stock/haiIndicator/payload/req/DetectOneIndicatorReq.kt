@@ -14,4 +14,7 @@ data class DetectOneIndicatorReq(
 
     @field:NotBlank(message = "dateEnd must not be blank")
     val dateEnd: String
-)
+) {
+    val indicatorNameNormalized = if(indicatorName.contains(":")) indicatorName.substringBefore(":")
+                                    else indicatorName
+}

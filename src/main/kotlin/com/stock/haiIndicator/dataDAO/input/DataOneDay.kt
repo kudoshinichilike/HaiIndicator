@@ -1,36 +1,30 @@
 package com.stock.haiIndicator.dataDAO.input
 
-import com.stock.haiIndicator.logger.GlobalLogger
+import com.stock.haiIndicator.logger.GLLogger
 import com.stock.haiIndicator.payload.res.ResMatchData
 import com.stock.haiIndicator.payload.res.ResStatisticData
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import kotlin.math.max
 import kotlin.math.round
 
 //TODO phuong: tinh lai KL & price ATC, ATO
 @Serializable
 data class DataOneDay(
     val GiaThamChieu: Float,
-    val DlChiTiet: List<DataOneMatch>,
+    var DlChiTiet: List<DataOneMatch>,
     val DlTongHop: List<DataOneStatistic>,
     var GiaDongCua: Float = DlChiTiet[DlChiTiet.size-1].Gia,
     var GiaMoCua: Float = DlChiTiet[0].Gia,
     var GiaCaoNhat: Float = DlChiTiet.maxOf { it.Gia },
     var GiaThapNhat: Float = DlChiTiet.minOf { it.Gia },
+    var GiaThapNhatPhien2: Float = DlChiTiet.filter { it.isInPhien2() }.minOf { it.Gia },
     var TongKhoiLuong: Long = DlChiTiet.sumOf { it.KLLo.toLong() },
 ) {
-    @Transient
-    val sortedDLTongHop = DlTongHop.sortedBy { it.Gia }
-
-    @Transient
-    var changePrice: Float = 0f
-
-    @Transient
-    var KLATO: Int = 0
-
-    @Transient
-    var KLATC: Int = 0
+    @Transient val sortedDLTongHop = DlTongHop.sortedBy { it.Gia }
+    @Transient var changePrice: Float = 0f
+    @Transient var KLATO: Long = 0L
+    @Transient var KLATC: Long = 0L
+    @Transient var KLPhien2: Long = calcKLPhien2()
 
     init {
         normalizeKLLo()
@@ -47,7 +41,17 @@ data class DataOneDay(
         KLATC = calcKLATC()
     }
 
+    /***
+     * check dữ liệu baf ngày 20231018, thấy 1 lệnh lúc đầu rất vô lí, tổng KL lệnh đó > lệnh ngay sau, nên ta có đoạn
+     * filter đầu tiên
+     */
     private fun normalizeKLLo() {
+        var checkMatchFirst = 0
+        while (checkMatchFirst < DlChiTiet.size - 1
+            && DlChiTiet[checkMatchFirst].KLTichLuy > DlChiTiet[checkMatchFirst+1].KLTichLuy)
+            checkMatchFirst ++
+        DlChiTiet = DlChiTiet.subList(checkMatchFirst, DlChiTiet.size)
+
         var lastKLTichLuy = 0L
         DlChiTiet.forEach {
             it.KLLo = it.KLTichLuy - lastKLTichLuy
@@ -78,6 +82,10 @@ data class DataOneDay(
         return DlChiTiet.filter { minPrice < it.Gia }.sumOf { it.KLLo.toInt() }
     }
 
+    fun calcKLEqualPrice(price: Float): Long {
+        return DlChiTiet.filter { price == it.Gia }.sumOf { it.KLLo.toLong() }
+    }
+
 //    fun calcKLowerPriceUnbound(maxPrice: Float): Int {
 //        return DlChiTiet.filter { it.Gia < maxPrice }.sumOf { it.KLLo.toInt() }
 //    }
@@ -97,16 +105,20 @@ data class DataOneDay(
         return calcKLLowerPrice(maxPrice) / TongKhoiLuong.toFloat()
     }
 
-    fun percentKLLowerPriceUnbound(maxPrice: Float): Float {
-        return calcKLLowerPriceUnbound(maxPrice) / TongKhoiLuong.toFloat()
+    fun percentKLLowerPriceUnbound(maxPrice: Float): Double {
+        return calcKLLowerPriceUnbound(maxPrice) / TongKhoiLuong.toDouble()
     }
 
-    fun percentKLLowerPrice(maxPrice: Float): Float {
-        return calcKLLowerPrice(maxPrice) / TongKhoiLuong.toFloat()
+    fun percentKLLowerPrice(maxPrice: Float): Double {
+        return calcKLLowerPrice(maxPrice) / TongKhoiLuong.toDouble()
     }
 
-    fun percentKLUpperPriceUnbound(minPrice: Float): Float {
-        return calcKLUpperPriceUnbound(minPrice) / TongKhoiLuong.toFloat()
+    fun percentKLUpperPriceUnbound(minPrice: Float): Double {
+        return calcKLUpperPriceUnbound(minPrice) / TongKhoiLuong.toDouble()
+    }
+
+    fun percentKLEqualPrice(price: Float): Double {
+        return calcKLEqualPrice(price) / TongKhoiLuong.toDouble()
     }
 
     fun KLStepUp(percentStep: Float): Int {
@@ -114,7 +126,7 @@ data class DataOneDay(
             throw Exception("KLStepUp invalid percentStep: $percentStep")
         val stepIdx = round(sortedDLTongHop.size * percentStep).toInt()
         val milestonePrice = sortedDLTongHop[sortedDLTongHop.size-stepIdx].Gia
-        GlobalLogger.logger.debug("KLStepUp size: ${sortedDLTongHop.size}, stepIdx: ${sortedDLTongHop.size-stepIdx}, milestonePrice: $milestonePrice")
+        GLLogger.logger.info("KLStepUp size: ${sortedDLTongHop.size}, stepIdx: ${sortedDLTongHop.size-stepIdx}, milestonePrice: $milestonePrice")
         return calcKLUpperPrice(milestonePrice)
     }
 
@@ -123,7 +135,7 @@ data class DataOneDay(
             throw Exception("KLStepDown invalid percentStep: $percentStep")
         val stepIdx = round(sortedDLTongHop.size * percentStep).toInt()
         val milestonePrice = sortedDLTongHop[stepIdx].Gia
-        GlobalLogger.logger.debug("KLStepDown size: ${sortedDLTongHop.size}, stepIdx: $stepIdx, milestonePrice: $milestonePrice")
+        GLLogger.logger.info("KLStepDown size: ${sortedDLTongHop.size}, stepIdx: $stepIdx, milestonePrice: $milestonePrice")
         return calcKLLowerPriceUnbound(milestonePrice)
     }
 
@@ -135,24 +147,20 @@ data class DataOneDay(
         return KLStepDown(percentDown) / TongKhoiLuong.toFloat()
     }
 
-    private fun calcKLATO() : Int {
-        return DlChiTiet.filter { it.isInATO() }.sumOf { it.KLLo.toInt()}
+    private fun calcKLATO() : Long {
+        return DlChiTiet.filter { it.isInATO() }.sumOf { it.KLLo.toLong()}
     }
 
-    private fun calcKLATC() : Int {
-        return getMatchATC().KLLo.toInt()
+    private fun calcKLATC() : Long {
+        return DlChiTiet.filter { it.isInATC() }.sumOf { it.KLLo.toLong()}
+    }
+
+    private fun calcKLPhien2() : Long {
+        return TongKhoiLuong - KLATO - KLATC
     }
 
     fun calcPercentATO() : Float {
         return calcKLATO() / TongKhoiLuong.toFloat()
-    }
-
-    fun getMatchATO(): DataOneMatch {
-        return DlChiTiet[0]
-    }
-
-    fun getMatchATC(): DataOneMatch {
-        return DlChiTiet[DlChiTiet.size-1]
     }
 
     fun calcVolInDuration(timeStart: String, timeEnd: String): Long {

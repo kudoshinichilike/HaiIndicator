@@ -47,4 +47,19 @@ data class DataOneMatch(
         else
             return false //TODO(calc ato)
     }
+
+    fun isInATC(): Boolean {
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"))
+        calendar.timeInMillis = timeStamp * 1000
+        if (ThoiGian.contains("T14:"))
+            return calendar.get(Calendar.HOUR_OF_DAY) == 14 && (calendar.get(Calendar.MINUTE) in 30..45)
+        else if (ThoiGian.contains("T07:"))
+            return calendar.get(Calendar.HOUR_OF_DAY) == 7 && (calendar.get(Calendar.MINUTE) in 30..45)
+        else
+            return false //TODO(calc ato)
+    }
+
+    fun isInPhien2(): Boolean {
+        return !isInATO() && !isInATC()
+    }
 }

@@ -5,9 +5,9 @@ import com.stock.haiIndicator.define.ConstDefine
 import com.stock.haiIndicator.define.ErrorDefine
 import com.stock.haiIndicator.dataDAO.DAO
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
-import com.stock.haiIndicator.logger.GlobalLogger
-import com.stock.haiIndicator.payload.res.resEachIndex.ResIndex8DetailInfo
-import com.stock.haiIndicator.payload.res.resEachIndex.SealedResIndex
+import com.stock.haiIndicator.logger.GLLogger
+import com.stock.haiIndicator.payload.res.resEachIndex.ResDetect8DetailInfo
+import com.stock.haiIndicator.payload.res.resEachIndex.SealedResDetect
 import com.stock.haiIndicator.service.DateValidator
 import com.zps.bitzerokt.utils.some_monad.Either
 import com.zps.bitzerokt.utils.some_monad.Left
@@ -52,7 +52,7 @@ object DetectIndex8: IDetectIndex {
             if (klCurDate != 0L && klCurDate > klBefore * multiply) {
                 val timeRes = code + " " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) +
                         "\n($klCurDate>$klBefore*$multiply)"
-                GlobalLogger.detectLogger.debug("DetectIndex8 $timeRes | klCurDate: $klCurDate | klBefore: $klBefore")
+                GLLogger.detectLogger.info("DetectIndex8 $timeRes | klCurDate: $klCurDate | klBefore: $klBefore")
                 resList.add(timeRes)
             }
 
@@ -97,7 +97,7 @@ object DetectIndex8: IDetectIndex {
         }
         if (cntDate == 0)
             return CAN_NOT_GET_KL_BF
-        GlobalLogger.detectLogger.debug("sumBefore $sumBefore")
+        GLLogger.detectLogger.info("sumBefore $sumBefore")
         return sumBefore / cntDate
     }
 
@@ -114,7 +114,11 @@ object DetectIndex8: IDetectIndex {
         return Pair(sumKL, (sumPrice / sumKL).toFloat())
     }
 
-    override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Pair<Boolean, SealedResIndex>> {
+    override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Pair<Boolean, SealedResDetect>> {
+        val resultFromSuper = super.detect(code, date)
+        if (resultFromSuper is Right)
+            return resultFromSuper
+
         return Left(ErrorDefine.FAIL)
     }
 
@@ -147,7 +151,7 @@ object DetectIndex8: IDetectIndex {
     }
 
     suspend fun detectResDetailInfo(code: String, multiply: Int, numDateBf: Int, date: Date):
-                            Either<ErrorDefine, List<ResIndex8DetailInfo>> {
+                            Either<ErrorDefine, List<ResDetect8DetailInfo>> {
         val dateStr = ConstDefine.SDF.format(date)
         val data = DAO.getDataOneDay(code, dateStr) ?: return Left(ErrorDefine.NO_EXIST_DATA)
 
@@ -176,8 +180,8 @@ object DetectIndex8: IDetectIndex {
     }
 
     private fun detectResDetailInfo(code: String, date: Date, multiply: Int,
-                    data: DataOneDay, dataBefore: List<Pair<String, DataOneDay>>): List<ResIndex8DetailInfo> {
-        val resList = mutableListOf<ResIndex8DetailInfo>()
+                    data: DataOneDay, dataBefore: List<Pair<String, DataOneDay>>): List<ResDetect8DetailInfo> {
+        val resList = mutableListOf<ResDetect8DetailInfo>()
         val dateStr = ConstDefine.SDF.format(date)
 
         val calendar = Calendar.getInstance()
@@ -206,14 +210,14 @@ object DetectIndex8: IDetectIndex {
 
             if (klBefore != CAN_NOT_GET_KL_BF && klCurDate != 0L && klCurDate > klBefore * multiply) {
                 val timeRes = "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}"
-                val info = ResIndex8DetailInfo(timeRes, klCurDate / klBefore.toFloat(), klCurDate, avgPrice)
+                val info = ResDetect8DetailInfo(timeRes, klCurDate / klBefore.toFloat(), klCurDate, avgPrice)
                 resList.add(info)
             }
 
             calendar.add(Calendar.MINUTE, 15)
         }
 
-        GlobalLogger.detectLogger.debug("code: $code, date: $dateStr, resList: ${Gson().toJson(resList)}")
+        GLLogger.detectLogger.info("code: $code, date: $dateStr, resList: ${Gson().toJson(resList)}")
         return resList
     }
 }

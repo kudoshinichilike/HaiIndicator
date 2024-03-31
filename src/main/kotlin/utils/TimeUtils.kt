@@ -1,5 +1,7 @@
 package utils
 
+import com.stock.haiIndicator.define.ConstDefine
+import java.time.LocalTime
 import java.util.*
 
 object TimeUtils {
@@ -85,5 +87,19 @@ object TimeUtils {
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.DAY_OF_MONTH, -numDateBefore)
         return calendar.timeInMillis
+    }
+
+    fun isTimeInRange(timeInputStr: String, startTimeStr: String, endTimeStr: String): Boolean {
+        val startTime = LocalTime.parse(startTimeStr)
+        val endTime = LocalTime.parse(endTimeStr)
+        val timeInput = LocalTime.parse(timeInputStr)
+        return timeInput in startTime..endTime
+    }
+
+    fun isWeekend(date: Date): Boolean {
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"))
+        calendar.time = date
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        return dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY
     }
 }

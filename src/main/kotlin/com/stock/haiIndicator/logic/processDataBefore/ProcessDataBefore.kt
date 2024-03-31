@@ -3,8 +3,10 @@ package com.stock.haiIndicator.logic.processDataBefore
 import com.stock.haiIndicator.define.ConstDefine
 import com.stock.haiIndicator.define.ErrorDefine
 import com.stock.haiIndicator.dataDAO.DAO
+import com.stock.haiIndicator.dataDAO.dataVDS.entities.DataKLBf
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
-import com.stock.haiIndicator.logger.GlobalLogger
+import com.stock.haiIndicator.logger.GLLogger
+import com.stock.haiIndicator.logic.cacheStore.KLStore
 import com.stock.haiIndicator.service.DateValidator
 import com.zps.bitzerokt.utils.some_monad.Either
 import com.zps.bitzerokt.utils.some_monad.Left
@@ -12,14 +14,24 @@ import com.zps.bitzerokt.utils.some_monad.Right
 import java.util.*
 
 object ProcessDataBefore {
-    suspend fun getAvgKLBefore(code: String, date: Date, numDataBfNeed: Int): Long {
-        return when (val eListDataBefore = getDataBefore(code, date, numDataBfNeed)) {
-            is Left -> {
-                val listDataBefore = eListDataBefore.value
-                return listDataBefore.sumOf { it.TongKhoiLuong } / listDataBefore.size
+    suspend fun getAvgKLBefore(code: String, date: Date, numDataBfNeed: Int): DataKLBf? {
+        val dataKL = KLStore.getDataKL(date, code)
+        return dataKL
+            ?: when (val eListDataBefore = getDataBefore(code, date, numDataBfNeed)) {
+                is Left -> {
+                    val listDataBefore = eListDataBefore.value
+                    val resDataKL = DataKLBf(
+                        listDataBefore.sumOf { it.TongKhoiLuong },
+                        listDataBefore.sumOf { it.KLATO },
+                        listDataBefore.sumOf { it.KLATC },
+                    )
+
+                    KLStore.addDataKL(date, code, resDataKL)
+                    resDataKL
+                }
+
+                is Right -> null
             }
-            is Right -> -1L
-        }
     }
 
     private fun calcMaxDateBfScan(numDataBfNeed: Int): Int {
@@ -51,7 +63,7 @@ object ProcessDataBefore {
         }
 
         if (dataBefore.size < numDataBf) {
-            GlobalLogger.detectLogger.warn("error getDataBefore code: $code, dateStr: $dateStr, numDataBf: $numDataBf")
+            GLLogger.detectLogger.warn("error getDataBefore code: $code, dateStr: $dateStr, numDataBf: $numDataBf")
             return Right(ErrorDefine.NOT_ENOUGH_DATA)
         }
 
