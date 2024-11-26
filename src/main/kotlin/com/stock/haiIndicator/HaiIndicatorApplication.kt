@@ -4,10 +4,14 @@ import com.google.gson.Gson
 import com.stock.haiIndicator.dataDAO.DAO
 import com.stock.haiIndicator.dataDAO.dataVDS.DataVDSDAO
 import com.stock.haiIndicator.define.ConstDefine
+import com.stock.haiIndicator.define.detectConfig.CodeConfig
 import com.stock.haiIndicator.define.detectConfig.CodeConfigVDS
 import com.stock.haiIndicator.define.serverConfig.ServerConfig
 import com.stock.haiIndicator.define.systemConfig.ToolConfig
+import com.stock.haiIndicator.logic.detectIndex.detect.DetectIndex3
 import com.stock.haiIndicator.logic.detectIndex.detect.index5.DetectIndex5
+import com.stock.haiIndicator.logic.detectIndex.detect.index5.index5BID.DetectIndex5BID
+import com.stock.haiIndicator.scheduler.SchedulerService
 import com.zps.bitzerokt.utils.some_monad.Left
 import com.zps.bitzerokt.utils.some_monad.Right
 import kotlinx.coroutines.runBlocking
@@ -36,6 +40,7 @@ suspend fun main(args: Array<String>) {
 	})
 
 //	test()
+	runBackup();
 }
 
 fun initConfig() {
@@ -93,6 +98,23 @@ suspend fun testNen() {
 		when (val tRes = DetectIndex5.detect(code, ConstDefine.SDF.parse(dateStr))) {
 			is Left -> println("left: ${tRes.value}")
 			is Right -> println("right: ${Gson().toJson(tRes.value)}")
+		}
+	}
+}
+
+suspend fun runBackup() {
+	val listDate = listOf("2024-11-26", "2024-11-25",
+		"2024-11-22", "2024-11-21", "2024-11-20", "2024-11-19", "2024-11-18",
+		"2024-11-15", "2024-11-14", "2024-11-13", "2024-11-12", "2024-11-11",
+		"2024-11-10", "2024-11-09", "2024-11-08", "2024-11-07", "2024-11-06",
+		"2024-11-05", "2024-11-04", "2024-11-01", "2024-10-31", "2024-10-30",
+		"2024-10-29", "2024-10-28", "2024-10-25", "2024-10-24", "2024-10-23",
+	)
+    listDate.forEach { curDateStr ->
+		val curDate = ConstDefine.SDF.parse(curDateStr)
+		run {
+			SchedulerService.jobAvgKL(curDate)
+			SchedulerService.jobDetect(curDate)
 		}
 	}
 }

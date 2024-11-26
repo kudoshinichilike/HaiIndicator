@@ -43,116 +43,129 @@ import java.util.*
  * Cố lên Phươg nhé! <3
  */
 @Component
-class SchedulerService {
+object SchedulerService {
     private val logger = LoggerFactory.getLogger(this.javaClass.simpleName)
 
-    @Scheduled(cron = "0 0 15 * * *")
-    fun jobAvgKLDaily() {
+//    @Scheduled(cron = "0 0 15 * * *")
+    fun jobAvgKLDailySchedule() {
         CoroutineScope(Dispatchers.IO).launch {
-            logger.info("jobAvgKLDaily ${TimeUtils.currentTimeSeconds()}")
+            logger.info("jobAvgKLDailySchedule ${TimeUtils.currentTimeSeconds()}")
 
-//            val curDate = ConstDefine.SDF.parse("2024-11-20"); //Date()
-            val curDate = Date()
-            if (TimeUtils.isWeekend(curDate))
-                return@launch
+            jobAvgKL(Date())
 
-            val curDateStr = ConstDefine.SDF.format(curDate)
-            val codeToDataKL = mutableMapOf<String, DataKLBf>()
+            logger.info("jobAvgKLDailySchedule Done ${TimeUtils.currentTimeSeconds()}")
+        }
+    }
 
-            CodeConfigVDS.codeList.forEach {
+    public suspend fun jobAvgKL(curDate: Date) {
+        logger.info("jobAvgKL ${TimeUtils.currentTimeSeconds()}")
+
+        if (TimeUtils.isWeekend(curDate))
+            return
+
+        val curDateStr = ConstDefine.SDF.format(curDate)
+        logger.info("jobAvgKL curDateStr: $curDateStr")
+        val codeToDataKL = mutableMapOf<String, DataKLBf>()
+
+        CodeConfigVDS.codeList.forEach {
 //            listOf("TPB", "HDB").forEach {
-                    code ->
-//                println("phuongnm5: $code");
-                val calendar = Calendar.getInstance()
-                calendar.time = curDate
-                calendar.add(Calendar.DATE, -35)
-                val listData = mutableListOf<Pair<String, DataOneDay>>()
+                code ->
+            val calendar = Calendar.getInstance()
+            calendar.time = curDate
+            calendar.add(Calendar.DATE, -35)
+            val listData = mutableListOf<Pair<String, DataOneDay>>()
 
-                while (calendar.time.before(curDate)) {
-                    calendar.add(Calendar.DATE, 1)
-                    val currentDate = calendar.time
-                    val currentDateStr = ConstDefine.SDF.format(currentDate)
-                    if (!DateValidator.validateDateGet(currentDateStr))
-                        continue
-                    val dataCur = DAO.getDataOneDay(code, currentDateStr)
-                    if (dataCur != null)
-                        listData.add(Pair(currentDateStr, dataCur))
-                }
-
-                if (listData.size >= 20) {
-                    val listDataCalc = listData.subList(listData.size-20, listData.size)
-                    codeToDataKL[code] = DataKLBf(
-                        listDataCalc.sumOf { it.second.TongKhoiLuong },
-                        listDataCalc.sumOf { it.second.KLATO },
-                        listDataCalc.sumOf { it.second.KLATC },
-                    )
-                }
+            while (calendar.time.before(curDate)) {
+                calendar.add(Calendar.DATE, 1)
+                val currentDate = calendar.time
+                val currentDateStr = ConstDefine.SDF.format(currentDate)
+                if (!DateValidator.validateDateGet(currentDateStr))
+                    continue
+                val dataCur = DAO.getDataOneDay(code, currentDateStr)
+                if (dataCur != null)
+                    listData.add(Pair(currentDateStr, dataCur))
             }
 
-            FileWriter.writeToFile(ToolConfig.pathOutputKL + curDateStr, Gson().toJson(codeToDataKL))
-
-            logger.info("Done jobAvgKLDaily ${TimeUtils.currentTimeSeconds()}")
+            if (listData.size >= 20) {
+                val listDataCalc = listData.subList(listData.size-20, listData.size)
+                codeToDataKL[code] = DataKLBf(
+                    listDataCalc.sumOf { it.second.TongKhoiLuong },
+                    listDataCalc.sumOf { it.second.KLATO },
+                    listDataCalc.sumOf { it.second.KLATC },
+                )
+            }
         }
+
+        FileWriter.writeToFile(ToolConfig.pathOutputKL + curDateStr, Gson().toJson(codeToDataKL))
+        logger.info("jobAvgKL Done $curDateStr")
     }
 
     /***
      * format return: date file indicator1999-01-10
      * { indicateName1: {code1: detailed1, code2: detailed2,...}, indicateName2: {codeX: detailedX, ...}, ... }
      */
-    @Scheduled(cron = "0 10 16 * * *")
-    fun jobDetectDaily() {
-        logger.info("jobDetectDaily ${TimeUtils.currentTimeSeconds()}")
-
+//    @Scheduled(cron = "0 10 16 * * *")
+    fun jobDetectDailySchedule() {
         CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val curDate = Date()
-                if (TimeUtils.isWeekend(curDate))
-                    return@launch
+            logger.info("jobDetectDailySchedule ${TimeUtils.currentTimeSeconds()}")
 
-                val curDateStr = ConstDefine.SDF.format(curDate)
+            jobDetect(Date())
+
+            logger.info("jobDetectDailySchedule Done ${TimeUtils.currentTimeSeconds()}")
+        }
+    }
+
+    public suspend fun jobDetect(curDate: Date) {
+        logger.info("jobDetect $curDate")
+
+        try {
+            if (TimeUtils.isWeekend(curDate))
+                return
+
+            val curDateStr = ConstDefine.SDF.format(curDate)
 
 //                val listDate = listOf("2024-03-15", "2024-03-07", "2024-03-05", "2024-03-04", "2024-03-01")
 //                listDate.forEach { curDateStr ->
 //                    val curDate = ConstDefine.SDF.parse(curDateStr)
 
-                    logger.warn("curDateStr: $curDateStr")
-                    val outputValue = mutableMapOf<String, List<String>>() //<indicatorName, list<code>>
-                    DefineDetector.mapNameToDetector.forEach { (indicatorName, detector) ->
-                        val resIndicator = mutableListOf<String>()
-                        CodeConfigVDS.codeList.forEach { code ->
-//                    listOf<String>("BID", "AAA", "AAS", "KBC", "MBB").forEach { code ->
-                            logger.warn("jobDetectDaily indicatorName: $indicatorName, code: $code")
-                            detector.detect(code, curDate)
-                            when (val resDetect = detector.detect(code, curDate)) {
-                                is Left -> {
-                                    val errCode = resDetect.value
-                                    logger.warn(
-                                        "jobDetectDaily errCode = ${errCode.name}, indicatorName: $indicatorName, " +
-                                                "code: $code"
-                                    )
-                                }
-
-                                is Right -> {
-                                    val (resultBoolean, detailedInfo) = resDetect.value
-                                    logger.info(
-                                        "jobDetectDaily resultBoolean: $resultBoolean, " +
-                                                "detailedInfo: ${Gson().toJson(detailedInfo)})"
-                                    )
-                                    if (resultBoolean)
-                                        resIndicator.add(code)
-                                }
-                            }
+            logger.warn("curDateStr: $curDateStr")
+            val outputValue = mutableMapOf<String, List<String>>() //<indicatorName, list<code>>
+            DefineDetector.mapNameToDetector.forEach { (indicatorName, detector) ->
+                val resIndicator = mutableListOf<String>()
+                CodeConfigVDS.codeList.forEach { code ->
+//                    listOf<String>("TPB", "HDB").forEach { code ->
+                    logger.warn("jobDetectDaily indicatorName: $indicatorName, code: $code")
+                    detector.detect(code, curDate)
+                    when (val resDetect = detector.detect(code, curDate)) {
+                        is Left -> {
+                            val errCode = resDetect.value
+                            logger.warn(
+                                "jobDetectDaily errCode = ${errCode.name}, indicatorName: $indicatorName, " +
+                                        "code: $code"
+                            )
                         }
-                        outputValue[indicatorName] = resIndicator
-                    }
-                    logger.warn("outputValue: ${Gson().toJson(outputValue)})")
 
-                    FileWriter.writeToFile(ToolConfig.pathOutputDetectDaily + curDateStr, Gson().toJson(outputValue))
+                        is Right -> {
+                            val (resultBoolean, detailedInfo) = resDetect.value
+                            logger.info(
+                                "jobDetectDaily resultBoolean: $resultBoolean, " +
+                                        "detailedInfo: ${Gson().toJson(detailedInfo)})"
+                            )
+                            if (resultBoolean)
+                                resIndicator.add(code)
+                        }
+                    }
+                }
+                outputValue[indicatorName] = resIndicator
+            }
+            logger.warn("outputValue: ${Gson().toJson(outputValue)})")
+
+            FileWriter.writeToFile(ToolConfig.pathOutputDetectDaily + curDateStr, Gson().toJson(outputValue))
 //                }
-            }
-            catch (e: Exception) {
-                logger.error("jobDetectDaily error, timestamp = ${TimeUtils.currentTimeSeconds()}", e)
-            }
         }
+        catch (e: Exception) {
+            logger.error("jobDetectDaily error, timestamp = ${TimeUtils.currentTimeSeconds()}", e)
+        }
+        logger.info("jobDetect DONE $curDate")
     }
 }
