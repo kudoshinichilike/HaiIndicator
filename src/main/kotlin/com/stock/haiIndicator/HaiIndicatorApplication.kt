@@ -118,4 +118,5 @@ suspend fun runBackup() {
 			SchedulerService.jobDetect(curDate)
 		}
 	}
+	println("runBackup DONE")
 }
