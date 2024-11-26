@@ -1,7 +1,7 @@
 package com.stock.haiIndicator.logic.volumnAnalyze
 
-import com.stock.haiIndicator.define.detectConfig.CodeConfig
 import com.stock.haiIndicator.dataDAO.DAO
+import com.stock.haiIndicator.define.detectConfig.CodeConfigVDS
 import com.stock.haiIndicator.logger.GLLogger
 
 object CalcVolInDuration {
@@ -18,7 +18,7 @@ object CalcVolInDuration {
         if (percentVolume != -1f)
                 GLLogger.detectLogger.info("VCB $percentVolume")
 
-        CodeConfig.codeList.forEach { code ->
+        CodeConfigVDS.codeList.forEach { code ->
             val percentVolume = calc(code, dateStr, timeStart, timeEnd)
             if (percentVolume != -1f)
                 GLLogger.detectLogger.info("calcAllCode percentVolume != -1f $code $percentVolume")

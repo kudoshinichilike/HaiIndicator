@@ -70,17 +70,29 @@
 
             </b-card>
 
-            <div class="row">
-                <div style="max-height: 800px; overflow-y: auto; width: 55%;"
-                     class="col-md-6 table-wrapper">
-                    <b-table :items="dataTableStatistic" :fields="fieldsTableStatistic" class="table-striped">
-                    </b-table>
+            <div class="row" v-if="dataSource == 'CAFE_F'">
+                <div style="max-height: 800px; overflow-y: auto; width: 50%;" class="col-md-6 table-wrapper">
+                    <b-button @click="onDownloadStatistic" variant="primary" block :disabled="isSearching">
+                        Download as Excel
+                    </b-button>
+                    <b-table :items="dataTableStatistic" :fields="fieldsTableStatistic" class="table-striped"></b-table>
                 </div>
 
-                <div style="max-height: 800px; overflow-y: auto; width: 55%;"
-                     class="table-wrapper col-md-6 text-right">
-                    <b-table :items="dataTableDetails" :fields="fieldsTableDetails" class="table-striped">
-                    </b-table>
+                <!-- Second Table -->
+                <div style="max-height: 800px; overflow-y: auto; width: 50%;" class="table-wrapper col-md-6 text-right">
+                    <b-button @click="onDownloadDetails" variant="primary" block :disabled="isSearching">
+                        Download as Excel
+                    </b-button>
+                    <b-table :items="dataTableDetails" :fields="fieldsTableDetails" class="table-striped"></b-table>
+                </div>
+            </div>
+
+            <div class="row" v-if="dataSource == 'RONG_VIET'">
+                <div style="max-height: 800px; overflow-y: auto; width: 50%;" class="col-md-6 table-wrapper">
+                    <b-button @click="onDownloadVDS" variant="primary" block :disabled="isSearching">
+                        Download VDS as Excel
+                    </b-button>
+                    <b-table :items="dataTableVDS" :fields="fieldsTableVDS" class="table-striped"></b-table>
                 </div>
             </div>
         </b-container>
@@ -93,6 +105,7 @@
 <script th:src="@{/lib/vue-multiselect@2.1.0.js}"></script>
 <script th:src="@{/js/utils.js}"></script>
 <script th:src="@{/js/conf_fab.js}"></script>
+<script th:src="@{/lib/xlsx.full.min.js}"></script>
 <script th:src="@{/js/searchData.js}"></script>
 </body>
 

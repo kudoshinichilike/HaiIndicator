@@ -8,4 +8,8 @@ data class CodeInfoVDS(
     val fullname_vi: String = "",
     val loaidn: Int,
     val san: String = ""
-)
+) {
+    fun validSan(): Boolean {
+        return san == FloorEnum.HNX.str || san == FloorEnum.HOSE.str || san == FloorEnum.UPCOM.str
+    }
+}

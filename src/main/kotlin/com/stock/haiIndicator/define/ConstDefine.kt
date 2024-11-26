@@ -1,5 +1,6 @@
 package com.stock.haiIndicator.define
 
+import com.stock.haiIndicator.define.serverConfig.ServerConfig
 import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -18,7 +19,8 @@ object ConstDefine {
     val zone = ZoneId.of("Asia/Bangkok")
     val DATE_START_VDS = SDF.parse("2023-12-11")
 
-    val prePathLoad = "/home/phuongnm5/toolAnhHai/data/"
-//    val prePathLoad = System.getProperty("user.dir") + "/data/"
+//    val prePathLoad = "/home/phuongnm5/toolAnhHai/data/"
     val dateValidScan: Date = SDF.parse("2024-03-01")
+    const val NUM_DATE_KL_BF = 20
+    const val KL_AVG_VALID = 2000 //20k nhung chia 10 vi kl ơ cafeF chia 10
 }

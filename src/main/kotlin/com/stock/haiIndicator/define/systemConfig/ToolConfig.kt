@@ -1,6 +1,7 @@
 package com.stock.haiIndicator.define.systemConfig
 
 import com.stock.haiIndicator.define.ConstDefine
+import com.stock.haiIndicator.define.serverConfig.ServerConfig
 import java.io.FileInputStream
 import java.util.*
 
@@ -12,7 +13,7 @@ object ToolConfig {
     init {
         val props = Properties()
 
-        val pathFile = ConstDefine.prePathLoad + "config/tool.properties"
+        val pathFile = ServerConfig.prePathLoad + "config/tool.properties"
         val inputStream = FileInputStream(pathFile)
 
         props.load(inputStream)
