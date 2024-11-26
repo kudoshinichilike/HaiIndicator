@@ -1,10 +1,10 @@
 package com.stock.haiIndicator.service
 
-import com.stock.haiIndicator.define.DataSourceEnum
-import com.stock.haiIndicator.define.ErrorDefine
-import com.stock.haiIndicator.define.detectConfig.CodeConfig
 import com.stock.haiIndicator.dataDAO.DAO
 import com.stock.haiIndicator.dataDAO.input.DataOneDay
+import com.stock.haiIndicator.define.DataSourceEnum
+import com.stock.haiIndicator.define.ErrorDefine
+import com.stock.haiIndicator.define.detectConfig.CodeConfigVDS
 import com.stock.haiIndicator.payload.req.ReqSearchData
 import com.stock.haiIndicator.payload.res.ResSearchData
 import org.slf4j.Logger
@@ -16,7 +16,7 @@ import java.util.*
 class SearchDataService {
     val logger: Logger = LoggerFactory.getLogger("SearchDataService")
     fun getListCodeSearch(): List<String> {
-        return CodeConfig.codeList.toList()
+        return CodeConfigVDS.codeList.toList()
     }
 
     suspend fun searchDataCafeF(reqData: ReqSearchData): ResSearchData {
@@ -38,7 +38,7 @@ class SearchDataService {
     }
 
     fun validateCode(code: String): Boolean {
-        return CodeConfig.containsCode(code)
+        return CodeConfigVDS.containsCode(code)
     }
 
     fun validateDate(dateStr: String): Boolean {

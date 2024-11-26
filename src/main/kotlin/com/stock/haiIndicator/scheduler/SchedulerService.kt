@@ -30,7 +30,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 /***
- * create by PhuogNguyen in 21/11/2024
+ * create by PhuogNguyen in 31/03/2024
  * Hôm nay là chủ nhật, anh Hải đồng ý dạy mình lúc 1h30. Mình rất kỳ vọng vào buổi học.
  * Nhưng hôm qua ngồi ăn với Vũ,
  * Vũ nói rằng, cảm giác như Phương kỳ vọng vào 1 thứ, và nó k như kỳ vọng thì Phương cảm thấy thất vọng.
@@ -51,6 +51,7 @@ class SchedulerService {
         CoroutineScope(Dispatchers.IO).launch {
             logger.info("jobAvgKLDaily ${TimeUtils.currentTimeSeconds()}")
 
+//            val curDate = ConstDefine.SDF.parse("2024-11-20"); //Date()
             val curDate = Date()
             if (TimeUtils.isWeekend(curDate))
                 return@launch
@@ -61,6 +62,7 @@ class SchedulerService {
             CodeConfigVDS.codeList.forEach {
 //            listOf("TPB", "HDB").forEach {
                     code ->
+//                println("phuongnm5: $code");
                 val calendar = Calendar.getInstance()
                 calendar.time = curDate
                 calendar.add(Calendar.DATE, -35)
@@ -88,6 +90,8 @@ class SchedulerService {
             }
 
             FileWriter.writeToFile(ToolConfig.pathOutputKL + curDateStr, Gson().toJson(codeToDataKL))
+
+            logger.info("Done jobAvgKLDaily ${TimeUtils.currentTimeSeconds()}")
         }
     }
 

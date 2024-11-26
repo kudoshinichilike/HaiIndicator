@@ -5,6 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping
 
 @Controller
 class WebController {
+    @GetMapping("/")
+    fun home(): String {
+        return detectOneCode()
+    }
+
     @GetMapping("/searchData")
     fun searchData(): String = "searchData"
 

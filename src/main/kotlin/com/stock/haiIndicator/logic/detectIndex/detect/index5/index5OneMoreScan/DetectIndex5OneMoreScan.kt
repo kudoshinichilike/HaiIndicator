@@ -98,7 +98,7 @@ object DetectIndex5OneMoreScan: IDetectIndex {
 
     override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Pair<Boolean, SealedResDetect>> {
         val resultFromSuper = super.detect(code, date)
-        if (resultFromSuper is Right)
+        if (resultFromSuper is Right || (resultFromSuper as Left).value == ErrorDefine.INVALID_KL_AVG)
             return resultFromSuper
 
 //        if (!date.before(ConstDefine.DATE_START_VDS))

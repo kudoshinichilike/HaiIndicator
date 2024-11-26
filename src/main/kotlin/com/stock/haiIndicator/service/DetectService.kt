@@ -3,7 +3,7 @@ package com.stock.haiIndicator.service
 import com.google.gson.Gson
 import com.stock.haiIndicator.define.ConstDefine.SDF
 import com.stock.haiIndicator.define.ErrorDefine
-import com.stock.haiIndicator.define.detectConfig.CodeConfig
+import com.stock.haiIndicator.define.detectConfig.CodeConfigVDS
 import com.stock.haiIndicator.logger.GLLogger
 import com.stock.haiIndicator.logic.detectIndex.DefineDetector
 import com.stock.haiIndicator.logic.detectIndex.detect.DetectIndex8
@@ -137,7 +137,7 @@ class DetectService {
     }
 
     fun validateCode(code: String): Boolean {
-        return CodeConfig.containsCode(code)
+        return CodeConfigVDS.containsCode(code)
     }
 
     fun getListIndicator(): List<String> {

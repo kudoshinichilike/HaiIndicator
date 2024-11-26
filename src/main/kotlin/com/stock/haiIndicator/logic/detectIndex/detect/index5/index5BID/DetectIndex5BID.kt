@@ -51,9 +51,10 @@ object DetectIndex5BID: IDetectIndex {
     private fun isValidShape(data: DataOneDay): Boolean {
 //        val con1 = data.GiaCaoNhat > data.GiaMoCua
 //        val con2 = data.GiaMoCua >= data.GiaDongCua
-        val con3 = data.GiaDongCua > data.GiaThapNhatPhien2
+        val minOpenAndClose = min(data.GiaDongCua, data.GiaMoCua)
+        val con3 = minOpenAndClose > data.GiaThapNhatPhien2
         val con4 = (data.GiaThapNhatPhien2 / data.GiaThamChieu) < TEST_LOWEST_PRICE_THREAD
-        val con5 = ((data.GiaDongCua / data.GiaThapNhatPhien2) - 1) >= 0.025
+        val con5 = ((minOpenAndClose / data.GiaThapNhatPhien2) - 1) >= 0.025
         return con3 && con4 && con5
     }
 
@@ -98,7 +99,7 @@ object DetectIndex5BID: IDetectIndex {
 
     override suspend fun detect(code: String, date: Date): Either<ErrorDefine, Pair<Boolean, SealedResDetect>> {
         val resultFromSuper = super.detect(code, date)
-        if (resultFromSuper is Right)
+        if (resultFromSuper is Right || (resultFromSuper as Left).value == ErrorDefine.INVALID_KL_AVG)
             return resultFromSuper
 
 //        if (!date.before(ConstDefine.DATE_START_VDS))

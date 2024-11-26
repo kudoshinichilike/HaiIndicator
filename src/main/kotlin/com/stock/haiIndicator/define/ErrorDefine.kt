@@ -13,5 +13,8 @@ enum class ErrorDefine (val code: Byte) {
     CAN_NOT_CALC_AVG_BF(8),
     EXCEPTION_IN_DETECT(9),
     FAIL_FROM_SUPER(10),
+    CODE_NOT_HAVE_ATO(11),
+    CODE_NOT_HAVE_ATC(12),
+    INVALID_KL_AVG(13),
     ;
 }

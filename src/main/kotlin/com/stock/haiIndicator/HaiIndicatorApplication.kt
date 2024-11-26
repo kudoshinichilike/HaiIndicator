@@ -4,10 +4,10 @@ import com.google.gson.Gson
 import com.stock.haiIndicator.dataDAO.DAO
 import com.stock.haiIndicator.dataDAO.dataVDS.DataVDSDAO
 import com.stock.haiIndicator.define.ConstDefine
-import com.stock.haiIndicator.define.detectConfig.CodeConfig
 import com.stock.haiIndicator.define.detectConfig.CodeConfigVDS
-import com.stock.haiIndicator.logic.detectIndex.detect.DetectIndex3
-import com.stock.haiIndicator.logic.detectIndex.detect.index5.index5BID.DetectIndex5BID
+import com.stock.haiIndicator.define.serverConfig.ServerConfig
+import com.stock.haiIndicator.define.systemConfig.ToolConfig
+import com.stock.haiIndicator.logic.detectIndex.detect.index5.DetectIndex5
 import com.zps.bitzerokt.utils.some_monad.Left
 import com.zps.bitzerokt.utils.some_monad.Right
 import kotlinx.coroutines.runBlocking
@@ -21,7 +21,7 @@ import org.springframework.scheduling.annotation.EnableScheduling
 class HaiIndicatorApplication
 
 suspend fun main(args: Array<String>) {
-	System.setProperty("log4j.configurationFile", ConstDefine.prePathLoad + "config/log4j2.xml")
+	System.setProperty("log4j.configurationFile", ServerConfig.prePathLoad + "config/log4j2.xml")
 	initConfig()
 	runApplication<HaiIndicatorApplication>(*args)
 
@@ -39,7 +39,8 @@ suspend fun main(args: Array<String>) {
 }
 
 fun initConfig() {
-	CodeConfig
+	CodeConfigVDS
+	ToolConfig
 }
 
 suspend fun test() {
@@ -68,7 +69,12 @@ suspend fun testGetDataFromAKelvin() {
 
 suspend fun testNen() {
 //	val codeList = listOf("BID" to "2024-03-08")
-	val codeList = listOf("DGC" to "2024-03-08")
+	val codeList = listOf(
+		"NLG" to "2024-03-15",
+		"SFI" to "2024-03-14",
+		"NBB" to "2024-03-11"
+
+	)
 
 //	val codeList = listOf("KBC" to "2024-01-22", "KBC" to "2023-12-06", "KBC" to "2023-12-07",
 //		"HVN" to "2024-02-27", "HVN" to "2024-02-19", "HVN" to "2024-01-02", "HVN" to "2023-12-11",
@@ -84,7 +90,7 @@ suspend fun testNen() {
 //	)
 	codeList.forEach { (code, dateStr) ->
 		println("phuongnm5: $code  $dateStr")
-		when (val tRes = DetectIndex3.detect(code, ConstDefine.SDF.parse(dateStr))) {
+		when (val tRes = DetectIndex5.detect(code, ConstDefine.SDF.parse(dateStr))) {
 			is Left -> println("left: ${tRes.value}")
 			is Right -> println("right: ${Gson().toJson(tRes.value)}")
 		}
